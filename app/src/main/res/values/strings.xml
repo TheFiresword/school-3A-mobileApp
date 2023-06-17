@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">SSTLA</string>              <!--Nom de l'App-->
+
+    <!-- Page principale -->
+    <string name="helpButton">AU SECOURS !!</string>
+
+    <!-- Séléction de la salle -->
+    <string name="inputLocationMessage">Entrez le numéro de votre salle :</string>
+    <string name="inputLocationHint">Exemple : E104, Aurore, ...</string>
+    <string name="confirmLocationButtonText">Confirmer</string>
+
+    <!-- Attente des secours -->
+    <string name="waitingSentence1">Votre appel en salle &#xA0;</string>
+    <string name="waitingSentence2">&#xA0; a bien été enregistré et envoyé au personnel SST de l\'établissement.</string>
+
+</resources>

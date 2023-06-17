@@ -1,0 +1,32 @@
+{
+    "rescuers":[
+        {  "id": 1,
+            "firstname":"Junior",
+            "lastname": "SEDOGBO",
+            "email": "junior.sedogbo@insa-cvl.fr",
+            "telephone": "",
+            "disponibility": 1,
+            "password": "mhuzblwhgiOKf"
+        },
+        
+        {  "id": 1,
+            "firstname":"François",
+            "lastname": "PARACHE",
+            "email": "francois.parache@insa-cvl.fr",
+            "telephone": "",
+            "disponibility": 1,
+            "password": "mhuzblwhgiOKf"
+        },
+
+        {  "id": 1,
+            "firstname":"Siméon",
+            "lastname": "GRAVIS",
+            "email": "simeon.gravis@insa-cvl.fr",
+            "telephone": "",
+            "disponibility": 1,
+            "password": "mhuzblwhgiOKf"
+        }
+    
+
+    ]
+}

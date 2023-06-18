@@ -9,7 +9,7 @@
             "password": "mhuzblwhgiOKf"
         },
         
-        {  "id": 1,
+        {  "id": 2,
             "firstname":"François",
             "lastname": "PARACHE",
             "email": "francois.parache@insa-cvl.fr",
@@ -18,7 +18,7 @@
             "password": "mhuzblwhgiOKf"
         },
 
-        {  "id": 1,
+        {  "id": 3,
             "firstname":"Siméon",
             "lastname": "GRAVIS",
             "email": "simeon.gravis@insa-cvl.fr",

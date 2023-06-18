@@ -1,9 +1,24 @@
 const express = require('express')
 const router = express.Router()
+const mysql = require('mysql2')
+
+const Rescuer = require('./../models/rescuersModel')
+
+
 
 // Fonction pour récupérer la liste de tous les secouristes
-router.get('/', (req, res)=>{
-    res.send('Hello dear student')
+router.get('/', async (req, res)=>{
+    const connection = req.connection;
+    connection.query('SELECT * from rescuers', (err, results, fields)=>{
+        if(err){
+            console.error('Erreur lors de l\'exécution de la requête', err);
+            res.status(500).send('Erreur de serveur');
+        }
+        else{
+            res.json(results);
+        }
+    })
+
 })
 
 // Fonction pour récupérer la liste des secouristes disponibles

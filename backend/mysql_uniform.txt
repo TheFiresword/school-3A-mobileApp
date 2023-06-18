@@ -1,0 +1,10 @@
+mysql -u root -p
+CREATE user 'uniform'@'localhost' identified by 'Uniform!';
+create database uniformDb;
+use uniformDb;
+
+GRANT all privileges on uniformDb.* to 'uniform'@'localhost' ;
+// Vérification
+show grants for 'uniform'@'localhost';
+
+source .\data.sql;

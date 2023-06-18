@@ -9,7 +9,8 @@ const connection = mysql.createConnection({
     host: connection_details.host,
     user: connection_details.user,
     password: connection_details.password,
-    database: connection_details.database
+    database: connection_details.database,
+    charset: 'utf8'
 })
 
 async function connecToDatabase(){

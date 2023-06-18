@@ -11,9 +11,8 @@ CREATE TABLE rescuers (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
-)DEFAULT CHARSET=utf8;
-
-SET NAMES utf8;
+)  DEFAULT COLLATE utf8_general_ci
+   DEFAULT CHARACTER SET utf8;
 
 INSERT INTO rescuers (firstname, lastname, email, password) VALUES 
 ("Junior", "SEDOGBO", "junior.sedogbo@insa-cvl.fr", "mhuzblwhgiOKf"),
@@ -21,4 +20,4 @@ INSERT INTO rescuers (firstname, lastname, email, password) VALUES
 ("François", "PARACHE", "francois.parache@insa-cvl.fr", "mhuzblwhgiOKf"),
 ("Yann", "GAUDICHAUD", "yann.gaudichaud@insa-cvl.fr", "mhuzblwhgiOKf"),
 ("Antoine", "GRAND", "antoine.grand@insa-cvl.fr", "mhuzblwhgiOKf"),
-("Pierre-Gilles", "LEBOTLAN", "pierre-gilles.le_botlan@insa-cvl.fr", "mhuzblwhgiOKf")
+("Pierre-Gilles", "LEBOTLAN", "pierre-gilles.le_botlan@insa-cvl.fr", "mhuzblwhgiOKf");

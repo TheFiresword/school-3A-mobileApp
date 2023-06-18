@@ -2,26 +2,22 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/helpImage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/helpButton"
-        android:layout_width="151dp"
-        android:layout_height="201dp"
-        android:layout_marginStart="117dp"
-        android:layout_marginLeft="117dp"
-        android:layout_marginTop="265dp"
-        android:layout_marginEnd="117dp"
-        android:layout_marginRight="117dp"
-        android:layout_marginBottom="265dp"
-        android:text="@string/helpButton"
-        android:background="@color/helpButtonBackgroundColor"
-        android:textColor="@color/helpButtonTextColor"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/HelpImage"
+        android:layout_width="318dp"
+        android:layout_height="565dp"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="83dp"
+        android:layout_marginEnd="47dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/_alert" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

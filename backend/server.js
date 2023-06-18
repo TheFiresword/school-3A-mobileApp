@@ -29,7 +29,7 @@ const app = express()
 
 //middleware pour transmettre l'objet connection
 app.use((req, res, next)=>{
-    req.connection = connection;
+    req.socket = connection;
     next();
 })
 

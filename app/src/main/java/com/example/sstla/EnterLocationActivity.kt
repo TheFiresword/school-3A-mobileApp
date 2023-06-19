@@ -16,6 +16,7 @@ class EnterLocationActivity : AppCompatActivity() {
 
         val locationEdit = findViewById<EditText>(R.id.inputLocation)
         val confirmLoc = findViewById<Button>(R.id.confirmLocationButton)    //Bouton "confirmer"
+        val retButton = findViewById<Button>(R.id.button_ret_0) //Bouton "retour"
 
         confirmLoc.setOnClickListener {              //Quand on clique sur le bouton confirmer
             val confirmedLoc = locationEdit.text.toString()               //On enregistre le texte
@@ -29,6 +30,11 @@ class EnterLocationActivity : AppCompatActivity() {
                 intent.putExtra("location", confirmedLoc)
                 startActivity(intent)
             }
+        }
+
+        retButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Parameters"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".parameters">
+
+    <ScrollView
+        android:id="@+id/scroller"
+        android:layout_width="409dp"
+        android:layout_height="729dp"
+        android:scrollbarStyle="insideInset"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/Titre_texte"
+                android:layout_width="match_parent"
+                android:layout_height="84dp"
+                android:fontFamily="sans-serif-black"
+                android:scaleX="1"
+                android:scaleY="1"
+                android:text="Paramètres"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="35sp"
+                android:textStyle="bold"
+                android:typeface="normal" />
+
+            <Button
+                android:id="@+id/BDD_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="67dp"
+                android:text="Base de Données"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="25dp" />
+
+            <Button
+                android:id="@+id/button_ret_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Retour" />
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

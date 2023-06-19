@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "225797711579",
+    "project_id": "sstou-f765c",
+    "storage_bucket": "sstou-f765c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225797711579:android:5f46df61ab7b62f0aecefe",
+        "android_client_info": {
+          "package_name": "insa.etudiant.sstou"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "225797711579-d26bigabffu5heo73mcvifhi85j0ibls.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGhlxjxsxyLd5lXbLqAwa04Jndquh58Dw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "225797711579-d26bigabffu5heo73mcvifhi85j0ibls.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

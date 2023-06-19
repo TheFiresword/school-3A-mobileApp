@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:rotationX="0"
     android:rotationY="0"
-    tools:context=".EnterLocationActivity">
+    tools:context="insa.etudiant.sstou.EnterLocationActivity">
 
     <TextView
         android:id="@+id/enterLocationText"

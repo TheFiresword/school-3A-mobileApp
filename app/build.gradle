@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.sstla'
+    namespace 'insa.etudiant.sstou'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.sstla"
+        applicationId "insa.etudiant.sstou"
         minSdk 19
         targetSdk 33
         versionCode 1

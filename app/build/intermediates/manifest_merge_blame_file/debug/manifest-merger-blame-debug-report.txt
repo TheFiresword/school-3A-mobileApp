@@ -1,0 +1,128 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.sstla"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="19"
+8-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="33" />
+9-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml
+10
+11    <uses-feature
+11-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:5:5-7:36
+12        android:name="android.hardware.telephony"
+12-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:6:9-50
+13        android:required="false" />
+13-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:7:9-33
+14
+15    <uses-permission android:name="android.permission.SEND_SMS" />
+15-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:9:5-67
+15-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:9:22-64
+16
+17    <permission
+17-->[androidx.core:core:1.9.0] C:\Users\Jdepierre\.gradle\caches\transforms-3\256c6597bc3e6f8192abd6f9b27a26ab\transformed\core-1.9.0\AndroidManifest.xml:22:5-24:47
+18        android:name="com.example.sstla.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+18-->[androidx.core:core:1.9.0] C:\Users\Jdepierre\.gradle\caches\transforms-3\256c6597bc3e6f8192abd6f9b27a26ab\transformed\core-1.9.0\AndroidManifest.xml:23:9-81
+19        android:protectionLevel="signature" />
+19-->[androidx.core:core:1.9.0] C:\Users\Jdepierre\.gradle\caches\transforms-3\256c6597bc3e6f8192abd6f9b27a26ab\transformed\core-1.9.0\AndroidManifest.xml:24:9-44
+20
+21    <uses-permission android:name="com.example.sstla.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+21-->[androidx.core:core:1.9.0] C:\Users\Jdepierre\.gradle\caches\transforms-3\256c6597bc3e6f8192abd6f9b27a26ab\transformed\core-1.9.0\AndroidManifest.xml:26:5-97
+21-->[androidx.core:core:1.9.0] C:\Users\Jdepierre\.gradle\caches\transforms-3\256c6597bc3e6f8192abd6f9b27a26ab\transformed\core-1.9.0\AndroidManifest.xml:26:22-94
+22
+23    <application
+23-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:11:5-45:19
+24        android:allowBackup="true"
+24-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:12:9-35
+25        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+25-->[androidx.core:core:1.9.0] C:\Users\Jdepierre\.gradle\caches\transforms-3\256c6597bc3e6f8192abd6f9b27a26ab\transformed\core-1.9.0\AndroidManifest.xml:28:18-86
+26        android:dataExtractionRules="@xml/data_extraction_rules"
+26-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:13:9-65
+27        android:debuggable="true"
+28        android:fullBackupContent="@xml/backup_rules"
+28-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:14:9-54
+29        android:icon="@mipmap/ic_launcher"
+29-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:15:9-43
+30        android:label="@string/app_name"
+30-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:16:9-41
+31        android:roundIcon="@mipmap/ic_launcher_round"
+31-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:17:9-54
+32        android:supportsRtl="true"
+32-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:18:9-35
+33        android:testOnly="true"
+34        android:theme="@style/Theme.SSTLA" >
+34-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:19:9-43
+35        <activity
+35-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:21:9-23:40
+36            android:name="com.example.sstla.profileActivity"
+36-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:22:13-44
+37            android:exported="false" />
+37-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:23:13-37
+38        <activity
+38-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:24:9-26:40
+39            android:name="com.example.sstla.LoginActivity"
+39-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:25:13-42
+40            android:exported="false" />
+40-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:26:13-37
+41        <activity
+41-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:27:9-29:40
+42            android:name="com.example.sstla.parameters"
+42-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:28:13-39
+43            android:exported="false" />
+43-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:29:13-37
+44        <activity
+44-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:30:9-32:40
+45            android:name="com.example.sstla.WaitingForHelp"
+45-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:31:13-43
+46            android:exported="false" />
+46-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:32:13-37
+47        <activity
+47-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:33:9-35:40
+48            android:name="com.example.sstla.EnterLocationActivity"
+48-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:34:13-50
+49            android:exported="false" />
+49-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:35:13-37
+50        <activity
+50-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:36:9-44:20
+51            android:name="com.example.sstla.MainActivity"
+51-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:37:13-41
+52            android:exported="true" >
+52-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:38:13-36
+53            <intent-filter>
+53-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:39:13-43:29
+54                <action android:name="android.intent.action.MAIN" />
+54-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:40:17-69
+54-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:40:25-66
+55
+56                <category android:name="android.intent.category.LAUNCHER" />
+56-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:42:17-77
+56-->F:\TRAVAUX SCOLAIRES\Projet app\SS-mobile-App\app\src\main\AndroidManifest.xml:42:27-74
+57            </intent-filter>
+58        </activity>
+59
+60        <provider
+60-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Jdepierre\.gradle\caches\transforms-3\ed5c533cc70e7b3b025c1d493dfcade0\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+61            android:name="androidx.startup.InitializationProvider"
+61-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Jdepierre\.gradle\caches\transforms-3\ed5c533cc70e7b3b025c1d493dfcade0\transformed\emoji2-1.2.0\AndroidManifest.xml:25:13-67
+62            android:authorities="com.example.sstla.androidx-startup"
+62-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Jdepierre\.gradle\caches\transforms-3\ed5c533cc70e7b3b025c1d493dfcade0\transformed\emoji2-1.2.0\AndroidManifest.xml:26:13-68
+63            android:exported="false" >
+63-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Jdepierre\.gradle\caches\transforms-3\ed5c533cc70e7b3b025c1d493dfcade0\transformed\emoji2-1.2.0\AndroidManifest.xml:27:13-37
+64            <meta-data
+64-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Jdepierre\.gradle\caches\transforms-3\ed5c533cc70e7b3b025c1d493dfcade0\transformed\emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+65                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+65-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Jdepierre\.gradle\caches\transforms-3\ed5c533cc70e7b3b025c1d493dfcade0\transformed\emoji2-1.2.0\AndroidManifest.xml:30:17-75
+66                android:value="androidx.startup" />
+66-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Jdepierre\.gradle\caches\transforms-3\ed5c533cc70e7b3b025c1d493dfcade0\transformed\emoji2-1.2.0\AndroidManifest.xml:31:17-49
+67            <meta-data
+67-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Jdepierre\.gradle\caches\transforms-3\41ce1ad912a5e3041715fcd6269c5d09\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
+68                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+68-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Jdepierre\.gradle\caches\transforms-3\41ce1ad912a5e3041715fcd6269c5d09\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
+69                android:value="androidx.startup" />
+69-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\Jdepierre\.gradle\caches\transforms-3\41ce1ad912a5e3041715fcd6269c5d09\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
+70        </provider>
+71    </application>
+72
+73</manifest>

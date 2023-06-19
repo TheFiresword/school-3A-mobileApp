@@ -1,0 +1,57 @@
+GET http://localhost:3000/rescuers
+
+###
+GET http://localhost:3000/rescuers/available
+
+###
+GET http://localhost:3000/rescuers/2
+
+###
+POST http://localhost:3000/rescuers
+Content-Type: application/json
+
+{
+    "firstname": "toto",
+    "lastname": "billy",
+    "email": "billytoto@gmail.com",
+    "telephone": "",
+    "disponibility": "",
+    "password": "HM,fizllk:a"
+}
+
+###
+POST http://localhost:3000/rescuers
+Content-Type: application/json
+
+{
+    "firstname": "toto",
+    "lastname": "billy",
+    "email": "billytoto@gmail.com",
+    "telephone": "",
+    "disponibility": "",
+    "password": "HM,fizllk:a"
+}
+
+###
+DELETE http://localhost:3000/rescuers/55
+
+###
+POST http://localhost:3000/rescuers
+Content-Type: application/json
+
+{
+    "firstname": "toto",
+    "lastname": "billy",
+    "email": "billytoto@gmail.com",
+    "telephone": "",
+    "disponibility": "",
+    "password": "HM,fizllk:a"
+}
+
+###
+PATCH http://localhost:3000/rescuers/9
+Content-Type: application/json
+
+{
+    "password": "Tibofssfssfec"
+}

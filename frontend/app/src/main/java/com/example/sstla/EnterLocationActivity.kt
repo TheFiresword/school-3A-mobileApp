@@ -26,7 +26,7 @@ class EnterLocationActivity : AppCompatActivity() {
                 warning_text.setVisibility(View.VISIBLE)
             }
             else {
-                val intent = Intent(this, WaitingForHelp::class.java)       //Se diriger vers l'activité "Suivante"
+                val intent = Intent(this, WaitingForHelpActivity::class.java)       //Se diriger vers l'activité "Suivante"
                 intent.putExtra("location", confirmedLoc)
                 startActivity(intent)
             }

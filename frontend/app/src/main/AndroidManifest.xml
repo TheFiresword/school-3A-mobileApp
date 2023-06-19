@@ -28,7 +28,7 @@
             android:name=".parameters"
             android:exported="false" />
         <activity
-            android:name=".WaitingForHelp"
+            android:name=".WaitingForHelpActivity"
             android:exported="false" />
         <activity
             android:name=".EnterLocationActivity"

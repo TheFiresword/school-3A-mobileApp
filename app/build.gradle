@@ -8,7 +8,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "insa.etudiant.sstou"
+        applicationId "com.example.sstla"
         minSdk 19
         targetSdk 33
         versionCode 1

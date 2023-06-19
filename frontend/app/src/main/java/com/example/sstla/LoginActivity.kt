@@ -21,8 +21,8 @@ class LoginActivity : AppCompatActivity() {
             val Username_entry = findViewById<EditText>(R.id.Username_entry)
             val Password_entry = findViewById<EditText>(R.id.Password_entry)
 
-            val username = Username_entry.toString()
-            val password = Password_entry.toString()
+            val username = Username_entry.text.toString()
+            val password = Password_entry.text.toString()
 
             if((username == "Admin") or (username == "admin"))
             {

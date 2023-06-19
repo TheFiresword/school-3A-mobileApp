@@ -4,12 +4,11 @@ class Rescuer{
     firstname;
     lastname;
     email;
+    password;
     telephone;
     disponibility;
-    password;
-    
-    constructor(id, firstname, lastname, email, password, telephone="", disponibility=true){
-        this.id=id;
+   
+    constructor(firstname, lastname, email, password, telephone="NaN", disponibility=1){
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;

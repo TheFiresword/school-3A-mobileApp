@@ -1,4 +1,4 @@
-package com.example.sstla
+package insa.etudiant.sstou
 
 import org.junit.Test
 

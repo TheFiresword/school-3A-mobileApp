@@ -20,22 +20,22 @@
         android:theme="@style/Theme.SSTLA"
         tools:targetApi="31">
         <activity
-            android:name=".profileActivity"
+            android:name="insa.etudiant.sstou.profileActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name="insa.etudiant.sstou.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".parameters"
+            android:name="insa.etudiant.sstou.parameters"
             android:exported="false" />
         <activity
-            android:name=".WaitingForHelp"
+            android:name="insa.etudiant.sstou.WaitingForHelp"
             android:exported="false" />
         <activity
-            android:name=".EnterLocationActivity"
+            android:name="insa.etudiant.sstou.EnterLocationActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="insa.etudiant.sstou.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

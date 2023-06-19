@@ -1,4 +1,4 @@
-package com.example.sstla
+package insa.etudiant.sstou
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -31,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
             else
             {
                 //insérer vérification mdp ici.
-                val intent = Intent(this,profileActivity::class.java)
+                val intent = Intent(this, profileActivity::class.java)
                 intent.putExtra("userTitle", username)
                 startActivity(intent) //Redirige vers profil utilisateur
 
@@ -44,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         ret_button.setOnClickListener {
-            val intent = Intent(this,MainActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
     }

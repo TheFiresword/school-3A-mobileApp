@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //val myButton = findViewById<Button>(R.id.helpButton)    //Bouton "demander de l'aide"
-        val myhelpbutton = findViewById<ImageView>(R.id.helpImage)
+        val myhelpbutton = findViewById<ImageView>(R.id.HelpButton)
 
         /*myButton.setOnClickListener {                                               //Quand on clique sur le bouton AIDE
             val intent = Intent(this, EnterLocationActivity::class.java)       //Se diriger vers l'activité "Entrer salle"

@@ -10,7 +10,11 @@
     <string name="confirmLocationButtonText">Confirmer</string>
 
     <!-- Attente des secours -->
-    <string name="waitingSentence1">Votre appel en salle &#xA0;</string>
-    <string name="waitingSentence2">&#xA0; a bien été enregistré et envoyé au personnel SST de l\'établissement.</string>
+    <string name="waitingSentence1">Votre appel en salle&#xA0;</string>
+    <string name="waitingSentence2">&#xA0;a bien été enregistré et envoyé au personnel SST de l\'établissement.</string>
+    <string name="param_tres">Paramètres</string>
+    <string name="alerte">Alerte</string>
+    <string name="cliquez">Cliquez sur le bouton ci-dessus pour prévenir les agents SST au sein de l\'INSA</string>
+    <string name="veuillez_saisir_le_num_ro_de_salle">Veuillez saisir le numéro de salle !</string>
 
 </resources>

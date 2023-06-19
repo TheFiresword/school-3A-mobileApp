@@ -1,8 +1,10 @@
 package com.example.sstla
 
+import android.content.Intent
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 
 class WaitingForHelp : AppCompatActivity() {
@@ -16,6 +18,13 @@ class WaitingForHelp : AppCompatActivity() {
 
         val waitingText = findViewById<TextView>(R.id.waitingText)
         waitingText.text = waitingSentence1 + location + waitingSentence2
+
+        val retButton = findViewById<Button>(R.id.button2)     //Bouton de retour vers la page d'accueil.
+        retButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
 
 
     }

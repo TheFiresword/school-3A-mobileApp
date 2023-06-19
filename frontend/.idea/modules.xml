@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/SSTLA.iml" filepath="$PROJECT_DIR$/.idea/SSTLA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SSTLA.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SSTLA.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SSTLA.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SSTLA.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SSTLA.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SSTLA.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SSTLA.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SSTLA.app.unitTest.iml" />
+    </modules>
+  </component>
+</project>

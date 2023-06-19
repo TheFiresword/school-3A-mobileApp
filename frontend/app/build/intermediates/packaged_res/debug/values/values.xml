@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="confirmLocationButtonBackgroundColor">#FF0000</color>
+    <color name="confirmLocationButtonTextColor">#FFFFFF</color>
+    <color name="helpButtonBackgroundColor">#FF0000</color>
+    <color name="helpButtonTextColor">#FFFFFF</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="alerte">Alerte</string>
+    <string name="app_name">SSTLA</string>
+    <string name="cliquez">Cliquez sur le bouton ci-dessus pour prévenir les agents SST au sein de l\'INSA</string>
+    <string name="confirmLocationButtonText">Confirmer</string>
+    <string name="helpButton">AU SECOURS !!</string>
+    <string name="inputLocationHint">Exemple : E104, Aurore, ...</string>
+    <string name="inputLocationMessage">Entrez le numéro de votre salle :</string>
+    <string name="param_tres">Paramètres</string>
+    <string name="veuillez_saisir_le_num_ro_de_salle">Veuillez saisir le numéro de salle !</string>
+    <string name="waitingSentence1">Votre appel en salle </string>
+    <string name="waitingSentence2"> a bien été enregistré et envoyé au personnel SST de l\'établissement.</string>
+    <style name="Base.Theme.SSTLA" parent="Theme.Material3.DayNight.NoActionBar">
+        
+        
+    </style>
+    <style name="Theme.SSTLA" parent="Base.Theme.SSTLA"/>
+</resources>

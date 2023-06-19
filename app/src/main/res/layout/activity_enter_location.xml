@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:rotationX="0"
+    android:rotationY="0"
     tools:context=".EnterLocationActivity">
 
     <TextView
@@ -43,13 +45,14 @@
         android:layout_width="151dp"
         android:layout_height="49dp"
         android:layout_marginStart="130dp"
-        android:layout_marginTop="57dp"
+        android:layout_marginTop="44dp"
         android:layout_marginEnd="130dp"
         android:background="@color/confirmLocationButtonBackgroundColor"
         android:text="@string/confirmLocationButtonText"
         android:textColor="@color/confirmLocationButtonTextColor"
         app:backgroundTint="@android:color/holo_red_dark"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputLocation" />
 
@@ -85,6 +88,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputLocation"
         app:layout_constraintVertical_bias="1.0" />
+
+    <RadioGroup
+        android:layout_width="123dp"
+        android:layout_height="257dp"
+        android:layout_marginStart="144dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="144dp"
+        android:layout_marginBottom="60dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_ret_0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confirmLocationButton">
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bonnichon" />
+
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Idasiak" />
+
+        <CheckBox
+            android:id="@+id/checkBox3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Personne (réel)" />
+
+        <CheckBox
+            android:id="@+id/checkBox4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Parache" />
+    </RadioGroup>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

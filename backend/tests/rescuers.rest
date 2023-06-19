@@ -53,5 +53,5 @@ PATCH http://localhost:3000/rescuers/9
 Content-Type: application/json
 
 {
-    "password": "Tibo"
+    "password": "Tibofssfssfec"
 }

@@ -190,49 +190,53 @@ router.patch('/:id', get_rescuer, (req, res)=>{
    
     let sql = `UPDATE ${config_values.rescuersTable} SET `;
     const params = [];
-    fields_sent.forEach((field, index)=>{
-        sql += ` ${field} = ?`;
 
-        let normalized_field = informations[field];
-        if(field != "disponibility"){
-            normalized_field = informations[field] || "Nan";
-        }
-        else{
-            normalized_field = informations[field] || true;
-        }
-
-        if(field == "password"){
-            if(informations.password.length < 8){
-                res.status(201).json(
-                    {message: "Echec", details: 'Mot de passe trop court'}
-                    );
-                return;
+    const updateFields = async () => {
+        for(let index=0; index < fields_sent.length; index++){
+            const field = fields_sent[index];
+            sql += ` ${field} = ?`;
+    
+            let normalized_field = informations[field];
+            if(field != "disponibility"){
+                normalized_field = informations[field] || "Nan";
             }
-            hash_passwd(informations['password']).then(
-                hash =>{
-                    normalized_field = hash;
-                }).catch(err => {res.status(500).json(
-                    {message: 'Echec', details: 'Erreur interne au serveur'});}); 
+            else{
+                normalized_field = informations[field] || true;
+            }
+            
+            if(field == "password"){
+                if(informations.password.length < 8){
+                    res.status(201).json(
+                        {message: "Echec", details: 'Mot de passe trop court'}
+                        );
+                    return;
+                }
+                const hash = await hash_passwd(informations['password']);
+                //console.log('The hash is', hash);
+                normalized_field = hash; 
+            }
+    
+            params.push(normalized_field);
+            if(index < fields_sent.length-1){
+                sql += ',';
+            }
         }
+        
+        sql += ' WHERE id = ?';
+        params.push(rescuer_id);
+        //console.log('La requête', sql, params);
 
-        params.push(normalized_field);
-        if(index < fields_sent.length-1){
-            sql += ',';
-        }
-    })
-    sql += ' WHERE id = ?';
-    params.push(rescuer_id);
-    console.log('La requête', sql, params);
-
-    connection.query(sql, params, (err, results, fields) =>{
-        if(err){
-            //console.error('Erreur lors de l\'exécution de la requête', err);
-            res.status(500).json({message: 'Echec', details: 'Erreur interne au serveur'});
-        }
-        else{
-            res.status(200).json({message: 'Succès', details:results});
-        }
-    } )
+        connection.query(sql, params, (err, results, fields) =>{
+            if(err){
+                //console.error('Erreur lors de l\'exécution de la requête', err);
+                res.status(500).json({message: 'Echec', details: 'Erreur interne au serveur'});
+            }
+            else{
+                res.status(200).json({message: 'Succès', details:results});
+            }
+        } )
+    }
+    updateFields();    
 })
 
 

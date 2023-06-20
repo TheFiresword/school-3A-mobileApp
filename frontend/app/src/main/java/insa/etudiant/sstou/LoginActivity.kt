@@ -39,6 +39,21 @@ fun sendPostRequest(url: String, requestBody: String): String {
     return response.toString()
 }
 
+//ChatGPT's json extractProfile
+import org.json.JSONObject
+
+data class Profile(val id: String, val firstName: String, val lastName: String, val email: String)
+
+fun extractProfileData(response: String): Profile {
+    val jsonResponse = JSONObject(response)
+
+    val id = jsonResponse.getString("id")
+    val firstName = jsonResponse.getString("first_name")
+    val lastName = jsonResponse.getString("last_name")
+    val email = jsonResponse.getString("email")
+
+    return Profile(id, firstName, lastName, email)
+}
 
 
 
@@ -53,21 +68,27 @@ class LoginActivity : AppCompatActivity() {
         val ret_button = findViewById<Button>(R.id.ret_button_2) // Bouton Retour
 
         Confirmation.setOnClickListener {
-            val Username_entry = findViewById<EditText>(R.id.Username_entry)
+            val Usermail_entry = findViewById<EditText>(R.id.Usermail_entry)
             val Password_entry = findViewById<EditText>(R.id.Password_entry)
 
-            val username = Username_entry.text.toString()
+            val usermail = Usermail_entry.text.toString()
             val password = Password_entry.text.toString()
 
-            if((username == "Admin") or (username == "admin"))
+            if((usermail == "Admin") or (usermail == "admin"))
             {
                 //Admin -> redirige vers la liste des comptes (RescuerListActivity)
             }
             else
             {
-                var response = sendPostRequest("http://localhost:3000/authentification/login", "{ \"email\": \"$username\", \"password\": \"$password\" }")
+                val response = sendPostRequest("http://localhost:3000/authentification/login", "{ \"email\": \"$usermail\", \"password\": \"$password\" }")
+                //println(response)
+                val profile = extractProfileData(response)
+
                 val intent = Intent(this, profileActivity::class.java)
-                intent.putExtra("userTitle", username)
+                intent.putExtra("userId", profile.id)
+                intent.putExtra("userFirstName", profile.firstName)
+                intent.putExtra("userLastName", profile.lastName)
+                intent.putExtra("userMail", profile.email)
                 startActivity(intent) //Redirige vers profil utilisateur (profileActivity
 
             }

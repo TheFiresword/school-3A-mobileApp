@@ -19,14 +19,14 @@
         android:layout_marginBottom="43dp"
         android:text="Connectez vous"
         android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@+id/Username_entry"
+        app:layout_constraintBottom_toTopOf="@+id/Usermail_entry"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.43" />
 
     <EditText
-        android:id="@+id/Username_entry"
+        android:id="@+id/Usermail_entry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -56,7 +56,7 @@
         app:layout_constraintBottom_toTopOf="@+id/Connection_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Username_entry" />
+        app:layout_constraintTop_toBottomOf="@+id/Usermail_entry" />
 
     <Button
         android:id="@+id/Connection_button"

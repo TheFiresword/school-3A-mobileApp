@@ -1,16 +1,19 @@
-const express = require('express')
-const router = express.Router()
-const mysql = require('mysql2')
+const express = require('express');
+const router = express.Router();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
+const secretKey = require('./../tokenGeneration')
 const config_values = require('./../config')
+
+const safeInfos = "id, firstname, lastname, email, telephone, disponibility";
 
 // Middleware pour vérifier l'existence d'un secouriste en fonction de l'id
 function get_rescuer(req, res, next){
     const connection = req.socket;
     const rescuer_id = parseInt(req.params.id);
     
-    const sql = `SELECT * from ${config_values.rescuersTable} WHERE id = ?`;
+    const sql = `SELECT ${safeInfos} from ${config_values.rescuersTable} WHERE id = ?`;
     const params = [rescuer_id];
     connection.query(sql, [params], (err, results)=>{
         if(err){
@@ -27,6 +30,25 @@ function get_rescuer(req, res, next){
         }
         next();
     })    
+}
+
+// Middleware pour vérifier la validité de la session (pour les requêtes de modification de données)
+const check_session = (req, res, next)=>{
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    //console.log(token);
+    if(token == null){
+        res.status(200).json({message: 'Echec', details:'La session est fermée'});
+        return;
+    }
+    jwt.verify(token, secretKey, (err, user)=>{
+        if(err){
+            res.status(403).json({message: 'Echec', details:'Token d\'authentification invalide'});
+            return;
+        }
+        req.rescuer = user;
+        next();
+    })
 }
 
 // Fonction de validation des données reçues d'un formulaire
@@ -49,7 +71,7 @@ const hash_passwd = async (password) => {
 // Fonction pour récupérer la liste de tous les secouristes
 router.get('/', (req, res)=>{
     const connection = req.socket;
-    connection.query('SELECT * from rescuers', (err, results, fields)=>{
+    connection.query(`SELECT ${safeInfos} from rescuers`, (err, results, fields)=>{
         if(err){
             //console.error('Erreur lors de l\'exécution de la requête', err);
             res.status(500).json(
@@ -65,7 +87,7 @@ router.get('/', (req, res)=>{
 // Fonction pour récupérer la liste des secouristes disponibles
 router.get('/available', (req, res)=>{
     const connection = req.socket; 
-    const sql = `SELECT * from ${config_values.rescuersTable} WHERE DISPONIBILITY = ?`;
+    const sql = `SELECT ${safeInfos} from ${config_values.rescuersTable} WHERE DISPONIBILITY = ?`;
     const params = [1];
 
     connection.query(sql, [params], (err, results, fields) =>{
@@ -85,7 +107,7 @@ router.get('/:id', get_rescuer, (req, res)=>{
 })
 
 // Fonction pour ajouter un secouriste dans la base
-router.post('/', (req, res)=>{
+router.post('/',  check_session, (req, res)=>{
     const connection = req.socket;
     const informations = req.body;
 
@@ -151,7 +173,7 @@ router.post('/', (req, res)=>{
                             const params = [informations.firstname, informations.lastname, informations.email, hashed_password, 
                                 informations.telephone, informations.disponibility
                             ];
-                            console.log('Parametres de requete', params);
+                            //console.log('Parametres de requete', params);
                             
                             const sql = `INSERT INTO ${config_values.rescuersTable} (firstname, lastname, email, password, telephone, disponibility) VALUES (?)`;
                             connection.query(sql, [params], (err, results) =>{
@@ -181,7 +203,7 @@ router.post('/', (req, res)=>{
 
     
 // Fonction pour modifier les informations d'un secouriste
-router.patch('/:id', get_rescuer, (req, res)=>{
+router.patch('/:id',  check_session, get_rescuer, (req, res)=>{
     const connection = req.socket;
     const rescuer_id = parseInt(req.params.id);
     
@@ -241,7 +263,7 @@ router.patch('/:id', get_rescuer, (req, res)=>{
 
 
 // Fonction pour supprimer un secouriste de la bdd
-router.delete('/:id', get_rescuer, (req, res)=>{
+router.delete('/:id', check_session, get_rescuer, (req, res)=>{
     const connection = req.socket;
     const rescuer_id = parseInt(req.params.id);
 
@@ -253,7 +275,7 @@ router.delete('/:id', get_rescuer, (req, res)=>{
             res.status(500).json({message: 'Echec', details: 'Erreur interne au serveur'});
         }
         else{
-            res.status(204).json({message: 'Succès', details:results});
+            res.status(200).json({message: 'Succès', details:results});
         }
     } )
 })

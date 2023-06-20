@@ -8,6 +8,57 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 
+//ChatGPT's POST
+import java.io.DataOutputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import java.io.BufferedReader
+import java.io.InputStreamReader
+
+import org.json.JSONObject
+
+fun sendPostRequest(url: String, requestBody: String): String {
+    val connection = URL(url).openConnection() as HttpURLConnection
+    connection.requestMethod = "POST"
+    connection.doOutput = true
+
+    val postData = requestBody.toByteArray(Charsets.UTF_8)
+    connection.setRequestProperty("Content-Length", postData.size.toString())
+    DataOutputStream(connection.outputStream).use { outputStream ->
+        outputStream.write(postData)
+    }
+
+    val responseCode = connection.responseCode
+    val response = StringBuilder()
+    BufferedReader(InputStreamReader(connection.inputStream)).use { reader ->
+        var line: String?
+        while (reader.readLine().also { line = it } != null) {
+            response.append(line)
+        }
+    }
+    connection.disconnect()
+
+    return response.toString()
+}
+
+//ChatGPT's json extractProfile
+
+data class Profile(val id: String, val firstName: String, val lastName: String, val email: String)
+
+fun extractProfileData(response: String): Profile {
+    val jsonResponse = JSONObject(response)
+
+    val id = jsonResponse.getString("id")
+    val firstName = jsonResponse.getString("first_name")
+    val lastName = jsonResponse.getString("last_name")
+    val email = jsonResponse.getString("email")
+
+    return Profile(id, firstName, lastName, email)
+}
+
+
+
+
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,22 +69,28 @@ class LoginActivity : AppCompatActivity() {
         val ret_button = findViewById<Button>(R.id.ret_button_2) // Bouton Retour
 
         Confirmation.setOnClickListener {
-            val Username_entry = findViewById<EditText>(R.id.Username_entry)
+            val Usermail_entry = findViewById<EditText>(R.id.Usermail_entry)
             val Password_entry = findViewById<EditText>(R.id.Password_entry)
 
-            val username = Username_entry.text.toString()
+            val usermail = Usermail_entry.text.toString()
             val password = Password_entry.text.toString()
 
-            if((username == "Admin") or (username == "admin"))
+            if((usermail == "Admin") or (usermail == "admin"))
             {
-                //Admin -> redirige vers la liste des comptes (Database)
+                //Admin -> redirige vers la liste des comptes (RescuerListActivity)
             }
             else
             {
-                //insérer vérification mdp ici.
+                val response = sendPostRequest("http://localhost:3000/authentification/login", "{ \"email\": \"$usermail\", \"password\": \"$password\" }")
+                //println(response)
+                val profile = extractProfileData(response)
+
                 val intent = Intent(this, profileActivity::class.java)
-                intent.putExtra("userTitle", username)
-                startActivity(intent) //Redirige vers profil utilisateur
+                intent.putExtra("userId", profile.id)
+                intent.putExtra("userFirstName", profile.firstName)
+                intent.putExtra("userLastName", profile.lastName)
+                intent.putExtra("userMail", profile.email)
+                startActivity(intent) //Redirige vers profil utilisateur (profileActivity
 
             }
         }

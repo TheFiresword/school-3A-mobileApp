@@ -1,14 +1,39 @@
+### Récupérer tous les secouristes
 GET http://localhost:3000/rescuers
 
-###
+### Récupérer tous les secouristes disponibles
 GET http://localhost:3000/rescuers/available
 
-###
-GET http://localhost:3000/rescuers/2
+### Récupérer le secouriste d'id 1 (admin)
+GET http://localhost:3000/rescuers/1
 
-###
+
+### Authentification admin
+POST http://localhost:3000/authentification/login
+Content-Type: application/json
+
+{
+    "email": "sstou.insa.projet@gmail.com",
+    "password": "sslikenazis"
+}
+
+### Authentification rescuer
+POST http://localhost:3000/authentification/login
+Content-Type: application/json
+
+{
+    "email": "junior.sedogbo@insa-cvl.fr",
+    "password": "uniformpass"
+}
+
+### CHANGER LA VALEUR DU TOKEN (utile pour les requêtes suivantes)
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNzdG91Lmluc2EucHJvamV0QGdtYWlsLmNvbSIsImlhdCI6MTY4NzIwMjUwNn0.b5MEtOADYFrB-jTw0A69p6F33wkj5f4QyLa-jra5Dio
+
+
+### Créer un nouveau secouriste
 POST http://localhost:3000/rescuers
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "firstname": "toto",
@@ -19,9 +44,10 @@ Content-Type: application/json
     "password": "HM,fizllk:a"
 }
 
-###
+### Recréer le même secouriste (échoue)
 POST http://localhost:3000/rescuers
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "firstname": "toto",
@@ -32,12 +58,15 @@ Content-Type: application/json
     "password": "HM,fizllk:a"
 }
 
-###
-DELETE http://localhost:3000/rescuers/55
+### Suppression d'un secouriste (changer l'id)
+DELETE http://localhost:3000/rescuers/8
+Authorization: Bearer {{token}}
 
-###
+
+### Recréation du secouriste supprimé
 POST http://localhost:3000/rescuers
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "firstname": "toto",
@@ -48,10 +77,16 @@ Content-Type: application/json
     "password": "HM,fizllk:a"
 }
 
-###
+### Modification du secouriste
 PATCH http://localhost:3000/rescuers/9
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "password": "Tibofssfssfec"
 }
+
+
+### Droit d'actions
+DELETE http://localhost:3000/rescuers/9
+Authorization: Bearer {{token}}

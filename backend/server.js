@@ -16,7 +16,7 @@ const connection = mysql.createConnection({
 async function connecToDatabase(){
     try{
         await connection.connect();
-        console.log('Connecté');
+        console.log('Connecté à la base de données');
     }catch(error){
         console.error('Erreur de connexion', error);
     }
@@ -38,8 +38,12 @@ app.use((req, res, next)=>{
 const rescuersRoutes = require('./routes/rescuersRoutes')
 app.use('/rescuers', rescuersRoutes)
 
+const authentificationRoutes = require('./routes/authentification')
+app.use('/authentification', authentificationRoutes)
+
 //Démarrage du serveur et gestion de la clôture
-app.listen(3000, ()=>console.log('Server started'))
+const app_port = 3000;
+app.listen(app_port, ()=>console.log(`Serveur lancé sur le port ${app_port}`))
 app.on('close', ()=>{
     connection.end();
 })

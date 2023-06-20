@@ -15,6 +15,8 @@ import java.net.URL
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
+import org.json.JSONObject
+
 fun sendPostRequest(url: String, requestBody: String): String {
     val connection = URL(url).openConnection() as HttpURLConnection
     connection.requestMethod = "POST"
@@ -40,7 +42,6 @@ fun sendPostRequest(url: String, requestBody: String): String {
 }
 
 //ChatGPT's json extractProfile
-import org.json.JSONObject
 
 data class Profile(val id: String, val firstName: String, val lastName: String, val email: String)
 

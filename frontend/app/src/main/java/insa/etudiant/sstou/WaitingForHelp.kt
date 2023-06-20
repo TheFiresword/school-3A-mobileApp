@@ -1,7 +1,6 @@
-package com.example.sstla
+package insa.etudiant.sstou
 
 import android.content.Intent
-import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button

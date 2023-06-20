@@ -1,4 +1,4 @@
-package com.example.sstla
+package insa.etudiant.sstou
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +14,7 @@ class parameters : AppCompatActivity() {
         val ret_button = findViewById<Button>(R.id.button_ret_1)
 
         Data_button.setOnClickListener {
-            val intent = Intent(this,LoginActivity::class.java) //Par défault : Page de login
+            val intent = Intent(this, LoginActivity::class.java) //Par défault : Page de login
             startActivity(intent)
         }
 

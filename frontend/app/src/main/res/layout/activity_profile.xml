@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:rotationX="0"
-    tools:context=".profileActivity">
+    tools:context="insa.etudiant.sstou.profileActivity">
 
     <TextView
         android:id="@+id/SSTProfile_Title"

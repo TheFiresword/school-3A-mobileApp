@@ -1,7 +1,6 @@
-package com.example.sstla
+package insa.etudiant.sstou
 
 import android.content.Intent
-import android.icu.text.CaseMap.Title
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -26,7 +25,7 @@ class profileActivity : AppCompatActivity() {
             //Insérer Comparaison ici
             //Insérer requête SQL ici
 
-            val intent = Intent(this,MainActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 

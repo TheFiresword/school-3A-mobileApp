@@ -7,7 +7,7 @@
         android:required="false" />
 
     <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -20,22 +20,25 @@
         android:theme="@style/Theme.SSTLA"
         tools:targetApi="31">
         <activity
-            android:name="insa.etudiant.sstou.profileActivity"
+            android:name=".RescuerListActivity"
             android:exported="false" />
         <activity
-            android:name="insa.etudiant.sstou.LoginActivity"
+            android:name=".profileActivity"
             android:exported="false" />
         <activity
-            android:name="insa.etudiant.sstou.parameters"
+            android:name=".LoginActivity"
             android:exported="false" />
         <activity
-            android:name="insa.etudiant.sstou.WaitingForHelpActivity"
+            android:name=".parameters"
             android:exported="false" />
         <activity
-            android:name="insa.etudiant.sstou.EnterLocationActivity"
+            android:name=".WaitingForHelpActivity"
             android:exported="false" />
         <activity
-            android:name="insa.etudiant.sstou.MainActivity"
+            android:name=".EnterLocationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +46,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name="insa.etudiant.sstou.PushNotificationService" android:exported="false">
+
+        <service
+            android:name=".PushNotificationService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

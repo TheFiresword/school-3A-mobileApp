@@ -26,14 +26,14 @@ class LoginActivity : AppCompatActivity() {
 
             if((username == "Admin") or (username == "admin"))
             {
-                //Admin -> redirige vers la liste des comptes (Database)
+                //Admin -> redirige vers la liste des comptes (RescuerListActivity)
             }
             else
             {
                 //insérer vérification mdp ici.
                 val intent = Intent(this, profileActivity::class.java)
                 intent.putExtra("userTitle", username)
-                startActivity(intent) //Redirige vers profil utilisateur
+                startActivity(intent) //Redirige vers profil utilisateur (profileActivity
 
             }
         }

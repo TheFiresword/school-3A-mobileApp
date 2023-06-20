@@ -7,7 +7,7 @@
     android:rotation="0"
     android:rotationX="0"
     android:rotationY="0"
-    tools:context=".LoginActivity">
+    tools:context="insa.etudiant.sstou.LoginActivity">
 
     <TextView
         android:id="@+id/textView5"

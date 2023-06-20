@@ -16,5 +16,7 @@
     <string name="alerte">Alerte</string>
     <string name="cliquez">Cliquez sur le bouton ci-dessus pour prévenir les agents SST au sein de l\'INSA</string>
     <string name="veuillez_saisir_le_num_ro_de_salle">Veuillez saisir le numéro de salle !</string>
+    <string name="baseNumber">+33781552056</string>
+    <string name="retour">Retour</string>
 
 </resources>

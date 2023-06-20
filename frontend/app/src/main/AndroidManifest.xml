@@ -29,7 +29,7 @@
             android:name="insa.etudiant.sstou.parameters"
             android:exported="false" />
         <activity
-            android:name="insa.etudiant.sstou.WaitingForHelp"
+            android:name="insa.etudiant.sstou.WaitingForHelpActivity"
             android:exported="false" />
         <activity
             android:name="insa.etudiant.sstou.EnterLocationActivity"

@@ -1,5 +1,6 @@
 package insa.etudiant.sstou
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.widget.EditText
 import android.widget.TextView
 
 class LoginActivity : AppCompatActivity() {
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -18,7 +20,7 @@ class LoginActivity : AppCompatActivity() {
         val ret_button = findViewById<Button>(R.id.ret_button_2) // Bouton Retour
 
         Confirmation.setOnClickListener {
-            val Username_entry = findViewById<EditText>(R.id.Username_entry)
+            val Username_entry = findViewById<EditText>(R.id.Username_entry) //Email !!!
             val Password_entry = findViewById<EditText>(R.id.Password_entry)
 
             val username = Username_entry.text.toString()
@@ -31,15 +33,23 @@ class LoginActivity : AppCompatActivity() {
             else
             {
                 //insérer vérification mdp ici.
-                val intent = Intent(this, profileActivity::class.java)
-                intent.putExtra("userTitle", username)
-                startActivity(intent) //Redirige vers profil utilisateur
-
+                if((username == "") or (password == ""))
+                {
+                    val JustTrolling = findViewById<TextView>(R.id.Troll)
+                    JustTrolling.text = "Veuillez renseigner tout les champs."
+                    JustTrolling.setVisibility(View.VISIBLE)
+                }
+                else {
+                    val intent = Intent(this, profileActivity::class.java)
+                    intent.putExtra("userEmail", username)
+                    startActivity(intent) //Redirige vers profil utilisateur
+                }
             }
         }
 
         MDP_forget.setOnClickListener {
             val JustTrolling = findViewById<TextView>(R.id.Troll)
+            JustTrolling.text = "Dommage !"
             JustTrolling.setVisibility(View.VISIBLE)
         }
 

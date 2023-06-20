@@ -11,7 +11,7 @@ class profileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        val userTitle = intent.getStringExtra("userTitle")
+        val userTitle = intent.getStringExtra("userEmail")
         val Title = findViewById<TextView>(R.id.SSTProfile_Title)
 
         Title.setText(userTitle)

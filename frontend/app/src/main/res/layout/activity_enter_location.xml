@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/inputLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
         android:layout_marginEnd="97dp"
         android:layout_marginBottom="21dp"
         android:alpha="255"
-        android:text="@string/veuillez_saisir_le_num_ro_de_salle"
+        android:text="@string/warning"
         android:textColor="@android:color/holo_red_light"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/confirmLocationButton"

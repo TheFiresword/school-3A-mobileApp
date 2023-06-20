@@ -1,6 +1,5 @@
 package insa.etudiant.sstou
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,8 +8,42 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 
+//ChatGPT's POST
+import java.io.DataOutputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import java.io.BufferedReader
+import java.io.InputStreamReader
+
+fun sendPostRequest(url: String, requestBody: String): String {
+    val connection = URL(url).openConnection() as HttpURLConnection
+    connection.requestMethod = "POST"
+    connection.doOutput = true
+
+    val postData = requestBody.toByteArray(Charsets.UTF_8)
+    connection.setRequestProperty("Content-Length", postData.size.toString())
+    DataOutputStream(connection.outputStream).use { outputStream ->
+        outputStream.write(postData)
+    }
+
+    val responseCode = connection.responseCode
+    val response = StringBuilder()
+    BufferedReader(InputStreamReader(connection.inputStream)).use { reader ->
+        var line: String?
+        while (reader.readLine().also { line = it } != null) {
+            response.append(line)
+        }
+    }
+    connection.disconnect()
+
+    return response.toString()
+}
+
+
+
+
+
 class LoginActivity : AppCompatActivity() {
-    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -28,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
 
             if((username == "Admin") or (username == "admin"))
             {
-                //Admin -> redirige vers la liste des comptes (Database)
+                //Admin -> redirige vers la liste des comptes (RescuerListActivity)
             }
             else
             {
@@ -40,6 +73,7 @@ class LoginActivity : AppCompatActivity() {
                     JustTrolling.setVisibility(View.VISIBLE)
                 }
                 else {
+                    var response = sendPostRequest("http://localhost:3000/authentification/login", "{ \"email\": \"$username\", \"password\": \"$password\" }")
                     val intent = Intent(this, profileActivity::class.java)
                     intent.putExtra("userEmail", username)
                     startActivity(intent) //Redirige vers profil utilisateur

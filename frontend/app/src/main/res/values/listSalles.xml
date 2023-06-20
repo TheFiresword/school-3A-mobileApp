@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <string-array name="listSalles">
+
+            <!--Bâtiment Principal -->
+                <!-- RDC -->
+            <item>Hall</item>
+            <item>Foyer</item>
+            <item>Accueil</item>
+            <item>Impérialis</item>
+            <item>Papillon</item>
+                <!-- 1er étage -->
+            <item>E.101</item>
+            <item>E.102</item>
+            <item>E.103</item>
+            <item>E.104</item>
+            <item>E.105</item>
+            <item>E.106</item>
+            <item>E.107</item>
+            <item>E.108</item>
+            <item>E.109</item>
+                <!-- 2eme étage -->
+            <item>E.201</item>
+            <item>E.202</item>
+            <item>E.203</item>
+            <item>E.204</item>
+            <item>E.205</item>
+            <item>E.206</item>
+            <item>E.207</item>
+            <item>E.208</item>
+            <item>E.209</item>
+
+            <!--Salle d'armes -->
+                <!-- RDC -->
+            <item>Sapphira</item>
+            <item>Salle ICE</item>
+                <!-- 1er étage -->
+            <item>SA.101</item>
+            <item>SA.102</item>
+            <item>SA.103</item>
+            <item>SA.104</item>
+            <item>SA.105</item>
+            <item>SA.106</item>
+            <item>SA.107</item>
+                <!-- 2eme étage -->
+            <item>SA.201</item>
+            <item>SA.202</item>
+            <item>SA.203</item>
+            <item>SA.204</item>
+            <item>SA.205</item>
+            <item>SA.206</item>
+                <!-- 3eme étage -->
+            <item>Salle Aurore</item>
+            <item>Learning Center</item>
+
+        </string-array>
+
+</resources>

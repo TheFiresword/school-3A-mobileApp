@@ -7,20 +7,39 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
+fun isAuthentified(): Boolean{
+    // check here if user is authentified
+    return true
+}
 class PushNotificationService : FirebaseMessagingService()  {
     override fun onNewToken(s : String) {
-        super.onNewToken(s);
-        println("token" + s)
-        // appel http serveur renseigner token
-
+        if(isAuthentified()) {
+            super.onNewToken(s);
+            println("token" + s)
+            // appel http serveur renseigner token
+        }
     }
+    fun printToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("TOKEN", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
 
+            // Get new FCM registration token
+            val token = task.result
+        })
+    }
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         val title = message.notification?.title

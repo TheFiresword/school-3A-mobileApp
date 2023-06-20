@@ -15,7 +15,6 @@ import java.net.URL
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-import org.json.JSONObject
 
 fun sendPostRequest(url: String, requestBody: String): String {
     val connection = URL(url).openConnection() as HttpURLConnection
@@ -41,20 +40,7 @@ fun sendPostRequest(url: String, requestBody: String): String {
     return response.toString()
 }
 
-//ChatGPT's json extractProfile
 
-data class Profile(val id: String, val firstName: String, val lastName: String, val email: String)
-
-fun extractProfileData(response: String): Profile {
-    val jsonResponse = JSONObject(response)
-
-    val id = jsonResponse.getString("id")
-    val firstName = jsonResponse.getString("first_name")
-    val lastName = jsonResponse.getString("last_name")
-    val email = jsonResponse.getString("email")
-
-    return Profile(id, firstName, lastName, email)
-}
 
 
 
@@ -75,24 +61,17 @@ class LoginActivity : AppCompatActivity() {
             val usermail = Usermail_entry.text.toString()
             val password = Password_entry.text.toString()
 
-            if((usermail == "Admin") or (usermail == "admin"))
-            {
-                //Admin -> redirige vers la liste des comptes (RescuerListActivity)
-            }
-            else
-            {
-                val response = sendPostRequest("http://localhost:3000/authentification/login", "{ \"email\": \"$usermail\", \"password\": \"$password\" }")
-                //println(response)
-                val profile = extractProfileData(response)
+            //Attention : ne pas confondre la requête pour se connecter (ici dans loginActivity) et la requête pour obtenir les infos sur le profil (dans profileActivity)
 
-                val intent = Intent(this, profileActivity::class.java)
-                intent.putExtra("userId", profile.id)
-                intent.putExtra("userFirstName", profile.firstName)
-                intent.putExtra("userLastName", profile.lastName)
-                intent.putExtra("userMail", profile.email)
-                startActivity(intent) //Redirige vers profil utilisateur (profileActivity
 
-            }
+            val response = sendPostRequest("http://localhost:3000/authentification/login", "{ \"email\": \"$usermail\", \"password\": \"$password\" }")
+            //println(response)
+            val profile = extractProfileData(response)
+
+            val intent = Intent(this, profileActivity::class.java)
+            intent.putExtra("userId", profile.id)
+            startActivity(intent) //Redirige vers profil utilisateur (profileActivity
+
         }
 
         MDP_forget.setOnClickListener {

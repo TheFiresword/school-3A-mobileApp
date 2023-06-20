@@ -8,6 +8,41 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 
+//ChatGPT's POST
+import java.io.DataOutputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import java.io.BufferedReader
+import java.io.InputStreamReader
+
+fun sendPostRequest(url: String, requestBody: String): String {
+    val connection = URL(url).openConnection() as HttpURLConnection
+    connection.requestMethod = "POST"
+    connection.doOutput = true
+
+    val postData = requestBody.toByteArray(Charsets.UTF_8)
+    connection.setRequestProperty("Content-Length", postData.size.toString())
+    DataOutputStream(connection.outputStream).use { outputStream ->
+        outputStream.write(postData)
+    }
+
+    val responseCode = connection.responseCode
+    val response = StringBuilder()
+    BufferedReader(InputStreamReader(connection.inputStream)).use { reader ->
+        var line: String?
+        while (reader.readLine().also { line = it } != null) {
+            response.append(line)
+        }
+    }
+    connection.disconnect()
+
+    return response.toString()
+}
+
+
+
+
+
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
             }
             else
             {
-                //insérer vérification mdp ici.
+                var response = sendPostRequest("http://localhost:3000/authentification/login", "{ \"email\": \"$username\", \"password\": \"$password\" }")
                 val intent = Intent(this, profileActivity::class.java)
                 intent.putExtra("userTitle", username)
                 startActivity(intent) //Redirige vers profil utilisateur (profileActivity

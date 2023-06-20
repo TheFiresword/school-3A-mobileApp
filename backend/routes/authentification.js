@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const secretKey = require('./../tokenGeneration')
 const config_values = require('./../config')
 
+console.log('je suis appelé')
 // Route de connexion
 router.post('/login', (req, res)=>{
     const email = req.body.email;

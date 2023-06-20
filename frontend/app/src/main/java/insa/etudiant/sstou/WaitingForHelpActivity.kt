@@ -1,8 +1,10 @@
 package insa.etudiant.sstou
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.telephony.SmsManager
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
 import android.widget.Toast
@@ -18,10 +20,14 @@ class WaitingForHelpActivity : AppCompatActivity() {
         val location = intent.getStringExtra("location")
         val waitingSentence1 = getString(R.string.waitingSentence1)
         val waitingSentence2 = getString(R.string.waitingSentence2)
+        val retButton = findViewById<Button>(R.id.button_ret_2) //Bouton "retour"
 
         val waitingText = findViewById<TextView>(R.id.waitingText)
         waitingText.text = waitingSentence1 + location + waitingSentence2
-
+        retButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
         initiateMessage()
 
     }

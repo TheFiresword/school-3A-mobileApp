@@ -16,8 +16,7 @@ import com.google.firebase.messaging.RemoteMessage
 class PushNotificationService : FirebaseMessagingService()  {
     override fun onNewToken(s : String) {
         super.onNewToken(s);
-        val tokenData: MutableMap<String, Any> = HashMap()
-        tokenData.put("token",s)
+        println(s)
         // appel http serveur renseigner token
 
     }

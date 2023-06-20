@@ -15,6 +15,7 @@ import java.net.URL
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
+
 fun sendPostRequest(url: String, requestBody: String): String {
     val connection = URL(url).openConnection() as HttpURLConnection
     connection.requestMethod = "POST"
@@ -43,6 +44,7 @@ fun sendPostRequest(url: String, requestBody: String): String {
 
 
 
+
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,32 +55,23 @@ class LoginActivity : AppCompatActivity() {
         val ret_button = findViewById<Button>(R.id.ret_button_2) // Bouton Retour
 
         Confirmation.setOnClickListener {
-            val Username_entry = findViewById<EditText>(R.id.Username_entry) //Email !!!
+            val Usermail_entry = findViewById<EditText>(R.id.Usermail_entry)
             val Password_entry = findViewById<EditText>(R.id.Password_entry)
 
-            val username = Username_entry.text.toString()
+            val usermail = Usermail_entry.text.toString()
             val password = Password_entry.text.toString()
 
-            if((username == "Admin") or (username == "admin"))
-            {
-                //Admin -> redirige vers la liste des comptes (RescuerListActivity)
-            }
-            else
-            {
-                //insérer vérification mdp ici.
-                if((username == "") or (password == ""))
-                {
-                    val JustTrolling = findViewById<TextView>(R.id.Troll)
-                    JustTrolling.text = "Veuillez renseigner tout les champs."
-                    JustTrolling.setVisibility(View.VISIBLE)
-                }
-                else {
-                    var response = sendPostRequest("http://localhost:3000/authentification/login", "{ \"email\": \"$username\", \"password\": \"$password\" }")
-                    val intent = Intent(this, profileActivity::class.java)
-                    intent.putExtra("userEmail", username)
-                    startActivity(intent) //Redirige vers profil utilisateur
-                }
-            }
+            //Attention : ne pas confondre la requête pour se connecter (ici dans loginActivity) et la requête pour obtenir les infos sur le profil (dans profileActivity)
+
+
+            val response = sendPostRequest("http://localhost:3000/authentification/login", "{ \"email\": \"$usermail\", \"password\": \"$password\" }")
+            //println(response)
+            val profile = extractProfileData(response)
+
+            val intent = Intent(this, profileActivity::class.java)
+            intent.putExtra("userId", profile.id)
+            startActivity(intent) //Redirige vers profil utilisateur (profileActivity
+
         }
 
         MDP_forget.setOnClickListener {

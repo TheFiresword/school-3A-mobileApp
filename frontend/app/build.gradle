@@ -47,4 +47,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
 }

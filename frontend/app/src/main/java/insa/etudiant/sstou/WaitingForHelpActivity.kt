@@ -8,9 +8,51 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import java.io.BufferedReader
+import java.io.DataOutputStream
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 
 class WaitingForHelpActivity : AppCompatActivity() {
     private val phoneNumber = "+33781552056"
+
+    private fun getAvailableSST(url: String): String {
+        val connection = URL(url).openConnection() as HttpURLConnection
+        connection.requestMethod = "GET"
+        connection.doOutput = true
+
+        /*val postData = requestBody.toByteArray(Charsets.UTF_8)
+        connection.setRequestProperty("Content-Length", postData.size.toString())
+        DataOutputStream(connection.outputStream).use { outputStream ->
+            outputStream.write(postData)
+        }*/
+
+        val responseCode = connection.responseCode
+        val response = StringBuilder()
+        BufferedReader(InputStreamReader(connection.inputStream)).use { reader ->
+            var line: String?
+            while (reader.readLine().also { line = it } != null) {
+                response.append(line)
+            }
+        }
+        connection.disconnect()
+
+        return response.toString()
+    }
+
+    /*private fun extractPhoneNumbers(response: String)
+    {
+        var repertoire = null
+        var deplacement = 0
+        for (i<=)
+            val pos = response.indexOf("telephone:",deplacement)
+            deplacement = pos + 1
+    }*/
+
+    val response = getAvailableSST("http://localhost:3000/rescuers/available")
+    //  0123456789 10 11 121314151617 181920 2122232425 26 2728293031323334 -> DATA juste après au bout du 35e caractère
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_waiting_for_help)

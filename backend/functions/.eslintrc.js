@@ -11,6 +11,7 @@ module.exports = {
     "google",
   ],
   rules: {
+    "linebreak-style": 0,
     "no-restricted-globals": ["error", "name", "length"],
     "prefer-arrow-callback": "error",
     "quotes": ["error", "double", {"allowTemplateLiterals": true}],

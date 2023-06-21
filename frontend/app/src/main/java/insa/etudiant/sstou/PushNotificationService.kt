@@ -7,19 +7,28 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
+
 class PushNotificationService : FirebaseMessagingService()  {
     override fun onNewToken(s : String) {
-        super.onNewToken(s);
-        println(s)
-        // appel http serveur renseigner token
+            super.onNewToken(s);
+            println("token" + s)
 
     }
+
+
+
+
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)

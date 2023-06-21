@@ -23,7 +23,7 @@ class PushNotificationService : FirebaseMessagingService()  {
     override fun onNewToken(s : String) {
             super.onNewToken(s);
             println("token" + s)
-        }
+
     }
 
 

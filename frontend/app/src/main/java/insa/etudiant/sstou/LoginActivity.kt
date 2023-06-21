@@ -93,6 +93,7 @@ class LoginActivity : AppCompatActivity() {
         val confirmation = findViewById<Button>(R.id.Connection_button)
         val mdpForget = findViewById<Button>(R.id.MDP_forget) // Bouton Mot de passe oublié
         val retButton = findViewById<Button>(R.id.ret_button_2) // Bouton Retour
+        val superButton = findViewById<Button>(R.id.superB)
 
         confirmation.setOnClickListener {
             val usermailEntry = findViewById<EditText>(R.id.Usermail_entry)
@@ -127,8 +128,8 @@ class LoginActivity : AppCompatActivity() {
                 var token = task.result // le token a envoyer
                 // A envoyer
                 var siteJunior = ""
-                val urltokenFirebase = siteJunior+"/rescuers/"+profile.id
-                sendPutRequest(urltokenFirebase,"{ \"email\": \"$usermail\", \"password\": \"$password\", \"tokenFirebase\": \"$token\" }")
+                //val urltokenFirebase = siteJunior+"/rescuers/"+profile.id
+                //sendPutRequest(urltokenFirebase,"{ \"email\": \"$usermail\", \"password\": \"$password\", \"tokenFirebase\": \"$token\" }")
             })
 
              // Le problème ici c'est qu'on ne peut pas fournir un "id" à profileActivity,
@@ -141,6 +142,12 @@ class LoginActivity : AppCompatActivity() {
         mdpForget.setOnClickListener {
             val justTrolling = findViewById<TextView>(R.id.Troll)
             justTrolling.visibility = View.VISIBLE
+        }
+
+
+        superButton.setOnClickListener {
+            val intent = Intent(this, RescuerListActivity::class.java)
+            startActivity(intent)
         }
 
         retButton.setOnClickListener {

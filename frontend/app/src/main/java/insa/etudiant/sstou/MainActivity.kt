@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         val myparametersbutton = findViewById<Button>(R.id.Params_button)
 
         myhelpbutton.setOnClickListener {                                           //Quand on clique sur le bonton rouge
-            val intent = Intent(this, RescuerListActivity::class.java)
+            val intent = Intent(this, EnterLocationActivity::class.java)
             startActivity(intent)                                                          //se diriger vers l'activité EnterLocation
         }
 

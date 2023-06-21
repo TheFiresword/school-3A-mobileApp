@@ -6,13 +6,15 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import org.json.JSONObject
+import org.json.JSONArray
 
-//ChatGPT's GET request
+
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
+//ChatGPT's sendGetRequest to get one user by id
 fun sendGetRequest(url: String): String {
     val connection = URL(url).openConnection() as HttpURLConnection
     connection.requestMethod = "GET"
@@ -27,6 +29,60 @@ fun sendGetRequest(url: String): String {
     connection.disconnect()
 
     return response.toString()
+}
+
+
+//ChatGPT's getAllUsers() to then filter by email
+fun getAllUsers(): String {
+    val urlString = "http://localhost:3000/rescuers"
+    val url = URL(urlString)
+    val connection = url.openConnection() as HttpURLConnection
+
+    try {
+        connection.requestMethod = "GET"
+
+        val responseCode = connection.responseCode
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            val inputStream = connection.inputStream
+            val bufferedReader = BufferedReader(InputStreamReader(inputStream))
+            val response = StringBuilder()
+
+            var line: String?
+            while (bufferedReader.readLine().also { line = it } != null) {
+                response.append(line)
+            }
+
+            bufferedReader.close()
+            inputStream.close()
+
+            return response.toString()
+        } else {
+            throw Exception("HTTP request failed with response code: $responseCode")
+        }
+    } finally {
+        connection.disconnect()
+    }
+}
+
+
+//ChatGPT's getUserByEmail
+fun getUserByEmail(usersJson: String, email: String): Profile? {
+    val usersArray = JSONArray(usersJson)
+
+    for (i in 0 until usersArray.length()) {
+        val userObj = usersArray.getJSONObject(i)
+        val userEmail = userObj.getString("email")
+
+        if (userEmail == email) {
+            val id = userObj.getInt("id")
+            val firstName = userObj.getString("firstName")
+            val lastName = userObj.getString("lastName")
+
+            return Profile(id.toString(), email, firstName, lastName /* and other fields */)
+        }
+    }
+
+    return null
 }
 
 
@@ -49,15 +105,19 @@ class profileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
 
         //val userTitle = intent.getStringExtra("userTitle")
-        val userId = intent.getStringExtra("userId")
-        val Title = findViewById<TextView>(R.id.SSTProfile_Title)
+        val usermail = intent.getStringExtra("usermail")
+        val title = findViewById<TextView>(R.id.SSTProfile_Title)
+
+        // Ok, je vais simplement GET tous les users et filtrer en fonction du mail.
 
 
-        val response = sendGetRequest("http://localhost:3000/rescuers/$userId")
-        val profile = extractProfileData(response)
+        val rescuers = getAllUsers()
+        val profile = usermail?.let { getUserByEmail(rescuers, it) }
 
 
-        Title.setText(profile.firstName)
+
+
+        title.setText(profile?.firstName)
 
         //Remplir les valeurs par défault avec celle de la base de données.
 

@@ -126,6 +126,7 @@ class LoginActivity : AppCompatActivity() {
 
         mdpForget.setOnClickListener {
             val justTrolling = findViewById<TextView>(R.id.Troll)
+            justTrolling.text = "Dommage !"
             justTrolling.visibility = View.VISIBLE
         }
 

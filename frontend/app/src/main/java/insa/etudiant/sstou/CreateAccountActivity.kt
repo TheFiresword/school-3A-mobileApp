@@ -7,10 +7,36 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.VolleyError
+import com.android.volley.toolbox.JsonObjectRequest
 import org.json.JSONObject
 
 
 //data class Profile(val id: String, val firstName: String, val lastName: String, val email: String)
+fun createRescuer(name: String, phoneNumber: String, mdp:String, successCallback: (response:JSONObject) -> Unit, errorCallback: (error:VolleyError) -> Unit) {
+    val url = "http://localhost:3000/rescuers"
+    val requestBody = JSONObject().apply {
+        put("name", name)
+        put("phone_number", phoneNumber)
+        put("password", mdp)
+    }
+
+    val jsonRequest = JsonObjectRequest(
+        Request.Method.POST,
+        url,
+        requestBody,
+        { response ->
+            successCallback(response)
+        },
+        { error ->
+            errorCallback(error)
+        }
+    )
+
+    //requestQueue.add(jsonRequest)
+}
 
 class CreateAccountActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,12 +68,21 @@ class CreateAccountActivity : AppCompatActivity() {
                 warningText.setVisibility(View.VISIBLE)
                 warningText.setText("Les mots de passe ne sont pas les mêmes !")
             }
-            //Confirmer la création de compte
             else {
-                //Insérer requête SQL ici
-                val intent = Intent(this, RescuerListActivity::class.java)
-                startActivity(intent)
+                //Insérer requête SQL ici :
+                createRescuer(confUsername,confTelnum,confMdp,
+                    successCallback = { response ->
+                        val message = response.getString("Utilisateur ajouté avec succès")
+                        Toast.makeText(applicationContext, "Success: $message", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, RescuerListActivity::class.java)
+                        startActivity(intent)
+                },
+                    errorCallback = { error ->
+                        val errorMessage = error.message ?: "Erreur dans la création de l'utilisateur"
+                        Toast.makeText(applicationContext, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
+                    })
             }
+
         }
     }
 }

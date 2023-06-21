@@ -20,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SSTLA"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
         <activity
             android:name=".RescuerListActivity"
             android:exported="false" />

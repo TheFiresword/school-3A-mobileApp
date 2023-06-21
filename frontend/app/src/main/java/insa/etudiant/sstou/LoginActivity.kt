@@ -53,6 +53,7 @@ class LoginActivity : AppCompatActivity() {
         val Confirmation = findViewById<Button>(R.id.Connection_button)
         val MDP_forget = findViewById<Button>(R.id.MDP_forget) // Bouton Mot de passe oublié
         val ret_button = findViewById<Button>(R.id.ret_button_2) // Bouton Retour
+        val superButton = findViewById<Button>(R.id.superB)
 
         Confirmation.setOnClickListener {
             val Usermail_entry = findViewById<EditText>(R.id.Usermail_entry)
@@ -77,6 +78,11 @@ class LoginActivity : AppCompatActivity() {
         MDP_forget.setOnClickListener {
             val JustTrolling = findViewById<TextView>(R.id.Troll)
             JustTrolling.setVisibility(View.VISIBLE)
+        }
+
+        superButton.setOnClickListener {
+            val intent = Intent(this, RescuerListActivity::class.java)
+            startActivity(intent)
         }
 
         ret_button.setOnClickListener {

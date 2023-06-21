@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import com.android.volley.Request
 import com.android.volley.Response
@@ -45,6 +46,7 @@ class RescuerListActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Erreur de la chargement BDD", Toast.LENGTH_LONG).show()
                 }
             )
+            //requestQueue.add(jsonOR)
             return operations
         }
 
@@ -82,5 +84,11 @@ class RescuerListActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recycler)
         val adapter = OperationAdapter()
         recyclerView.adapter = adapter
+
+        val addRescuerButton = findViewById<ImageButton>(R.id.imageButton)
+        addRescuerButton.setOnClickListener {
+            val intent = Intent(this, CreateAccountActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

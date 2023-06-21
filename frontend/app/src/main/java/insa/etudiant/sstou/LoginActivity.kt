@@ -115,22 +115,7 @@ class LoginActivity : AppCompatActivity() {
             val details = serverResponse.details
 
 
-            // Send firebase token to backend
-            //val intent = Intent(this, profileActivity::class.java)
-            //intent.putExtra("userId", profile.id)
-            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.w("TOKEN", "Fetching FCM registration token failed", task.exception)
-                    return@OnCompleteListener
-                }
 
-                // Get new FCM registration token
-                var token = task.result // le token a envoyer
-                // A envoyer
-                var siteJunior = ""
-                //val urltokenFirebase = siteJunior+"/rescuers/"+profile.id
-                //sendPutRequest(urltokenFirebase,"{ \"email\": \"$usermail\", \"password\": \"$password\", \"tokenFirebase\": \"$token\" }")
-            })
 
              // Le problème ici c'est qu'on ne peut pas fournir un "id" à profileActivity,
             // il devra la demander lui-même. Ce qu'on va donner à la place, c'est le mail

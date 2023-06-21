@@ -7,6 +7,8 @@ const secretKey = require('./../tokenGeneration')
 const config_values = require('./../config')
 
 const safeInfos = "id, firstname, lastname, email, telephone, disponibility";
+const HelpInfos = "id, firstname, lastname, email, telephone, disponibility, tokenFirebase";
+
 
 // Middleware pour vérifier l'existence d'un secouriste en fonction de l'id
 function get_rescuer(req, res, next){
@@ -87,7 +89,7 @@ router.get('/', (req, res)=>{
 // Fonction pour récupérer la liste des secouristes disponibles
 router.get('/available', (req, res)=>{
     const connection = req.socket; 
-    const sql = `SELECT ${safeInfos} from ${config_values.rescuersTable} WHERE DISPONIBILITY = ?`;
+    const sql = `SELECT ${HelpInfos} from ${config_values.rescuersTable} WHERE DISPONIBILITY = ?`;
     const params = [1];
 
     connection.query(sql, [params], (err, results, fields) =>{

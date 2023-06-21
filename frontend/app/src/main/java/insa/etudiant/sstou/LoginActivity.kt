@@ -3,10 +3,12 @@ package insa.etudiant.sstou
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.google.firebase.messaging.FirebaseMessaging
 
 //ChatGPT's POST
 import java.io.DataOutputStream
@@ -41,7 +43,29 @@ fun sendPostRequest(url: String, requestBody: String): String {
 }
 
 
+fun sendPutRequest(url: String, requestBody: String): String {
+    val connection = URL(url).openConnection() as HttpURLConnection
+    connection.requestMethod = "PUT"
+    connection.doOutput = true
 
+    val postData = requestBody.toByteArray(Charsets.UTF_8)
+    connection.setRequestProperty("Content-Length", postData.size.toString())
+    DataOutputStream(connection.outputStream).use { outputStream ->
+        outputStream.write(postData)
+    }
+
+    val responseCode = connection.responseCode
+    val response = StringBuilder()
+    BufferedReader(InputStreamReader(connection.inputStream)).use { reader ->
+        var line: String?
+        while (reader.readLine().also { line = it } != null) {
+            response.append(line)
+        }
+    }
+    connection.disconnect()
+
+    return response.toString()
+}
 
 
 
@@ -68,8 +92,23 @@ class LoginActivity : AppCompatActivity() {
             //println(response)
             val profile = extractProfileData(response)
 
+
+            // Send firebase token to backend
             val intent = Intent(this, profileActivity::class.java)
             intent.putExtra("userId", profile.id)
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("TOKEN", "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new FCM registration token
+                var token = task.result // le token a envoyer
+                // A envoyer
+                var siteJunior = ""
+                val urltokenFirebase = siteJunior+"/rescuers/"+profile.id
+                sendPutRequest(urltokenFirebase,"{ \"email\": \"$usermail\", \"password\": \"$password\", \"tokenFirebase\": \"$token\" }")
+            })
             startActivity(intent) //Redirige vers profil utilisateur (profileActivity
 
         }

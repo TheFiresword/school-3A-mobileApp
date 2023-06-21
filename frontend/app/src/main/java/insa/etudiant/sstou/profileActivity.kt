@@ -1,15 +1,21 @@
 package insa.etudiant.sstou
 
+//ChatGPT's GET request
+
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import org.json.JSONObject
-
-//ChatGPT's GET request
 import java.io.BufferedReader
+import java.io.DataOutputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
@@ -30,10 +36,34 @@ fun sendGetRequest(url: String): String {
     return response.toString()
 }
 
-fun patchRequest(url: String): String {
+fun deleteRequest(url: String): String {
     val connection = URL(url).openConnection() as HttpURLConnection
-    connection.requestMethod = "GET"
+    connection.requestMethod = "DELETE"
 
+    val response = StringBuilder()
+    BufferedReader(InputStreamReader(connection.inputStream)).use { reader ->
+        var line: String?
+        while (reader.readLine().also { line = it } != null) {
+            response.append(line)
+        }
+    }
+    connection.disconnect()
+
+    return response.toString()
+}
+
+fun patchRequest(url: String, requestBody: String): String {
+    val connection = URL(url).openConnection() as HttpURLConnection
+    connection.requestMethod = "PATCH"
+    connection.doOutput = true
+
+    val postData = requestBody.toByteArray(Charsets.UTF_8)
+    connection.setRequestProperty("Content-Length", postData.size.toString())
+    DataOutputStream(connection.outputStream).use { outputStream ->
+        outputStream.write(postData)
+    }
+
+    val responseCode = connection.responseCode
     val response = StringBuilder()
     BufferedReader(InputStreamReader(connection.inputStream)).use { reader ->
         var line: String?
@@ -133,7 +163,16 @@ class profileActivity : AppCompatActivity() {
             }
             else
             {
+                val firstname = firstNameinput.text.toString()
+                val lastname = lastNameinput.text.toString()
+                val password = Passwordinput.text.toString()
+                val email = Emailinput.text.toString()
+
                 //Insérer requête SQL ici
+                patchRequest("http://localhost:3000/rescuers/"+profile.id,
+                    "{\"firstname\": \"$firstname\" , \"lastname\": \"$lastname\" , " +
+                            "\"password\": \"$password\" , \"email\" : \"$email\"}"
+                )
 
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
@@ -141,6 +180,14 @@ class profileActivity : AppCompatActivity() {
 
 
 
+        }
+
+        val bouton_suppression = findViewById<Button>(R.id.button_supprimer)
+
+        bouton_suppression.setOnClickListener {
+            deleteRequest("http://localhost:3000/rescuers/"+profile.id)
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
 
         //Récupérer les données

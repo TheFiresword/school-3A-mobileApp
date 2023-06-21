@@ -55,7 +55,6 @@ fun deleteRequest(url: String): String {
         }
     }
     connection.disconnect()
-
     return response.toString()
 }
 

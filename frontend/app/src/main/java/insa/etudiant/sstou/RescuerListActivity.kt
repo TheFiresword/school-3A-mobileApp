@@ -17,16 +17,19 @@ import com.android.volley.VolleyError
 
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.RequestQueue
 import insa.etudiant.sstou.profileActivity
 import org.json.JSONObject
 
 class RescuerListActivity : AppCompatActivity() {
+    private lateinit var requestQueue: RequestQueue
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rescuer_list)
 
         fun getRescuerList(): ArrayList<String> {
             val url = "http://localhost:3000/rescuers"
+            requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
             var operations = arrayListOf("Secouriste 1", "Secouriste 2", "Secouriste 3", "Secouriste 4") //Default List
 
             val jsonOR = JsonObjectRequest(
@@ -46,7 +49,7 @@ class RescuerListActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Erreur de la chargement BDD", Toast.LENGTH_LONG).show()
                 }
             )
-            //requestQueue.add(jsonOR)
+            requestQueue.add(jsonOR)
             return operations
         }
 

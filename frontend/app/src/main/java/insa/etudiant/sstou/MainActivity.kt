@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.content.Intent
 import android.widget.ImageView
+import com.android.volley.toolbox.Volley
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,6 +15,8 @@ class MainActivity : AppCompatActivity() {
 
         val myhelpbutton = findViewById<ImageView>(R.id.HelpButton)
         val myparametersbutton = findViewById<Button>(R.id.Params_button)
+        val requestQueue = Volley.newRequestQueue(this)
+
 
         myhelpbutton.setOnClickListener {                                           //Quand on clique sur le bonton rouge
             val intent = Intent(this, EnterLocationActivity::class.java)

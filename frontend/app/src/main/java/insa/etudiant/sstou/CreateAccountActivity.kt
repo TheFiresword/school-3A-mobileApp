@@ -9,13 +9,14 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.android.volley.Request
+import com.android.volley.RequestQueue
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import org.json.JSONObject
 
 
 //data class Profile(val id: String, val firstName: String, val lastName: String, val email: String)
-fun createRescuer(name: String, phoneNumber: String, mdp:String, successCallback: (response:JSONObject) -> Unit, errorCallback: (error:VolleyError) -> Unit) {
+fun createRescuer(requestQueue : RequestQueue, name: String, phoneNumber: String, mdp:String, successCallback: (response:JSONObject) -> Unit, errorCallback: (error:VolleyError) -> Unit) {
     val url = "http://localhost:3000/rescuers"
     val requestBody = JSONObject().apply {
         put("name", name)
@@ -34,11 +35,11 @@ fun createRescuer(name: String, phoneNumber: String, mdp:String, successCallback
             errorCallback(error)
         }
     )
-
-    //requestQueue.add(jsonRequest)
+    requestQueue.add(jsonRequest)
 }
 
 class CreateAccountActivity : AppCompatActivity() {
+    private lateinit var requestQueue: RequestQueue
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
@@ -58,7 +59,6 @@ class CreateAccountActivity : AppCompatActivity() {
             val confTelnum = telnum.text.toString()
             val confMdp = mdp.text.toString()
             val confConfMdp = mdpconf.text.toString()
-            val warningText =
             //Erreurs dans le remplissage des champs :
             if (confUsername.isEmpty() or confTelnum.isEmpty() or confMdp.isEmpty() or confConfMdp.isEmpty()) {
                 warningText.setVisibility(View.VISIBLE)
@@ -69,8 +69,8 @@ class CreateAccountActivity : AppCompatActivity() {
                 warningText.setText("Les mots de passe ne sont pas les mêmes !")
             }
             else {
-                //Insérer requête SQL ici :
-                createRescuer(confUsername,confTelnum,confMdp,
+                requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
+                createRescuer(requestQueue, confUsername,confTelnum,confMdp,
                     successCallback = { response ->
                         val message = response.getString("Utilisateur ajouté avec succès")
                         Toast.makeText(applicationContext, "Success: $message", Toast.LENGTH_SHORT).show()

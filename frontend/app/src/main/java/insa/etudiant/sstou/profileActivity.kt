@@ -3,8 +3,11 @@ package insa.etudiant.sstou
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import org.json.JSONObject
 import org.json.JSONArray
 
@@ -131,7 +134,22 @@ class profileActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+        // Send firebase token to backend
+        //val intent = Intent(this, profileActivity::class.java)
+        //intent.putExtra("userId", profile.id)
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("TOKEN", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
 
+            // Get new FCM registration token
+            var token = task.result // le token a envoyer
+            // A envoyer
+            var siteJunior = ""
+            val urltokenFirebase = siteJunior+"/rescuers/"+profile?.id
+                    sendPutRequest(urltokenFirebase,"{ \"email\": \"$usermail\", \"password\": \"$password\", \"tokenFirebase\": \"$token\" }")
+        })
         //Récupérer les données
     }
 }

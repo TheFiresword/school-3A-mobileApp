@@ -89,7 +89,7 @@ class WaitingForHelpActivity : AppCompatActivity() {
         val response = sendHelpRequest(helpUrl)
         val helpers = extractHelpersData(response)
         for (secourist in helpers){
-                secourist.tokenFirebase
+                Companion.sendNotif(location.toString(),secourist.tokenFirebase)
         }
 
 

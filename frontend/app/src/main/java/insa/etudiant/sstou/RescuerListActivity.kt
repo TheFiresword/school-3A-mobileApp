@@ -18,7 +18,6 @@ import com.android.volley.VolleyError
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.RequestQueue
-import insa.etudiant.sstou.profileActivity
 import org.json.JSONObject
 
 class RescuerListActivity : AppCompatActivity() {
@@ -52,7 +51,6 @@ class RescuerListActivity : AppCompatActivity() {
             requestQueue.add(jsonOR)
             return operations
         }
-
         var operations = getRescuerList()
 
         class OperationAdapter : RecyclerView.Adapter<OperationAdapter.OperationViewHolder>() {
@@ -74,9 +72,10 @@ class RescuerListActivity : AppCompatActivity() {
 
                 fun bind(operation: String) {
                     itemTv.text = operation
+                    val context = itemView.context
                     itemView.setOnClickListener {
                         val clickedRescuer = operations[adapterPosition]
-                        val intent = Intent(itemView.context, profileActivity::class.java)
+                        val intent = Intent(context, ProfileActivity::class.java)
                         intent.putExtra("userTitle", clickedRescuer)
                         startActivity(intent)
                     }

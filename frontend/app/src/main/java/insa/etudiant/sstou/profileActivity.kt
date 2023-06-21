@@ -148,7 +148,7 @@ class profileActivity : AppCompatActivity() {
             // A envoyer
             var siteJunior = ""
             val urltokenFirebase = siteJunior+"/rescuers/"+profile?.id
-                    sendPutRequest(urltokenFirebase,"{  \"tokenFirebase\": \"$token\" }")
+                    sendPatchRequest(urltokenFirebase,"{  \"tokenFirebase\": \"$token\" }")
         })
         //Récupérer les données
     }

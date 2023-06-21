@@ -59,9 +59,9 @@ fun extractServerResponse(response: String): ServerResponse {
 }
 
 
-fun sendPutRequest(url: String, requestBody: String): String {
+fun sendPatchRequest(url: String, requestBody: String): String {
     val connection = URL(url).openConnection() as HttpURLConnection
-    connection.requestMethod = "PUT"
+    connection.requestMethod = "PATCH"
     connection.doOutput = true
 
     val postData = requestBody.toByteArray(Charsets.UTF_8)

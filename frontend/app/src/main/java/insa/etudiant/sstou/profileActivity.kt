@@ -100,96 +100,105 @@ class profileActivity : AppCompatActivity() {
         val Title = findViewById<TextView>(R.id.SSTProfile_Title)
 
 
-        val response = sendGetRequest("http://localhost:3000/rescuers/$userId")
-        //Test si message est Succés et non échec
-        val profile = extractProfileData(response)
 
-        val Telinput = findViewById<EditText>(R.id.SSTProfile_Tel)
-        val Passwordinput = findViewById<EditText>(R.id.SSTProfile_Password)
-        val PasswordConfirminput = findViewById<EditText>(R.id.SSTProfile_Password_confirm)
-        val firstNameinput = findViewById<EditText>(R.id.SSTProfile_firstname)
-        val lastNameinput = findViewById<EditText>(R.id.SSTProfile_lastname)
-        val Emailinput = findViewById<EditText>(R.id.SSTProfile_email)
+        val response = sendGetRequest("http://localhost:3000/rescuers/$userId")  //Rajouter un try catch ?
+        val jsonResponse = JSONObject(response)
+        val status = jsonResponse.getString("message")
 
-        firstNameinput.setText(profile.firstName)
-        lastNameinput.setText(profile.lastName)
-        Emailinput.setText(profile.email)
-        Title.setText(profile.firstName)
+        if(status == "Succès") {
+            //Test si message est Succés et non échec
+            val profile = extractProfileData(response)
 
-        //Remplir les valeurs par défault avec celle de la base de données.
+            val Telinput = findViewById<EditText>(R.id.SSTProfile_Tel)
+            val Passwordinput = findViewById<EditText>(R.id.SSTProfile_Password)
+            val PasswordConfirminput = findViewById<EditText>(R.id.SSTProfile_Password_confirm)
+            val firstNameinput = findViewById<EditText>(R.id.SSTProfile_firstname)
+            val lastNameinput = findViewById<EditText>(R.id.SSTProfile_lastname)
+            val Emailinput = findViewById<EditText>(R.id.SSTProfile_email)
 
-        val Confirmation_button = findViewById<Button>(R.id.button_confirmation)
+            firstNameinput.setText(profile.firstName)
+            lastNameinput.setText(profile.lastName)
+            Emailinput.setText(profile.email)
+            Title.setText(profile.firstName)
 
-        Confirmation_button.setOnClickListener {
+            //Remplir les valeurs par défault avec celle de la base de données.
 
-            var PasswordChange = false
-            var FirstNameChange = false
-            var LastNameChange = false
-            var TelephoneChange = false
-            var EmailChange = false
+            val Confirmation_button = findViewById<Button>(R.id.button_confirmation)
 
-            if(Passwordinput.text == PasswordConfirminput.text)
-            {
-                PasswordChange = true
+            Confirmation_button.setOnClickListener {
+
+                var PasswordChange = false
+                var FirstNameChange = false
+                var LastNameChange = false
+                var TelephoneChange = false
+                var EmailChange = false
+
+                if (Passwordinput.text == PasswordConfirminput.text) {
+                    PasswordChange = true
+                }
+
+                if (firstNameinput.text.toString() != profile.firstName) {
+                    FirstNameChange = true
+                }
+
+                if (lastNameinput.text.toString() != profile.lastName) {
+                    LastNameChange = true
+                }
+
+                if (Emailinput.text.toString() != profile.email) {
+                    EmailChange = true
+                }
+
+                //Pareil mais avec le numéro de téléphone
+
+                //Pareil avec les préférences
+
+                //Pareil avec la disponibilité
+
+                //Gestion mdp spéciaux
+
+                if (((Passwordinput.text.toString() == "") and (PasswordConfirminput.text.toString() != ""))
+                    or ((Passwordinput.text.toString() != "") and (PasswordConfirminput.text.toString() == "")))
+                {
+                    //Champs des mots de passe incomplet == Non envoie du nouveau mot de passe
+                }
+                else
+                {
+                    val firstname = firstNameinput.text.toString()
+                    val lastname = lastNameinput.text.toString()
+                    val password = Passwordinput.text.toString()
+                    val email = Emailinput.text.toString()
+
+                    //Insérer requête SQL ici
+                    patchRequest(
+                        "http://localhost:3000/rescuers/" + profile.id,
+                        "{\"firstname\": \"$firstname\" , \"lastname\": \"$lastname\" , " +
+                                "\"password\": \"$password\" , \"email\" : \"$email\"}"
+                    )
+
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                }
+
+
             }
 
-            if(firstNameinput.text.toString() != profile.firstName)
-            {
-                FirstNameChange = true
-            }
+            val bouton_suppression = findViewById<Button>(R.id.button_supprimer)
 
-            if(lastNameinput.text.toString() != profile.lastName)
-            {
-                LastNameChange = true
-            }
-
-            if(Emailinput.text.toString() != profile.email)
-            {
-                EmailChange = true
-            }
-
-            //Pareil mais avec le numéro de téléphone
-
-            //Pareil avec les préférences
-
-            //Pareil avec la disponibilité
-
-            //Gestion mdp spéciaux
-
-            if(((Passwordinput.text.toString() == "") and (PasswordConfirminput.text.toString() != ""))
-                or ((Passwordinput.text.toString() != "") and (PasswordConfirminput.text.toString() == "")))
-            {
-                //Champs des mots de passe incomplet == Non envoie du nouveau mot de passe
-            }
-            else
-            {
-                val firstname = firstNameinput.text.toString()
-                val lastname = lastNameinput.text.toString()
-                val password = Passwordinput.text.toString()
-                val email = Emailinput.text.toString()
-
-                //Insérer requête SQL ici
-                patchRequest("http://localhost:3000/rescuers/"+profile.id,
-                    "{\"firstname\": \"$firstname\" , \"lastname\": \"$lastname\" , " +
-                            "\"password\": \"$password\" , \"email\" : \"$email\"}"
-                )
-
+            bouton_suppression.setOnClickListener {
+                deleteRequest("http://localhost:3000/rescuers/" + profile.id)
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
 
-
-
         }
-
-        val bouton_suppression = findViewById<Button>(R.id.button_supprimer)
-
-        bouton_suppression.setOnClickListener {
-            deleteRequest("http://localhost:3000/rescuers/"+profile.id)
+        else
+        {
+            //Erreur : La requête GET à echouer
+            val message_erreur = jsonResponse.getString("details")
+            println(message_erreur)
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
-
-        //Récupérer les données
     }
 }

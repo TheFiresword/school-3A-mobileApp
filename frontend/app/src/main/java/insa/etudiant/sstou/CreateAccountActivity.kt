@@ -17,7 +17,7 @@ import org.json.JSONObject
 
 //data class Profile(val id: String, val firstName: String, val lastName: String, val email: String)
 fun createRescuer(requestQueue : RequestQueue, name: String, phoneNumber: String, mdp:String, successCallback: (response:JSONObject) -> Unit, errorCallback: (error:VolleyError) -> Unit) {
-    val url = "http://localhost:3000/rescuers"
+    val url = "https://backend-service-3kjf.onrender.com/rescuers"
     val requestBody = JSONObject().apply {
         put("name", name)
         put("phone_number", phoneNumber)

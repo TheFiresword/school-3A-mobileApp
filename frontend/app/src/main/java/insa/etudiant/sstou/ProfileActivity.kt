@@ -22,8 +22,10 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        val userTitle = intent.getStringExtra("userTitle")
-        val usermail = intent.getStringExtra("usermail")
+        // UserTitle et Mail pris de l'intent(activité précédente) ou bien définis par défaut si non trouvés.
+        val userTitle: String? = intent.getStringExtra("userTitle") ?: "defaultTitle"
+        val usermail: String? = intent.getStringExtra("usermail") ?: "defaultMail"
+
         val title = findViewById<TextView>(R.id.SSTProfile_Title)
 
         // Ok, je vais simplement GET tous les users et filtrer en fonction du mail.
@@ -209,7 +211,6 @@ fun patchRequest(url: String, requestBody: String): String {
 }
 
 
-//ChatGPT's getAllUsers() to then filter by email
 fun getAllUsers(): String {
     val urlString = "http://localhost:3000/rescuers"
     val url = URL(urlString)

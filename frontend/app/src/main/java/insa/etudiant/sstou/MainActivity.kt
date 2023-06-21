@@ -6,7 +6,6 @@ import android.widget.Button
 import android.content.Intent
 import android.widget.ImageView
 
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +23,12 @@ class MainActivity : AppCompatActivity() {
         myparametersbutton.setOnClickListener {
             val intent = Intent(this, parameters::class.java)
             startActivity(intent)
+        }
+
+        val myparametersbutton2 = findViewById<Button>(R.id.buttontestnotif)
+
+        myparametersbutton2.setOnClickListener {
+            WaitingForHelpActivity.sendNotif("Aurore","dZAVyEPBRuOJQoNoLblJHQ:APA91bF4Sk0qKy_gkODgpLUxX15Mh_cl3Mtx8O-9r1Rm2-DWSubj-AR9y37x6c9heSfNLaLxxs3EyWFI_AsWK_n5wh_C9Vze39LDSvmh9Y7rf66yEixweqQGTayAWfTn9Js8WmfJ8nO_")
         }
 
     }

@@ -10,6 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.firestore.FirebaseFirestore
+import java.util.Objects
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.HttpURLConnection
@@ -120,7 +122,9 @@ class WaitingForHelpActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(
+
+
+        override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
         grantResults: IntArray
@@ -138,6 +142,19 @@ class WaitingForHelpActivity : AppCompatActivity() {
 
 
     companion object {
+        fun sendNotif(room:String, theToken:String) {
+            val notif = HashMap<String,String>()
+            notif.put("title","Aide demandée !")
+            notif.put("body", "Urgence en salle " + room + " !")
+            notif.put("to", theToken)
+            val firestore = FirebaseFirestore.getInstance()
+            firestore.collection("Notifications").document().set(notif)
+            println("done")
+        }
+
         private const val PERMISSION_REQUEST_SEND_SMS = 1
     }
+
 }
+
+

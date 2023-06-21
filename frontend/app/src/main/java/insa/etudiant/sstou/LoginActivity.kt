@@ -8,6 +8,10 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.JsonObjectRequest
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 
@@ -59,29 +63,7 @@ fun extractServerResponse(response: String): ServerResponse {
 }
 
 
-fun sendPatchRequest(url: String, requestBody: String): String {
-    val connection = URL(url).openConnection() as HttpURLConnection
-    connection.requestMethod = "PATCH"
-    connection.doOutput = true
 
-    val postData = requestBody.toByteArray(Charsets.UTF_8)
-    connection.setRequestProperty("Content-Length", postData.size.toString())
-    DataOutputStream(connection.outputStream).use { outputStream ->
-        outputStream.write(postData)
-    }
-
-    val responseCode = connection.responseCode
-    val response = StringBuilder()
-    BufferedReader(InputStreamReader(connection.inputStream)).use { reader ->
-        var line: String?
-        while (reader.readLine().also { line = it } != null) {
-            response.append(line)
-        }
-    }
-    connection.disconnect()
-
-    return response.toString()
-}
 
 
 
@@ -105,7 +87,7 @@ class LoginActivity : AppCompatActivity() {
             //Attention : ne pas confondre la requête pour se connecter (ici dans loginActivity) et la requête pour obtenir les infos sur le profil (dans profileActivity)
 
 
-            val response = sendPostRequest("http://localhost:3000/authentification/login",
+            val response = sendPostRequest("https://backend-service-3kjf.onrender.com/login",
                 "{ \"email\": \"$usermail\", \"password\": \"$password\" }")
             //println(response)
             //La réponse est sous la forme : { "message": "Succès", "details": "..." }
@@ -114,15 +96,62 @@ class LoginActivity : AppCompatActivity() {
             val message = serverResponse.message
             val details = serverResponse.details
 
+            val id = ""
+
+            var requestQueue: RequestQueue
+            var urltokenFirebase = mutableListOf<String>()
+
+
+            fun sendPatchRequest(id:String) {
+                requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
+
+                // Send firebase token to backend
+                //val intent = Intent(this, profileActivity::class.java)
+                //intent.putExtra("userId", profile.id)
+                FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.w("TOKEN", "Fetching FCM registration token failed", task.exception)
+                        return@OnCompleteListener
+                    }
+                    // Get new FCM registration token
+                    var token = task.result // le token a envoyer
+                    // A envoyer
+                    var siteJunior = "https://backend-service-3kjf.onrender.com/"+id
+                    urltokenFirebase.add(siteJunior + "rescuers/" + id)
+                    urltokenFirebase.add(token)
+
+                })
+                val jsonOR = JsonObjectRequest(
+                    Request.Method.PATCH,
+                    urltokenFirebase[0].toString(),
+                    JSONObject().apply {
+                        put("tokenFirebase", urltokenFirebase[1].toString())
+                    }, // envoi token firebase
+                    { response ->
+                        Toast.makeText(applicationContext, "Réussite chargement BDD", Toast.LENGTH_LONG)
+                            .show()
+                        val jsonArray = response.getJSONArray("details")
+                    },
+                    { error ->
+                        Toast.makeText(
+                            applicationContext,
+                            "Erreur du chargement BDD",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                )
+                requestQueue?.add(jsonOR)
+            }
 
 
 
-             // Le problème ici c'est qu'on ne peut pas fournir un "id" à profileActivity,
-            // il devra la demander lui-même. Ce qu'on va donner à la place, c'est le mail
+            sendPatchRequest(id)
             intent.putExtra("usermail", usermail)
             startActivity(intent) //Redirige vers profil utilisateur (profileActivity
 
         }
+
+
 
         mdpForget.setOnClickListener {
             val justTrolling = findViewById<TextView>(R.id.Troll)

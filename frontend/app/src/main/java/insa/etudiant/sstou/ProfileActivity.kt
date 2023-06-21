@@ -135,21 +135,7 @@ class ProfileActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
-        // Send firebase token to backend
-        //val intent = Intent(this, profileActivity::class.java)
-        //intent.putExtra("userId", profile.id)
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w("TOKEN", "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-            // Get new FCM registration token
-            var token = task.result // le token a envoyer
-            // A envoyer
-            var siteJunior = ""
-            val urltokenFirebase = siteJunior+"/rescuers/"+profile?.id
-            sendPatchRequest(urltokenFirebase,"{  \"tokenFirebase\": \"$token\" }")
-        })
+
         //Récupérer les données
     }
 }

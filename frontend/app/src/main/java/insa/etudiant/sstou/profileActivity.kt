@@ -14,14 +14,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import org.json.JSONObject
+import org.json.JSONArray
 
-//ChatGPT's GET request
+
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
+//ChatGPT's sendGetRequest to get one user by id
 fun sendGetRequest(url: String): String {
     val connection = URL(url).openConnection() as HttpURLConnection
     connection.requestMethod = "GET"
@@ -79,6 +81,60 @@ fun patchRequest(url: String, requestBody: String): String {
 }
 
 
+//ChatGPT's getAllUsers() to then filter by email
+fun getAllUsers(): String {
+    val urlString = "http://localhost:3000/rescuers"
+    val url = URL(urlString)
+    val connection = url.openConnection() as HttpURLConnection
+
+    try {
+        connection.requestMethod = "GET"
+
+        val responseCode = connection.responseCode
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            val inputStream = connection.inputStream
+            val bufferedReader = BufferedReader(InputStreamReader(inputStream))
+            val response = StringBuilder()
+
+            var line: String?
+            while (bufferedReader.readLine().also { line = it } != null) {
+                response.append(line)
+            }
+
+            bufferedReader.close()
+            inputStream.close()
+
+            return response.toString()
+        } else {
+            throw Exception("HTTP request failed with response code: $responseCode")
+        }
+    } finally {
+        connection.disconnect()
+    }
+}
+
+
+//ChatGPT's getUserByEmail
+fun getUserByEmail(usersJson: String, email: String): Profile? {
+    val usersArray = JSONArray(usersJson)
+
+    for (i in 0 until usersArray.length()) {
+        val userObj = usersArray.getJSONObject(i)
+        val userEmail = userObj.getString("email")
+
+        if (userEmail == email) {
+            val id = userObj.getInt("id")
+            val firstName = userObj.getString("firstName")
+            val lastName = userObj.getString("lastName")
+
+            return Profile(id.toString(), email, firstName, lastName /* and other fields */)
+        }
+    }
+
+    return null
+}
+
+
 //ChatGPT's json extractProfile
 data class Profile(val id: String, val firstName: String, val lastName: String, val email: String)
 fun extractProfileData(response: String): Profile {
@@ -99,7 +155,13 @@ class profileActivity : AppCompatActivity() {
 
         //val userTitle = intent.getStringExtra("userTitle")
         val usermail = intent.getStringExtra("usermail")
-        val Title = findViewById<TextView>(R.id.SSTProfile_Title)
+        val title = findViewById<TextView>(R.id.SSTProfile_Title)
+
+        // Ok, je vais simplement GET tous les users et filtrer en fonction du mail.
+
+
+        val rescuers = getAllUsers()
+        val profile = usermail?.let { getUserByEmail(rescuers, it) }
 
         //problème : il faut ici utiliser une requête permettant d'obtenir un rescuer par son mail,
         //ce qui nécessite une requête du côté du backend (laquelle n'existe pas encore)
@@ -118,10 +180,11 @@ class profileActivity : AppCompatActivity() {
             val lastNameinput = findViewById<EditText>(R.id.SSTProfile_lastname)
             val Emailinput = findViewById<EditText>(R.id.SSTProfile_email)
 
+
+            title.setText(profile?.firstName)
             firstNameinput.setText(profile.firstName)
             lastNameinput.setText(profile.lastName)
             Emailinput.setText(profile.email)
-            Title.setText(profile.firstName)
 
             //Remplir les valeurs par défault avec celle de la base de données.
 

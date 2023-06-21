@@ -8,3 +8,8 @@ GRANT all privileges on uniformDb.* to 'uniform'@'localhost' ;
 show grants for 'uniform'@'localhost';
 
 source .\data.sql;
+
+mysql -u root
+use uniformdb
+ALTER TABLE rescuers
+ADD tokenFirebase Varchar(255);

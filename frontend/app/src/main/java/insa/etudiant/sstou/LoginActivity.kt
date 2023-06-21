@@ -3,10 +3,13 @@ package insa.etudiant.sstou
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 //ChatGPT's POST
 import java.io.DataOutputStream
@@ -56,7 +59,29 @@ fun extractServerResponse(response: String): ServerResponse {
 }
 
 
+fun sendPutRequest(url: String, requestBody: String): String {
+    val connection = URL(url).openConnection() as HttpURLConnection
+    connection.requestMethod = "PUT"
+    connection.doOutput = true
 
+    val postData = requestBody.toByteArray(Charsets.UTF_8)
+    connection.setRequestProperty("Content-Length", postData.size.toString())
+    DataOutputStream(connection.outputStream).use { outputStream ->
+        outputStream.write(postData)
+    }
+
+    val responseCode = connection.responseCode
+    val response = StringBuilder()
+    BufferedReader(InputStreamReader(connection.inputStream)).use { reader ->
+        var line: String?
+        while (reader.readLine().also { line = it } != null) {
+            response.append(line)
+        }
+    }
+    connection.disconnect()
+
+    return response.toString()
+}
 
 
 
@@ -68,6 +93,7 @@ class LoginActivity : AppCompatActivity() {
         val confirmation = findViewById<Button>(R.id.Connection_button)
         val mdpForget = findViewById<Button>(R.id.MDP_forget) // Bouton Mot de passe oublié
         val retButton = findViewById<Button>(R.id.ret_button_2) // Bouton Retour
+        val superButton = findViewById<Button>(R.id.superB)
 
         confirmation.setOnClickListener {
             val usermailEntry = findViewById<EditText>(R.id.Usermail_entry)
@@ -88,12 +114,28 @@ class LoginActivity : AppCompatActivity() {
             val message = serverResponse.message
             val details = serverResponse.details
 
-            val intent = Intent(this, profileActivity::class.java)
+
+            // Send firebase token to backend
+            //val intent = Intent(this, profileActivity::class.java)
             //intent.putExtra("userId", profile.id)
-            // Le problème ici c'est qu'on ne peut pas fournir un "id" à profileActivity,
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("TOKEN", "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new FCM registration token
+                var token = task.result // le token a envoyer
+                // A envoyer
+                var siteJunior = ""
+                //val urltokenFirebase = siteJunior+"/rescuers/"+profile.id
+                //sendPutRequest(urltokenFirebase,"{ \"email\": \"$usermail\", \"password\": \"$password\", \"tokenFirebase\": \"$token\" }")
+            })
+
+             // Le problème ici c'est qu'on ne peut pas fournir un "id" à profileActivity,
             // il devra la demander lui-même. Ce qu'on va donner à la place, c'est le mail
             intent.putExtra("usermail", usermail)
-            startActivity(intent) //Redirige vers profil utilisateur (profileActivity)
+            startActivity(intent) //Redirige vers profil utilisateur (profileActivity
 
         }
 
@@ -101,6 +143,12 @@ class LoginActivity : AppCompatActivity() {
             val justTrolling = findViewById<TextView>(R.id.Troll)
             justTrolling.text = "Dommage !"
             justTrolling.visibility = View.VISIBLE
+        }
+
+
+        superButton.setOnClickListener {
+            val intent = Intent(this, RescuerListActivity::class.java)
+            startActivity(intent)
         }
 
         retButton.setOnClickListener {

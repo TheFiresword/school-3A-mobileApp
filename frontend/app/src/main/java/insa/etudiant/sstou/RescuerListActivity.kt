@@ -1,5 +1,6 @@
 package insa.etudiant.sstou
 
+//import android.app.DownloadManager.Request
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,17 +8,47 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.VolleyError
+
+
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import insa.etudiant.sstou.profileActivity
+import org.json.JSONObject
 
 class RescuerListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rescuer_list)
 
-        //Remplacer la valeur suivante par une requête au serveur qui demande la liste de tous les secouristes
-        val operations = arrayListOf<String>("Secouriste 1", "Secouriste 2", "Secouriste 3", "Secouriste 4")
+        fun getRescuerList(): ArrayList<String> {
+            val url = "http://localhost:3000/rescuers"
+            var operations = arrayListOf("Secouriste 1", "Secouriste 2", "Secouriste 3", "Secouriste 4") //Default List
+
+            val jsonOR = JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null, // Rien besoin d'envoyer
+                { response ->
+                    Toast.makeText(applicationContext, "Réussite chargement BDD", Toast.LENGTH_LONG).show()
+                    val jsonArray = response.getJSONArray("rescuers")
+                    operations.clear()
+                    for (i in 0 until jsonArray.length()) {
+                        val rescuer = jsonArray.getString(i)
+                        operations.add(rescuer)
+                    }
+                },
+                { error ->
+                    Toast.makeText(applicationContext, "Erreur de la chargement BDD", Toast.LENGTH_LONG).show()
+                }
+            )
+            return operations
+        }
+
+        var operations = getRescuerList()
 
         class OperationAdapter : RecyclerView.Adapter<OperationAdapter.OperationViewHolder>() {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OperationViewHolder {

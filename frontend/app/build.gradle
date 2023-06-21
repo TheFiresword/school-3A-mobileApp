@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'com.google.gms.google-services'
+    id 'com.google.gms.google-services' apply true
 }
 
 android {
@@ -46,5 +46,5 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.1.1')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx'
-    implementation 'com.android.volley:volley:1.2.1'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
 }

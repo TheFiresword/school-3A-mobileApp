@@ -49,11 +49,12 @@ class profileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
 
         //val userTitle = intent.getStringExtra("userTitle")
-        val userId = intent.getStringExtra("userId")
+        val usermail = intent.getStringExtra("usermail")
         val Title = findViewById<TextView>(R.id.SSTProfile_Title)
 
-
-        val response = sendGetRequest("http://localhost:3000/rescuers/$userId")
+        //problème : il faut ici utiliser une requête permettant d'obtenir un rescuer par son mail,
+        //ce qui nécessite une requête du côté du backend (laquelle n'existe pas encore)
+        val response = sendGetRequest("http://localhost:3000/rescuers/$usermail")
         val profile = extractProfileData(response)
 
 

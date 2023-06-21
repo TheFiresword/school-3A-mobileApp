@@ -91,7 +91,8 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, profileActivity::class.java)
             //intent.putExtra("userId", profile.id)
             // Le problème ici c'est qu'on ne peut pas fournir un "id" à profileActivity,
-            // il devra la demander lui-même.
+            // il devra la demander lui-même. Ce qu'on va donner à la place, c'est le mail
+            intent.putExtra("usermail", usermail)
             startActivity(intent) //Redirige vers profil utilisateur (profileActivity)
 
         }

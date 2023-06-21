@@ -29,9 +29,9 @@ class RescuerListActivity : AppCompatActivity() {
             var operations = arrayListOf("Secouriste 1", "Secouriste 2", "Secouriste 3", "Secouriste 4") //Default List
 
             val jsonOR = JsonObjectRequest(
-                Request.Method.GET, // Request method (GET)
-                url, // URL of the API endpoint
-                null, // Request body
+                Request.Method.GET,
+                url,
+                null, // Rien besoin d'envoyer
                 { response ->
                     Toast.makeText(applicationContext, "Réussite chargement BDD", Toast.LENGTH_LONG).show()
                     val jsonArray = response.getJSONArray("rescuers")

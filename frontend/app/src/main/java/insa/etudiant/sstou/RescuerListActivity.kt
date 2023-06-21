@@ -41,9 +41,9 @@ class RescuerListActivity : AppCompatActivity() {
                     println(names)
                     names.clear()
                     for (i in 0 until jsonArray.length()) {
-                        val rescuerName = jsonArray.getJSONObject(i)
-                        val rescuer = rescuerName.getString("lastname")
-                        names.add(rescuer)
+                        val rescuer = jsonArray.getJSONObject(i)
+                        val rescuerName = rescuer.getString("lastname") + "  " + rescuer.getString("firstname")
+                        names.add(rescuerName)
                     }
                     callback(names)
                 },

@@ -25,7 +25,6 @@ class PushNotificationService : FirebaseMessagingService()  {
             println("token" + s)
 
     }
-
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         val title = message.notification?.title

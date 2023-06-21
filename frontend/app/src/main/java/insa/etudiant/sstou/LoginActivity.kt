@@ -15,6 +15,8 @@ import java.net.URL
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
+import org.json.JSONObject
+
 
 fun sendPostRequest(url: String, requestBody: String): String {
     val connection = URL(url).openConnection() as HttpURLConnection
@@ -27,7 +29,6 @@ fun sendPostRequest(url: String, requestBody: String): String {
         outputStream.write(postData)
     }
 
-    val responseCode = connection.responseCode
     val response = StringBuilder()
     BufferedReader(InputStreamReader(connection.inputStream)).use { reader ->
         var line: String?
@@ -41,6 +42,20 @@ fun sendPostRequest(url: String, requestBody: String): String {
 }
 
 
+//ChatGPT's ServerResponse
+
+data class ServerResponse(val message: String, val details: String)
+
+fun extractServerResponse(response: String): ServerResponse {
+    val jsonResponse = JSONObject(response)
+
+    val message = jsonResponse.getString("message")
+    val details = jsonResponse.getString("details")
+
+    return ServerResponse(message, details)
+}
+
+
 
 
 
@@ -50,37 +65,45 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val Confirmation = findViewById<Button>(R.id.Connection_button)
-        val MDP_forget = findViewById<Button>(R.id.MDP_forget) // Bouton Mot de passe oublié
-        val ret_button = findViewById<Button>(R.id.ret_button_2) // Bouton Retour
+        val confirmation = findViewById<Button>(R.id.Connection_button)
+        val mdpForget = findViewById<Button>(R.id.MDP_forget) // Bouton Mot de passe oublié
+        val retButton = findViewById<Button>(R.id.ret_button_2) // Bouton Retour
 
-        Confirmation.setOnClickListener {
-            val Usermail_entry = findViewById<EditText>(R.id.Usermail_entry)
-            val Password_entry = findViewById<EditText>(R.id.Password_entry)
+        confirmation.setOnClickListener {
+            val usermailEntry = findViewById<EditText>(R.id.Usermail_entry)
+            val passwordEntry = findViewById<EditText>(R.id.Password_entry)
 
-            val usermail = Usermail_entry.text.toString()
-            val password = Password_entry.text.toString()
+            val usermail = usermailEntry.text.toString()
+            val password = passwordEntry.text.toString()
 
             //Attention : ne pas confondre la requête pour se connecter (ici dans loginActivity) et la requête pour obtenir les infos sur le profil (dans profileActivity)
 
 
-            val response = sendPostRequest("http://localhost:3000/authentification/login", "{ \"email\": \"$usermail\", \"password\": \"$password\" }")
+            val response = sendPostRequest("http://localhost:3000/authentification/login",
+                "{ \"email\": \"$usermail\", \"password\": \"$password\" }")
             //println(response)
-            val profile = extractProfileData(response)
+            //La réponse est sous la forme : { "message": "Succès", "details": "..." }
+            val serverResponse = extractServerResponse(response)
+
+            val message = serverResponse.message
+            val details = serverResponse.details
 
             val intent = Intent(this, profileActivity::class.java)
-            intent.putExtra("userId", profile.id)
-            startActivity(intent) //Redirige vers profil utilisateur (profileActivity
+            //intent.putExtra("userId", profile.id)
+            // Le problème ici c'est qu'on ne peut pas fournir un "id" à profileActivity,
+            // il devra la demander lui-même. Ce qu'on va donner à la place, c'est le mail
+            intent.putExtra("usermail", usermail)
+            startActivity(intent) //Redirige vers profil utilisateur (profileActivity)
 
         }
 
-        MDP_forget.setOnClickListener {
-            val JustTrolling = findViewById<TextView>(R.id.Troll)
-            JustTrolling.text = "Dommage !"
-            JustTrolling.setVisibility(View.VISIBLE)
+        mdpForget.setOnClickListener {
+            val justTrolling = findViewById<TextView>(R.id.Troll)
+            justTrolling.text = "Dommage !"
+            justTrolling.visibility = View.VISIBLE
         }
 
-        ret_button.setOnClickListener {
+        retButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }

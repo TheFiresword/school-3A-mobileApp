@@ -14,6 +14,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import org.json.JSONObject
+
+//ChatGPT's GET request
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.io.InputStreamReader
@@ -96,12 +98,12 @@ class profileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
 
         //val userTitle = intent.getStringExtra("userTitle")
-        val userId = intent.getStringExtra("userId")
+        val usermail = intent.getStringExtra("usermail")
         val Title = findViewById<TextView>(R.id.SSTProfile_Title)
 
-
-
-        val response = sendGetRequest("http://localhost:3000/rescuers/$userId")  //Rajouter un try catch ?
+        //problème : il faut ici utiliser une requête permettant d'obtenir un rescuer par son mail,
+        //ce qui nécessite une requête du côté du backend (laquelle n'existe pas encore)
+        val response = sendGetRequest("http://localhost:3000/rescuers/$usermail")  //Rajouter un try catch ?
         val jsonResponse = JSONObject(response)
         val status = jsonResponse.getString("message")
 

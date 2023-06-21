@@ -27,20 +27,6 @@ class PushNotificationService : FirebaseMessagingService()  {
     }
 
 
-// Fonction pour envoyer Token
-    fun sendToken() {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w("TOKEN", "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            // Get new FCM registration token
-            var token = task.result // le token a envoyer
-            // A envoyer
-
-        })
-    }
 
 
 }

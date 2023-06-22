@@ -67,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
 
             authentification(reqQueue, usermail, password,
                 success_callback = { myEmail, myId, myToken ->
-                    Toast.makeText(applicationContext, "Login Réussi", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Login Réussi.", Toast.LENGTH_SHORT).show()
 
                     val intent: Intent
                     if (myId == 1) {
@@ -112,9 +112,9 @@ class LoginActivity : AppCompatActivity() {
                 val message = serverResponse.message
                 val details = serverResponse.details
 
-            val id = "someIdIcantgetbecausefrançoishasnotfinishedhisjob"
-            val token = "the identification token Icantgetbecausefrançoishasnotfinishedhisjob"
-            var requestQueue: RequestQueue
+                val id = "someIdIcantgetbecausefrançoishasnotfinishedhisjob"
+                val token = "the identification token Icantgetbecausefrançoishasnotfinishedhisjob"
+                var requestQueue: RequestQueue
 
 
                 fun sendPatchRequest(id: String) {
@@ -137,6 +137,7 @@ class LoginActivity : AppCompatActivity() {
 
                     var siteJunior = "https://backend-service-3kjf.onrender.com/"+id
                     var patchurl = siteJunior + "rescuers/" + id
+
                     val jsonOR = JsonObjectRequest(
                     Request.Method.PATCH,
                     patchurl,
@@ -148,7 +149,7 @@ class LoginActivity : AppCompatActivity() {
                     { response ->
                         Toast.makeText(applicationContext, "Réussite chargement BDD", Toast.LENGTH_LONG)
                             .show()
-                        val jsonArray = response.getJSONArray("details")
+                        //val jsonArray = response.getJSONArray("details")
                     },
                     { error ->
                         Toast.makeText(

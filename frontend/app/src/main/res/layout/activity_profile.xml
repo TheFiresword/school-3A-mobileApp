@@ -30,7 +30,7 @@
         android:inputType="phone"
         android:text=""
         app:layout_constraintStart_toEndOf="@+id/Telephone"
-        app:layout_constraintTop_toBottomOf="@+id/switch2" />
+        app:layout_constraintTop_toBottomOf="@+id/switch_dispo" />
 
     <TextView
         android:id="@+id/textView7"
@@ -54,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <Switch
-        android:id="@+id/switch2"
+        android:id="@+id/switch_dispo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="164dp"
@@ -206,5 +206,14 @@
         android:text=""
         tools:layout_editor_absoluteX="163dp"
         tools:layout_editor_absoluteY="58dp" />
+
+    <TextView
+        android:id="@+id/Alerte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_red_dark"
+        tools:layout_editor_absoluteX="175dp"
+        tools:layout_editor_absoluteY="492dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

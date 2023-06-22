@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 
@@ -19,8 +20,31 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 
 import org.json.JSONObject
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.VolleyError
 
+fun LoginVolleyRequest(email: String, mdp: String): ArrayList<String> {
+    val url = "https://backend-service-3kjf.onrender.com/authentification/login"
+    val requestBody = JSONObject().apply {
+        put("email", email)
+        put("password", mdp)
+    }
 
+    val jsonOR = JsonObjectRequest(
+        Request.Method.POST,
+        url,
+        requestBody,
+        { response ->
+            successCallback(response)
+        },
+        { error ->
+            errorCallback(error)
+        }
+    )
+    //requestQueue.add(jsonOR)
+}
 fun sendPostRequest(url: String, requestBody: String): String {
     val connection = URL(url).openConnection() as HttpURLConnection
     connection.requestMethod = "POST"
@@ -105,9 +129,10 @@ class LoginActivity : AppCompatActivity() {
             //Attention : ne pas confondre la requête pour se connecter (ici dans loginActivity) et la requête pour obtenir les infos sur le profil (dans profileActivity)
 
 
-            val response = sendPostRequest("http://localhost:3000/authentification/login",
+            val response = sendPostRequest("https://backend-service-3kjf.onrender.com/authentification/login",
                 "{ \"email\": \"$usermail\", \"password\": \"$password\" }")
-            //println(response)
+
+            println(response)
             //La réponse est sous la forme : { "message": "Succès", "details": "..." }
             val serverResponse = extractServerResponse(response)
 

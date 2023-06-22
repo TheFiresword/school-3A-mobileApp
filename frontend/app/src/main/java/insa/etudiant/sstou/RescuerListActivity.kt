@@ -34,8 +34,7 @@ class RescuerListActivity : AppCompatActivity() {
                 url,
                 null, // Rien besoin d'envoyer
                 { response ->
-                    Toast.makeText(applicationContext, "Réussite chargement BDD", Toast.LENGTH_LONG).show()
-                    val jsonArray = response.getJSONArray("rescuers")
+                    val jsonArray = response.getJSONArray("details")
                     operations.clear()
                     for (i in 0 until jsonArray.length()) {
                         val rescuer = jsonArray.getString(i)

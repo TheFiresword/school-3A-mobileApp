@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Switch
-        android:id="@+id/switch2"
+        android:id="@+id/switch_dispo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="160dp"
@@ -104,7 +104,7 @@
         android:ems="10"
         android:inputType="phone"
         app:layout_constraintStart_toEndOf="@+id/Telephone"
-        app:layout_constraintTop_toBottomOf="@+id/switch2" />
+        app:layout_constraintTop_toBottomOf="@+id/switch_dispo" />
 
     <EditText
         android:id="@+id/SSTProfile_Password_confirm"

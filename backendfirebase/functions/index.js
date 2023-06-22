@@ -24,13 +24,21 @@ admin.initializeApp()
 
 exports.androidPushNotification = functions.firestore.document("Notifications/{docId}").onCreate((snapshot, context) =>{
     let registrationTokens = [];
+
+    const data = {};
+    if (snapshot.data().exp) {
+        data.exp = snapshot.data().exp;
+    }
+
     registrationTokens.push(snapshot.data().to)
     admin.messaging().sendMulticast({
             tokens: registrationTokens,
             notification: {
                 title: snapshot.data().title,
                 body: snapshot.data().body
-            }
+            },
+            data: data
+
         });
     }
 );

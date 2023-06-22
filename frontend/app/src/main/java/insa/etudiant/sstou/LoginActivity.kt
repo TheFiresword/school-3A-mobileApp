@@ -1,6 +1,7 @@
 package insa.etudiant.sstou
 
 import android.content.ContentValues.TAG
+import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -76,23 +77,90 @@ class LoginActivity : AppCompatActivity() {
                 error_callback = {
                     Toast.makeText(applicationContext, "Login Echoué", Toast.LENGTH_SHORT).show()
                 })
-        }
 
-        mdpForget.setOnClickListener {
-            val justTrolling = findViewById<TextView>(R.id.Troll)
-            justTrolling.text = "Dommage !"
-            justTrolling.visibility = View.VISIBLE
-        }
+            mdpForget.setOnClickListener {
+                val justTrolling = findViewById<TextView>(R.id.Troll)
+                justTrolling.text = "Dommage !"
+                justTrolling.visibility = View.VISIBLE
+            }
 
-        superButton.setOnClickListener {
-            val intent = Intent(this, RescuerListActivity::class.java)
-            startActivity(intent)
-        }
+            superButton.setOnClickListener {
+                val intent = Intent(this, RescuerListActivity::class.java)
+                startActivity(intent)
+            }
 
-        retButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            retButton.setOnClickListener {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 }
+            /*
 
+                requestQueue?.add(jsonOR)
+
+                //println(response)
+                //La réponse est sous la forme : { "message": "Succès", "details": "..." }
+                val serverResponse = extractServerResponse(response)
+
+                val message = serverResponse.message
+                val details = serverResponse.details
+
+            val id = "someIdIcantgetbecausefrançoishasnotfinishedhisjob"
+            val token = "the identification token Icantgetbecausefrançoishasnotfinishedhisjob"
+            var requestQueue: RequestQueue
+
+
+                fun sendPatchRequest(id: String) {
+                    requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
+
+                // Send firebase token to backend
+                //val intent = Intent(this, profileActivity::class.java)
+                //intent.putExtra("userId", profile.id)
+                FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                        return@OnCompleteListener
+                    }
+
+                    // Get new FCM registration token
+                    val firetoken = task.result
+
+                    // Log and toast
+
+
+                    var siteJunior = "https://backend-service-3kjf.onrender.com/"+id
+                    var patchurl = siteJunior + "rescuers/" + id
+                    val jsonOR = JsonObjectRequest(
+                    Request.Method.PATCH,
+                    patchurl,
+                    JSONObject().apply {
+                        put("tokenFirebase", firetoken)
+                        put("id",id)
+                        put("token",token)
+                    }, // envoi token firebase
+                    { response ->
+                        Toast.makeText(applicationContext, "Réussite chargement BDD", Toast.LENGTH_LONG)
+                            .show()
+                        val jsonArray = response.getJSONArray("details")
+                    },
+                    { error ->
+                        Toast.makeText(
+                            applicationContext,
+                            "Erreur du chargement BDD",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                )
+                requestQueue?.add(jsonOR)
+            })
+            }
+            sendPatchRequest(id)
+            intent.putExtra("usermail", usermail)
+            startActivity(intent) //Redirige vers profil utilisateur (profileActivity
+
+        }
+    }
+}
+*/

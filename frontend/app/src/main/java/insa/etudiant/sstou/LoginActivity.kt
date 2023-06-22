@@ -23,6 +23,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 
 import org.json.JSONObject
+import java.io.File
 
 
 fun sendPostRequest(url: String, requestBody: String): String {
@@ -96,10 +97,9 @@ class LoginActivity : AppCompatActivity() {
             val message = serverResponse.message
             val details = serverResponse.details
 
-            val id = ""
+            val id = "someIdIcantgetbecausefrançoishasnotfinishedhisjob"
 
             var requestQueue: RequestQueue
-            var urltokenFirebase = mutableListOf<String>()
 
 
             fun sendPatchRequest(id:String) {
@@ -110,22 +110,23 @@ class LoginActivity : AppCompatActivity() {
                 //intent.putExtra("userId", profile.id)
                 FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                     if (!task.isSuccessful) {
-                        Log.w("TOKEN", "Fetching FCM registration token failed", task.exception)
+                        Log.w(TAG, "Fetching FCM registration token failed", task.exception)
                         return@OnCompleteListener
                     }
-                    // Get new FCM registration token
-                    var token = task.result // le token a envoyer
-                    // A envoyer
-                    var siteJunior = "https://backend-service-3kjf.onrender.com/"+id
-                    urltokenFirebase.add(siteJunior + "rescuers/" + id)
-                    urltokenFirebase.add(token)
 
-                })
-                val jsonOR = JsonObjectRequest(
+                    // Get new FCM registration token
+                    val token = task.result
+
+                    // Log and toast
+
+
+                    var siteJunior = "https://backend-service-3kjf.onrender.com/"+id
+                    var patchurl = siteJunior + "rescuers/" + id
+                    val jsonOR = JsonObjectRequest(
                     Request.Method.PATCH,
-                    urltokenFirebase[0].toString(),
+                    patchurl,
                     JSONObject().apply {
-                        put("tokenFirebase", urltokenFirebase[1].toString())
+                        put("tokenFirebase", token)
                     }, // envoi token firebase
                     { response ->
                         Toast.makeText(applicationContext, "Réussite chargement BDD", Toast.LENGTH_LONG)
@@ -141,16 +142,14 @@ class LoginActivity : AppCompatActivity() {
                     }
                 )
                 requestQueue?.add(jsonOR)
+            })
+
+
             }
-
-
-
             sendPatchRequest(id)
             intent.putExtra("usermail", usermail)
             startActivity(intent) //Redirige vers profil utilisateur (profileActivity
-
         }
-
 
 
         mdpForget.setOnClickListener {

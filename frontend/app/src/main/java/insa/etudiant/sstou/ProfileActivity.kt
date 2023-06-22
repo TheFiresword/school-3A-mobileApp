@@ -362,7 +362,7 @@ class ProfileActivity : AppCompatActivity() {
                     }
                 },
                 { error ->
-                    Toast.makeText(applicationContext, "Erreur de la chargement BDD", Toast.LENGTH_LONG).show()
+                    //Toast.makeText(applicationContext, "Erreur de la chargement BDD", Toast.LENGTH_LONG).show()
                     println("error BDD not reached or something")
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
@@ -505,8 +505,6 @@ class ProfileActivity : AppCompatActivity() {
                             if(EmailChange)
                             patchVolleyRequest(profile.id,firstname,lastname,email,telephone,DisponibilitySwitch.isChecked(), description, password, token,
                                 successCallback = { response ->
-                                    val message = response.getString("Compte mis à jour")
-                                    Toast.makeText(applicationContext, "Success: $message", Toast.LENGTH_SHORT).show()
                                     println("Test Patch")
                                     val intent = Intent(this, MainActivity::class.java)
                                     startActivity(intent)
@@ -520,12 +518,6 @@ class ProfileActivity : AppCompatActivity() {
                             {
                                 patchVolleyRequestWithoutmail(profile.id,firstname,lastname,telephone,DisponibilitySwitch.isChecked(), description, password, token,
                                     successCallback = { response ->
-                                        val message = response.getString("Compte mis à jour")
-                                        Toast.makeText(
-                                            applicationContext,
-                                            "Success: $message",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
                                         println("Test Patch")
                                         val intent = Intent(this, MainActivity::class.java)
                                         startActivity(intent)

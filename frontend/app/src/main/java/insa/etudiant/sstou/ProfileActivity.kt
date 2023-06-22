@@ -489,6 +489,15 @@ class ProfileActivity : AppCompatActivity() {
                         val message_alerte = findViewById<TextView>(R.id.Alerte)
                         message_alerte.text = "Champs non complétés"
                     }
+                    else if (Telinput.text.toString().length <= 10)
+                    {
+                        val message_alerte = findViewById<TextView>(R.id.Alerte)
+                        message_alerte.text = "Le numéro de téléphone est trop long"
+                    }
+                    /*else if (['À','Á','Â','Ã','Ä','Å','Æ','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ð','Ñ','Ò','Ó','Ô','Õ','Ö','Ø','Œ','Š','þ','Ù','Ú','Û','Ü','Ý','Ÿ','à','á','â','ã','ä','å','æ','ç','è','é','ê','ë','ì','í','î','ï','ð','ñ','ò','ó','ô','õ','ö','ø','œ','š','Þ','ù','ú','û','ü','ý','ÿ'] in (firstNameinput.text.toString() + lastNameinput.text.toString()))
+                    {
+
+                    }*/
                     else
                     {
                         val firstname = firstNameinput.text.toString()
@@ -506,6 +515,7 @@ class ProfileActivity : AppCompatActivity() {
                             patchVolleyRequest(profile.id,firstname,lastname,email,telephone,DisponibilitySwitch.isChecked(), description, password, token,
                                 successCallback = { response ->
                                     println("Test Patch")
+                                    Toast.makeText(applicationContext, "Compte modifié", Toast.LENGTH_SHORT).show()
                                     val intent = Intent(this, MainActivity::class.java)
                                     startActivity(intent)
                                 },
@@ -519,6 +529,7 @@ class ProfileActivity : AppCompatActivity() {
                                 patchVolleyRequestWithoutmail(profile.id,firstname,lastname,telephone,DisponibilitySwitch.isChecked(), description, password, token,
                                     successCallback = { response ->
                                         println("Test Patch")
+                                        Toast.makeText(applicationContext, "Compte modifié", Toast.LENGTH_SHORT).show()
                                         val intent = Intent(this, MainActivity::class.java)
                                         startActivity(intent)
                                     },

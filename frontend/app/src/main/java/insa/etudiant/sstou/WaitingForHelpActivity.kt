@@ -61,7 +61,13 @@ class WaitingForHelpActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_rescuer_list)
+        //setContentView(R.layout.activity_rescuer_list)
+        /*val Texte = findViewById<TextView>(R.id.waitingText)
+        Texte.text = "Requête pour la salle " + EnterLocationActivity().defLocation + " envoyé !"*/
+
+
+
+
         var helperList = mutableListOf<Helpers>()
         fun useHelperList() {
             val url = "https://backend-service-3kjf.onrender.com/rescuers/available"

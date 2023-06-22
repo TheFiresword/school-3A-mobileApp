@@ -82,6 +82,7 @@ class RescuerListActivity : AppCompatActivity() {
                         //val clickedRescuer = operations[adapterPosition]
                         val intent = Intent(context, ProfileActivity::class.java)
                         intent.putExtra("usermail", clickedRescuerEmail)
+                        intent.putExtra("Token", intent.getStringExtra("Token"))
                         startActivity(intent)
                     }
                 }

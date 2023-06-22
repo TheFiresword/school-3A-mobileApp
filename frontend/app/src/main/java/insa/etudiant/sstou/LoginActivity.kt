@@ -70,7 +70,7 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Login Réussi", Toast.LENGTH_SHORT).show()
 
                     val intent: Intent
-                    if (myEmail == "sstou.insa.projet@gmail.com") {
+                    if (myId == 1) {
                         intent = Intent(this, RescuerListActivity::class.java)
                     } else {
                         intent = Intent(this, ProfileActivity::class.java)

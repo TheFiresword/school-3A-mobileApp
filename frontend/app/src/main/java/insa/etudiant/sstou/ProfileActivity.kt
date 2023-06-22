@@ -228,7 +228,7 @@ class ProfileActivity : AppCompatActivity() {
                 put("tokenFirebase", token)
             }
 
-            val jsonRequest = JsonObjectRequest(
+            val jsonRequest = object : JsonObjectRequest(
                 Request.Method.PATCH,
                 url,
                 requestBody,
@@ -238,7 +238,19 @@ class ProfileActivity : AppCompatActivity() {
                 { error ->
                     errorCallback(error)
                 }
+
             )
+            {
+                override fun getHeaders(): MutableMap<String, String> {
+                    val headers = HashMap<String, String>()
+                    println(token)
+                    println("TEST")
+                    headers["Accept"] = "application/json"
+                    headers["Authorization"] = "Bearer {{$token}}"
+                    headers["Content-Type"] = "application/json"
+                    return headers
+                }
+            }
 
             requestQueue.add(jsonRequest)
         }
@@ -428,7 +440,8 @@ class ProfileActivity : AppCompatActivity() {
                         val description = "Patch"
                         val token : String? = intent.getStringExtra("Token")
 
-                        //Besoin d'authentification avant d'envoyer cette requête sauf que je ne connais pas le mot de passe
+                        //Besoin d'authentification avant d'envoyer cette requête
+                        //Erreur 401 : Token d'authentification absent ou invalide
                         if (token != null) {
                             patchVolleyRequest(profile.id,firstname,lastname,email,telephone,DisponibilitySwitch.isChecked(), description, password, token,
                                 successCallback = { response ->
@@ -444,6 +457,7 @@ class ProfileActivity : AppCompatActivity() {
                                 },
                                 errorCallback = { error ->
                                     val errorMessage = error.message ?: "Erreur dans la modification du compte"
+                                    println("Probleme Patch")
                                     Toast.makeText(applicationContext, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
                                 })
                         }

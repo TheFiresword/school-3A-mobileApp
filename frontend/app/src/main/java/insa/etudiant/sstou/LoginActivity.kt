@@ -78,6 +78,7 @@ class LoginActivity : AppCompatActivity() {
                     intent.putExtra("usermail", myEmail)
                     intent.putExtra("Id", myId)
                     intent.putExtra("Token", myToken)
+                    intent.putExtra("userpassword", password)
                     val id = myId
                     val token = myToken
                     val requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()

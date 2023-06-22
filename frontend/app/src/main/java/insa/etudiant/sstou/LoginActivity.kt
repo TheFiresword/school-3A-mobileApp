@@ -60,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
         val url = "https://backend-service-3kjf.onrender.com/rescuers/$id"
         val requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
         val requestBody = JSONObject().apply {
-            put("tokenfirebase", firetoken)
+            put("tokenFirebase", firetoken)
         }
 
 

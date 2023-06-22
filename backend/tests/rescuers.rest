@@ -22,7 +22,7 @@ POST http://localhost:3000/authentification/login
 Content-Type: application/json
 
 {
-    "email": "junior.sedogbo@insa-cvl.fr",
+    "email": "pierre-gilles.le_botlan@insa-cvl.fr",
     "password": "uniformpass"
 }
 

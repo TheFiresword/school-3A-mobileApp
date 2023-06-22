@@ -60,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
         val url = "https://backend-service-3kjf.onrender.com/rescuers/$id"
         val requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
         val requestBody = JSONObject().apply {
-            put("tokenfirebase", firetoken)
+            put("tokenFirebase", firetoken)
         }
 
 
@@ -129,9 +129,9 @@ class LoginActivity : AppCompatActivity() {
                             Log.w(TAG, "Fetching FCM registration token failed", task.exception)
                             return@OnCompleteListener
                         }
-                        val firetoken = "dZAVyEPBRuOJQoNoLblJHQ:APA91bF4Sk0qKy_gkODgpLUxX15Mh_cl3Mtx8O-9r1Rm2-DWSubj-AR9y37x6c9heSfNLaLxxs3EyWFI_AsWK_n5wh_C9Vze39LDSvmh9Y7rf66yEixweqQGTayAWfTn9Js8WmfJ8nO_"
+                        //val firetoken = "dZAVyEPBRuOJQoNoLblJHQ:APA91bF4Sk0qKy_gkODgpLUxX15Mh_cl3Mtx8O-9r1Rm2-DWSubj-AR9y37x6c9heSfNLaLxxs3EyWFI_AsWK_n5wh_C9Vze39LDSvmh9Y7rf66yEixweqQGTayAWfTn9Js8WmfJ8nO_"
                         val authtoken = myToken
-                        //val firetoken = task.result.toString()
+                        val firetoken = task.result.toString()
                         //println("this is the token:$firetoken")
                         patchVolleyRequest(id.toString(), firetoken, authtoken)
                         startActivity(intent)

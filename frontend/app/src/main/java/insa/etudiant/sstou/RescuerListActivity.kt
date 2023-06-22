@@ -26,6 +26,8 @@ class RescuerListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rescuer_list)
 
+        var emails = arrayListOf<String>("Email1", "Email2")
+
         fun getRescuerList(callback: (ArrayList<String>) -> Unit) {
             val url = "https://backend-service-3kjf.onrender.com/rescuers"
             requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
@@ -40,10 +42,12 @@ class RescuerListActivity : AppCompatActivity() {
                     val jsonArray = response.getJSONArray("details")
                     println(names)
                     names.clear()
+                    emails.clear()
                     for (i in 0 until jsonArray.length()) {
                         val rescuer = jsonArray.getJSONObject(i)
                         val rescuerName = rescuer.getString("lastname") + "  " + rescuer.getString("firstname")
                         names.add(rescuerName)
+                        emails.add(rescuer.getString("email"))
                     }
                     callback(names)
                 },
@@ -75,9 +79,9 @@ class RescuerListActivity : AppCompatActivity() {
                     itemTv.text = operation
                     val context = itemView.context
                     itemView.setOnClickListener {
-                        val clickedRescuer = operations[adapterPosition]
+                        //val clickedRescuer = operations[adapterPosition]
                         val intent = Intent(context, ProfileActivity::class.java)
-                        intent.putExtra("userTitle", clickedRescuer)
+                        intent.putExtra("usermail", emails[adapterPosition])
                         startActivity(intent)
                     }
                 }

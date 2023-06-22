@@ -23,7 +23,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.firebase.messaging.FirebaseMessaging
 import org.json.JSONObject
 import org.json.JSONArray
-
+import com.android.volley.RequestQueue
 import com.android.volley.Request
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
@@ -66,9 +66,9 @@ import java.net.URL
     return response.toString()
 }*/
 
-fun deleteVolleyRequest(id : Int, successCallback: (response:JSONObject) -> Unit, errorCallback: (error:VolleyError) -> Unit) {
+/*fun deleteVolleyRequest(id : Int, successCallback: (response:JSONObject) -> Unit, errorCallback: (error:VolleyError) -> Unit) {
     val url = "https://backend-service-3kjf.onrender.com/rescuers/"+id
-
+    requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
     val jsonRequest = JsonObjectRequest(
         Request.Method.DELETE,
         url,
@@ -80,11 +80,13 @@ fun deleteVolleyRequest(id : Int, successCallback: (response:JSONObject) -> Unit
             errorCallback(error)
         }
     )
-}
+    requestQueue?.add(jsonRequest)
+}*/
 
-fun patchVolleyRequest(id: Int, firstName: String, lastName: String, email: String, Tele: String, Dispo: Boolean, description: String, password: String, token: String, successCallback: (response:JSONObject) -> Unit, errorCallback: (error:VolleyError) -> Unit)
+/*fun patchVolleyRequest(id: Int, firstName: String, lastName: String, email: String, Tele: String, Dispo: Boolean, description: String, password: String, token: String, successCallback: (response:JSONObject) -> Unit, errorCallback: (error:VolleyError) -> Unit)
 {
     val url = "https://backend-service-3kjf.onrender.com/rescuers/$id"
+    requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
     val requestBody = JSONObject().apply {
         put("firstname", firstName)
         put("lastname", lastName)
@@ -107,7 +109,9 @@ fun patchVolleyRequest(id: Int, firstName: String, lastName: String, email: Stri
             errorCallback(error)
         }
     )
-}
+
+    requestQueue?.add(jsonRequest)
+}*/
 
 /*fun patchRequest(url: String, requestBody: String): String {
     val connection = URL(url).openConnection() as HttpURLConnection
@@ -204,9 +208,57 @@ data class Profile(val id: Int, val firstName: String, val lastName: String, val
 
 class profileActivity : AppCompatActivity() {
     @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private lateinit var requestQueue: RequestQueue
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+
+        fun patchVolleyRequest(id: Int, firstName: String, lastName: String, email: String, Tele: String, Dispo: Boolean, description: String, password: String, token: String, successCallback: (response:JSONObject) -> Unit, errorCallback: (error:VolleyError) -> Unit)
+        {
+            val url = "https://backend-service-3kjf.onrender.com/rescuers/$id"
+            requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
+            val requestBody = JSONObject().apply {
+                put("firstname", firstName)
+                put("lastname", lastName)
+                put("email", email)
+                put("telephone", Tele)
+                put("disponibility", Dispo)
+                put("description", description)
+                put("password", password)
+                put("tokenFirebase", token)
+            }
+
+            val jsonRequest = JsonObjectRequest(
+                Request.Method.PATCH,
+                url,
+                requestBody,
+                { response ->
+                    successCallback(response)
+                },
+                { error ->
+                    errorCallback(error)
+                }
+            )
+
+            requestQueue.add(jsonRequest)
+        }
+
+        fun deleteVolleyRequest(id : Int, successCallback: (response:JSONObject) -> Unit, errorCallback: (error:VolleyError) -> Unit) {
+            val url = "https://backend-service-3kjf.onrender.com/rescuers/"+id
+            requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
+            val jsonRequest = JsonObjectRequest(
+                Request.Method.DELETE,
+                url,
+                null,
+                { response ->
+                    successCallback(response)
+                },
+                { error ->
+                    errorCallback(error)
+                }
+            )
+            requestQueue.add(jsonRequest)
+        }
 
         fun getRescuerByMailList(email: String): Profile {
             val url = "https://backend-service-3kjf.onrender.com/rescuers"
@@ -236,7 +288,6 @@ class profileActivity : AppCompatActivity() {
                             disponibility = rescuer.getBoolean("disponibility")
                             token = rescuer.getString("tokenFirebase")
                         }
-
                     }
                 },
                 { error ->

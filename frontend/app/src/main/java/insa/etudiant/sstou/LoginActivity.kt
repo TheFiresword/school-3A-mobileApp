@@ -68,7 +68,13 @@ class LoginActivity : AppCompatActivity() {
             authentification(reqQueue, usermail, password,
                 success_callback = { myEmail, myId, myToken ->
                     Toast.makeText(applicationContext, "Login Réussi", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, ProfileActivity::class.java)
+
+                    val intent: Intent
+                    if (myEmail == "sstou.insa.projet@gmail.com") {
+                        intent = Intent(this, RescuerListActivity::class.java)
+                    } else {
+                        intent = Intent(this, ProfileActivity::class.java)
+                    }
                     intent.putExtra("usermail", myEmail)
                     intent.putExtra("Id", myId)
                     intent.putExtra("Token", myToken)
@@ -119,22 +125,21 @@ class LoginActivity : AppCompatActivity() {
                 error_callback = {
                     Toast.makeText(applicationContext, "Login Echoué", Toast.LENGTH_SHORT).show()
                 })
+        }
+        mdpForget.setOnClickListener {
+            val justTrolling = findViewById<TextView>(R.id.Troll)
+            justTrolling.text = "Dommage !"
+            justTrolling.visibility = View.VISIBLE
+        }
 
-            mdpForget.setOnClickListener {
-                val justTrolling = findViewById<TextView>(R.id.Troll)
-                justTrolling.text = "Dommage !"
-                justTrolling.visibility = View.VISIBLE
-            }
+        superButton.setOnClickListener {
+            val intent = Intent(this, RescuerListActivity::class.java)
+            startActivity(intent)
+        }
 
-            superButton.setOnClickListener {
-                val intent = Intent(this, RescuerListActivity::class.java)
-                startActivity(intent)
-            }
-
-            retButton.setOnClickListener {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-            }
+        retButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 }

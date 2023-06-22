@@ -39,9 +39,18 @@ class WaitingForHelpActivity : AppCompatActivity() {
         notif.put("title", "Aide demandée !")
         notif.put("body", "Urgence en salle " + room + " !")
         notif.put("to", theToken)
-        val firestore = FirebaseFirestore.getInstance()
-        firestore.collection("Notifications").document().set(notif)
-        println("done")
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+            val token = task.result.toString()
+            println("token = " + token)
+            notif.put("exp", token)
+            val firestore = FirebaseFirestore.getInstance()
+            firestore.collection("Notifications").document().set(notif)
+            println("done")
+        })
     }
 
 

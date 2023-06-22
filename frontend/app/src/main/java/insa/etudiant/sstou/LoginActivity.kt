@@ -1,5 +1,6 @@
 package insa.etudiant.sstou
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -95,7 +96,7 @@ fun sendPatchRequest(url: String, requestBody: String): String {
                 val details = serverResponse.details
 
             val id = "someIdIcantgetbecausefrançoishasnotfinishedhisjob"
-
+            val token = "the identification token Icantgetbecausefrançoishasnotfinishedhisjob"
             var requestQueue: RequestQueue
 
 
@@ -112,7 +113,7 @@ fun sendPatchRequest(url: String, requestBody: String): String {
                     }
 
                     // Get new FCM registration token
-                    val token = task.result
+                    val firetoken = task.result
 
                     // Log and toast
 
@@ -123,7 +124,9 @@ fun sendPatchRequest(url: String, requestBody: String): String {
                     Request.Method.PATCH,
                     patchurl,
                     JSONObject().apply {
-                        put("tokenFirebase", token)
+                        put("tokenFirebase", firetoken)
+                        put("id",id)
+                        put("token",token)
                     }, // envoi token firebase
                     { response ->
                         Toast.makeText(applicationContext, "Réussite chargement BDD", Toast.LENGTH_LONG)
@@ -167,4 +170,5 @@ fun sendPatchRequest(url: String, requestBody: String): String {
             }
         }
     }
+
 }

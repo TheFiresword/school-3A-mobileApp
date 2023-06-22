@@ -68,7 +68,13 @@ class LoginActivity : AppCompatActivity() {
             authentification(reqQueue, usermail, password,
                 success_callback = { myEmail, myId, myToken ->
                     Toast.makeText(applicationContext, "Login Réussi", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, ProfileActivity::class.java)
+
+                    val intent: Intent
+                    if (myEmail == "sstou.insa.projet@gmail.com") {
+                        intent = Intent(this, RescuerListActivity::class.java)
+                    } else {
+                        intent = Intent(this, ProfileActivity::class.java)
+                    }
                     intent.putExtra("usermail", myEmail)
                     intent.putExtra("Id", myId)
                     intent.putExtra("Token", myToken)

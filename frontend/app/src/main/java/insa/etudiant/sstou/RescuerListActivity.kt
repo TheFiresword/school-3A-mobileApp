@@ -26,12 +26,11 @@ class RescuerListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rescuer_list)
 
-        var emails = arrayListOf<String>("Email1", "Email2")
-
-        fun getRescuerList(callback: (ArrayList<String>) -> Unit) {
+        fun getRescuerList(callback: (ArrayList<String>, ArrayList<String>) -> Unit) {
             val url = "https://backend-service-3kjf.onrender.com/rescuers"
             requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
             var names = arrayListOf("Secouriste 1", "Secouriste 2", "Secouriste 3", "Secouriste 4") //Default List
+            var emails = arrayListOf<String>()
 
             val jsonOR = JsonObjectRequest(
                 Request.Method.GET,
@@ -40,25 +39,24 @@ class RescuerListActivity : AppCompatActivity() {
                 { response ->
                     Toast.makeText(applicationContext, "Réussite chargement BDD", Toast.LENGTH_LONG).show()
                     val jsonArray = response.getJSONArray("details")
-                    println(names)
                     names.clear()
-                    emails.clear()
                     for (i in 0 until jsonArray.length()) {
                         val rescuer = jsonArray.getJSONObject(i)
                         val rescuerName = rescuer.getString("lastname") + "  " + rescuer.getString("firstname")
+                        val rescuerEmail = rescuer.getString("email")
                         names.add(rescuerName)
-                        emails.add(rescuer.getString("email"))
+                        emails.add(rescuerEmail)
                     }
-                    callback(names)
+                    callback(names, emails)
                 },
                 { error ->
                     Toast.makeText(applicationContext, "Erreur du chargement BDD", Toast.LENGTH_LONG).show()
                 }
             )
-            requestQueue?.add(jsonOR)
+            requestQueue.add(jsonOR)
         }
 
-        class OperationAdapter(private val operations: ArrayList<String>) : RecyclerView.Adapter<OperationAdapter.OperationViewHolder>() {
+        class OperationAdapter(private val operations: ArrayList<String>, private val emails: ArrayList<String>) : RecyclerView.Adapter<OperationAdapter.OperationViewHolder>() {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OperationViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
                 val itemView = inflater.inflate(R.layout.item_of_rescuer_list, parent, false)
@@ -79,18 +77,20 @@ class RescuerListActivity : AppCompatActivity() {
                     itemTv.text = operation
                     val context = itemView.context
                     itemView.setOnClickListener {
+                        val clickedPosition = adapterPosition
+                        val clickedRescuerEmail = emails[clickedPosition]
                         //val clickedRescuer = operations[adapterPosition]
                         val intent = Intent(context, ProfileActivity::class.java)
-                        intent.putExtra("usermail", emails[adapterPosition])
+                        intent.putExtra("usermail", clickedRescuerEmail)
                         startActivity(intent)
                     }
                 }
             }
         }
 
-        getRescuerList { operations ->
+        getRescuerList { operations, emails ->
             val recyclerView = findViewById<RecyclerView>(R.id.recycler)
-            val adapter = OperationAdapter(operations)
+            val adapter = OperationAdapter(operations, emails)
             recyclerView.adapter = adapter
 
             val addRescuerButton = findViewById<ImageButton>(R.id.imageButton)

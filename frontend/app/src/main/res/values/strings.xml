@@ -21,4 +21,7 @@
     <string name="retour">Retour</string>
     <string name="rescuerListTitle">Liste du personnel SST enregistré</string>
 
+    <string name="accept">ACCEPTER</string>
+
+
 </resources>

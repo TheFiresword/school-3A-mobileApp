@@ -1,6 +1,7 @@
 package insa.etudiant.sstou
 
 import android.content.ContentValues.TAG
+import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -59,12 +60,8 @@ fun extractServerResponse(response: String): ServerResponse {
 
     return ServerResponse(message, details)
 }
-fun sendPatchRequest(url: String, requestBody: String): String {
-    val connection = URL(url).openConnection() as HttpURLConnection
-    connection.requestMethod = "PATCH"
-    connection.doOutput = true
-    return ""
-}
+
+
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -156,7 +153,7 @@ class LoginActivity : AppCompatActivity() {
                 val details = serverResponse.details
 
             val id = "someIdIcantgetbecausefrançoishasnotfinishedhisjob"
-
+            val token = "the identification token Icantgetbecausefrançoishasnotfinishedhisjob"
             var requestQueue: RequestQueue
 
 
@@ -173,7 +170,7 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     // Get new FCM registration token
-                    val token = task.result
+                    val firetoken = task.result
 
                     // Log and toast
 
@@ -184,7 +181,9 @@ class LoginActivity : AppCompatActivity() {
                     Request.Method.PATCH,
                     patchurl,
                     JSONObject().apply {
-                        put("tokenFirebase", token)
+                        put("tokenFirebase", firetoken)
+                        put("id",id)
+                        put("token",token)
                     }, // envoi token firebase
                     { response ->
                         Toast.makeText(applicationContext, "Réussite chargement BDD", Toast.LENGTH_LONG)

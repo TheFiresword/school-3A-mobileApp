@@ -10,6 +10,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import java.io.File
 import java.util.concurrent.atomic.AtomicInteger
 
 
@@ -23,7 +24,6 @@ class PushNotificationService : FirebaseMessagingService()  {
     override fun onNewToken(s : String) {
             super.onNewToken(s)
             println("token" + s)
-
     }
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)

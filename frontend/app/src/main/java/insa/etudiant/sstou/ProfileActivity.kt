@@ -426,24 +426,27 @@ class ProfileActivity : AppCompatActivity() {
                         val email = Emailinput.text.toString()
                         val telephone = Telinput.text.toString()
                         val description = "Patch"
-                        val token = ""//profile.token
+                        val token : String? = intent.getStringExtra("Token")
 
                         //Besoin d'authentification avant d'envoyer cette requête sauf que je ne connais pas le mot de passe
-                        patchVolleyRequest(profile.id,firstname,lastname,email,telephone,DisponibilitySwitch.isChecked(), description, password, token,
-                            successCallback = { response ->
-                                val message = response.getString("Compte mis à jour")
-                                Toast.makeText(
-                                    applicationContext,
-                                    "Success: $message",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                val intent = Intent(this, MainActivity::class.java)
-                                startActivity(intent)
-                            },
-                            errorCallback = { error ->
-                                val errorMessage = error.message ?: "Erreur dans la creation du compte"
-                                Toast.makeText(applicationContext, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
-                            })
+                        if (token != null) {
+                            patchVolleyRequest(profile.id,firstname,lastname,email,telephone,DisponibilitySwitch.isChecked(), description, password, token,
+                                successCallback = { response ->
+                                    val message = response.getString("Compte mis à jour")
+                                    Toast.makeText(
+                                        applicationContext,
+                                        "Success: $message",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    println("Test Patch")
+                                    val intent = Intent(this, MainActivity::class.java)
+                                    startActivity(intent)
+                                },
+                                errorCallback = { error ->
+                                    val errorMessage = error.message ?: "Erreur dans la modification du compte"
+                                    Toast.makeText(applicationContext, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
+                                })
+                        }
 
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)

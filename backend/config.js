@@ -1,8 +1,13 @@
-const connection_details ={
-    host: 'localhost',
-    user: 'uniform',
-    password: 'Uniform!',
-    database: 'uniformDb',
-    rescuersTable: 'rescuers'
+const db_connection_details ={
+  host: process.env.DATABASE_URL,
+  user: process.env.DATABASE_USER,
+  port: process.env.DATABASE_PORT,
+  password: process.env.DATABASE_PASSWD,
+  database: process.env.DATABASE_NAME
 }
-module.exports = connection_details
+
+const app_config_details = {
+  port : process.env.APP_PORT || 3000
+}
+
+module.exports = {db_connection_details, app_config_details}

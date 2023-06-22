@@ -27,8 +27,7 @@ Content-Type: application/json
 }
 
 ### CHANGER LA VALEUR DU TOKEN (utile pour les requêtes suivantes)
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNzdG91Lmluc2EucHJvamV0QGdtYWlsLmNvbSIsImlhdCI6MTY4NzIwMjUwNn0.b5MEtOADYFrB-jTw0A69p6F33wkj5f4QyLa-jra5Dio
-
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNzdG91Lmluc2EucHJvamV0QGdtYWlsLmNvbSIsImlhdCI6MTY4NzM5MjI0NX0.m_s-mDp0PslE4egg9OKsaR5oztqanuBIT4wEeVdgaYU
 
 ### Créer un nouveau secouriste
 POST http://localhost:3000/rescuers
@@ -83,7 +82,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "password": "Tibofssfssfec"
+    "password": "uscvOFLFHAF"
 }
 
 

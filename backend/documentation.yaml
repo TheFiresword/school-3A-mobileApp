@@ -1,0 +1,74 @@
+openapi: 3.0.0
+info:
+  title: Documentation de l'API
+  version: 1.0.0
+paths:
+  /authentification/login:
+    POST:
+      summary: Connexion utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Connexion réussie
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  details:
+                    type: object
+                    properties:
+                      token: 
+                        type: string
+                        description: Le token généré pour l'authentification (à utiliser dans toutes les autres requêtes futures de l'utilisateur)
+                      userData:
+                        type: object(Rescuer)
+                        description: Les infos du secouriste
+                        
+        '400':
+          description: Données invalides
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  details:
+                    type: string
+
+        '401':
+          description: Authentification échouée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  details:
+                    type: string
+        
+        '500':
+          description: Erreur serveur
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  details:
+                    type: string

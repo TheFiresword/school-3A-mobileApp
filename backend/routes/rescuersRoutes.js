@@ -4,25 +4,27 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const secretKey = require('./../tokenGeneration')
-const config_values = require('./../config')
 
-const safeInfos = "id, firstname, lastname, email, telephone, disponibility";
+const safeInfos = "id, firstname, lastname, email, telephone, disponibility, tokenFirebase";
+const changeable_fields = ["firstname", "lastname", "email", "telephone", "disponibility",
+"description", "password", "tokenFirebase"];
 
 // Middleware pour vérifier l'existence d'un secouriste en fonction de l'id
 function get_rescuer(req, res, next){
-    const connection = req.socket;
+    const connection_pool = req.socket;
     const rescuer_id = parseInt(req.params.id);
     
-    const sql = `SELECT ${safeInfos} from ${config_values.rescuersTable} WHERE id = ?`;
+    const sql = `SELECT ${safeInfos} from rescuers WHERE id = $1`;
     const params = [rescuer_id];
-    connection.query(sql, [params], (err, results)=>{
+    connection_pool.query(sql, params, (err, results)=>{
         if(err){
             res.status(500).json({message: 'Echec', details:'Erreur interne au serveur'});
             return;
         }
+        results = results.rows;
         if(results.length === 0){
             // Le secouriste n'existe pas
-            res.status(200).json({message: 'Echec', details:'Le secouriste demandé n\'existe pas'});
+            res.status(404).json({message: 'Echec', details:'Le secouriste demandé n\'existe pas'});
             return;
         }
         else{
@@ -32,18 +34,41 @@ function get_rescuer(req, res, next){
     })    
 }
 
+// Fonction findByEmail()
+const email_exists = (pooldb, email) => {
+    return new Promise((resolve, reject) => {
+      const sql = `SELECT firstname, lastname FROM rescuers WHERE email = $1`;
+      const params = [email];
+  
+      pooldb.query(sql, params, (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          results = results.rows;
+          if(results.length !== 0){
+            resolve(results[0]);
+          }
+          else{
+            resolve(null);
+          }
+        }
+      });
+    });
+};
+  
+
 // Middleware pour vérifier la validité de la session (pour les requêtes de modification de données)
 const check_session = (req, res, next)=>{
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     //console.log(token);
     if(token == null){
-        res.status(200).json({message: 'Echec', details:'La session est fermée'});
+        res.status(401).json({message: 'Echec', details:'La session est fermée'});
         return;
     }
     jwt.verify(token, secretKey, (err, user)=>{
         if(err){
-            res.status(403).json({message: 'Echec', details:'Token d\'authentification invalide'});
+            res.status(401).json({message: 'Echec', details:'Token d\'authentification invalide'});
             return;
         }
         req.rescuer = user;
@@ -53,8 +78,7 @@ const check_session = (req, res, next)=>{
 
 // Fonction de validation des données reçues d'un formulaire
 const validate_fields = (data)=>{
-    return ("firstname" in data && "lastname" in data && "email" in data
-    && "password" in data && "telephone" in data && "disponibility" in data);
+    return ("firstname" in data && "lastname" in data && "email" in data && "password" in data);
 }
 
 // Fonction de hachage des mots de passe
@@ -70,8 +94,10 @@ const hash_passwd = async (password) => {
 
 // Fonction pour récupérer la liste de tous les secouristes
 router.get('/', (req, res)=>{
-    const connection = req.socket;
-    connection.query(`SELECT ${safeInfos} from rescuers`, (err, results, fields)=>{
+    const connection_pool = req.socket;
+
+    const sql = `SELECT ${safeInfos} from rescuers`;
+    connection_pool.query(sql,  (err, results, fields)=>{
         if(err){
             //console.error('Erreur lors de l\'exécution de la requête', err);
             res.status(500).json(
@@ -79,6 +105,7 @@ router.get('/', (req, res)=>{
                 );
         }
         else{
+            results = results.rows;
             res.status(200).json({message: 'Succès', details:results});
         }
     })
@@ -86,29 +113,25 @@ router.get('/', (req, res)=>{
 
 // Fonction pour récupérer la liste des secouristes disponibles
 router.get('/available', (req, res)=>{
-    const connection = req.socket; 
-    const sql = `SELECT ${safeInfos} from ${config_values.rescuersTable} WHERE DISPONIBILITY = ?`;
+    const connection_pool = req.socket; 
+    const sql = `SELECT ${safeInfos} from rescuers WHERE DISPONIBILITY = $1`;
     const params = [1];
 
-    connection.query(sql, [params], (err, results, fields) =>{
+    connection_pool.query(sql, params, (err, results, fields) =>{
         if(err){
             //console.error('Erreur lors de l\'exécution de la requête', err);
             res.status(500).json({message: 'Echec', details:'Erreur de serveur'});
         }
         else{
+            results = results.rows;
             res.status(200).json({message: 'Succès', details:results});
         }
     } )
 })
 
-// Fonction pour récupérer un secouriste en particulier
-router.get('/:id', get_rescuer, (req, res)=>{
-    res.status(200).json({message: 'Succès', details:res.rescuer});    
-})
-
 // Fonction pour ajouter un secouriste dans la base
-router.post('/',  check_session, (req, res)=>{
-    const connection = req.socket;
+router.post('/',  check_session, async (req, res)=>{
+    const connection_pool = req.socket;
     const informations = req.body;
 
     // Vérifier que la data envoyée est au bon format (bons champs)
@@ -116,7 +139,7 @@ router.post('/',  check_session, (req, res)=>{
     const valid = validate_fields(informations);
 
     if(!valid){
-        res.status(200).json(
+        res.status(400).json(
             {message: 'Echec', 
             details: 'Data corrompue, le formulaire ne contient pas les bons champs'
         });
@@ -125,135 +148,164 @@ router.post('/',  check_session, (req, res)=>{
 
     // Vérifier qu'il n'y a pas déja un compte associé à cet email
     if(informations.email){
-        const sql = `SELECT firstname, lastname from ${config_values.rescuersTable} where email = ?`;
-        const params = [informations.email]
-        connection.query(sql, [params],
-        (err, results)=>{
-            if(err){
-                res.status(500).json(
+        try{
+            const exists = await email_exists(connection_pool,informations.email);
+            if(exists != null){
+                res.status(409).json(
                     {message: 'Echec', 
-                    details: err.message
+                    details: 'Un compte associé à cette adresse mail existe déja'
                 });
+                return;
             }
             else{
-                //console.log('Checking status', results);
-
-                if(results.length != 0){
-                    //Compte existant
-                    res.status(200).json(
-                        {message: 'Echec', 
-                        details: 'Un compte associé à cette adresse mail existe déja'
-                    });
+                // Vérifier que le mot de passe fait au moins 8 caractères 
+                // (cette contrainte doit être préfaite par le frontend)
+                if(informations.password.length < 8){
+                    res.status(400).json(
+                        {message: "Echec", details: 'Mot de passe trop court'}
+                    );
+                    return;
                 }
-                else{
-                    // Vérifier que le mot de passe fait au moins 8 caractères 
-                    // (cette contrainte doit être préfaite par le frontend)
-                    if(informations.password.length < 8){
-                        res.status(201).json(
-                            {message: "Echec", details: 'Mot de passe trop court'}
-                            );
-                        return;
-                    }
-
-                    // Hasher le mot de passe avant de continuer
-                    hash_passwd(informations.password).then(
-                        hash =>{
-                            const hashed_password = hash;
-                            //console.log('Hashed généré', hashed_password);
-                            
-                            if(!hashed_password){
-                                res.status(500).json({message: 'Echec', details: 'Erreur interne au serveur'});
+                // Hasher le mot de passe avant de continuer
+                hash_passwd(informations.password).then(
+                    hash =>{
+                        const hashed_password = hash;
+                        //console.log('Hashed généré', hashed_password);
+                                
+                        if(!hashed_password){
+                            res.status(500).json({message: 'Echec', details: 'Erreur interne au serveur'});
+                            return;
+                        }
+                        // Traitement des champs optionnels
+                        informations.telephone = informations.telephone || "NaN";
+                        informations.disponibility = parseInt(informations.disponibility) || true;  
+            
+                        const params = [informations.firstname, informations.lastname, informations.email, hashed_password, 
+                            informations.telephone, informations.disponibility
+                        ];
+                        //console.log('Parametres de requete', params);
+                                
+                        const sql = `INSERT INTO rescuers (firstname, lastname, email, password, telephone, 
+                            disponibility) VALUES ($1, $2, $3, $4, $5, $6)`;
+                        connection_pool.query(sql, params, (err, results) =>{
+                            if(err){
+                                res.status(500).json(
+                                    {message: 'Echec', details: 'Erreur interne au serveur'}
+                                );
                                 return;
                             }
-
-                            // Traitement des champs optionnels
-                            informations.telephone = informations.telephone || "NaN";
-                            informations.disponibility = parseInt(informations.disponibility) || true;  
-        
-                            const params = [informations.firstname, informations.lastname, informations.email, hashed_password, 
-                                informations.telephone, informations.disponibility
-                            ];
-                            //console.log('Parametres de requete', params);
-                            
-                            const sql = `INSERT INTO ${config_values.rescuersTable} (firstname, lastname, email, password, telephone, disponibility) VALUES (?)`;
-                            connection.query(sql, [params], (err, results) =>{
-                                if(err){
-                                    res.status(400).json(
-                                        {message: 'Echec', details:err.message}
+                            // ne pas envoyer tous les champs
+                            else{
+                                results = results.rows;
+                                res.status(201).json(
+                                    {message: "Succès", details: results}
                                     );
-                                    return;
                                 }
-                                // ne pas envoyer tous les champs
-                                else{
-                                    res.status(201).json(
-                                        {message: "Succès", details: results}
-                                        );
-                                    }
-                                })                        
-                        }                    
-                    ).catch(err => {res.status(500).json(
-                        {message: 'Echec', details: 'Erreur interne au serveur'});});                    
-                                                                                                 
-                }
+                            })                        
+                    }                    
+                ).catch(err => {res.status(500).json(
+                    {message: 'Echec', details: 'Erreur interne au serveur'});});                    
+                                                                                                     
             }
-        })
+        }catch(err){
+            res.status(500).json(
+                {message: 'Echec', 
+                details: 'Erreur interne au serveur'
+            });
+            return;
+        }               
     }
-            
+})
+
+// Fonction pour récupérer un secouriste en particulier
+router.get('/:id', get_rescuer, (req, res)=>{
+    res.status(200).json({message: 'Succès', details:res.rescuer});    
 })
 
     
 // Fonction pour modifier les informations d'un secouriste
 router.patch('/:id',  check_session, get_rescuer, (req, res)=>{
-    const connection = req.socket;
+    const connection_pool = req.socket;
     const rescuer_id = parseInt(req.params.id);
     
     const informations = req.body;
+    if(Object.keys(informations).length === 0){
+        res.status(400).json({message: 'Echec', details:'Aucun champ à modifier'});
+        return;
+    }
+
     const fields_sent = Object.keys(informations);
    
-    let sql = `UPDATE ${config_values.rescuersTable} SET `;
+    let sql = `UPDATE rescuers SET `;
     const params = [];
 
     const updateFields = async () => {
-        for(let index=0; index < fields_sent.length; index++){
-            const field = fields_sent[index];
-            sql += ` ${field} = ?`;
-    
-            let normalized_field = informations[field];
-            if(field != "disponibility"){
-                normalized_field = informations[field] || "Nan";
-            }
-            else{
-                normalized_field = informations[field] || true;
-            }
-            
-            if(field == "password"){
-                if(informations.password.length < 8){
-                    res.status(201).json(
-                        {message: "Echec", details: 'Mot de passe trop court'}
-                        );
-                    return;
+        let replicated_index = 0;
+        for(; replicated_index < fields_sent.length; replicated_index++){
+            const field = fields_sent[replicated_index];
+            if(changeable_fields.includes(field)){
+                // Pas de Champ customisé renvoyé par le client
+                
+                sql += ` ${field} = $${replicated_index+1}`;
+                let normalized_field = informations[field];
+                if(field != "disponibility"){
+                    normalized_field = informations[field] || "Nan";
                 }
-                const hash = await hash_passwd(informations['password']);
-                //console.log('The hash is', hash);
-                normalized_field = hash; 
-            }
-    
-            params.push(normalized_field);
-            if(index < fields_sent.length-1){
-                sql += ',';
-            }
+                else{
+                    normalized_field = informations[field] || true;
+                }
+                
+                // On vérifie que le mot de passe n'est pas trop court
+                if(field == "password"){
+                    if(informations.password.length < 8){
+                        res.status(400).json(
+                            {message: "Echec", details: 'Mot de passe trop court'}
+                            );
+                        return;
+                    }
+                    const hash = await hash_passwd(informations['password']);
+                    //console.log('The hash is', hash);
+                    normalized_field = hash; 
+                }
+                
+                // On vérifie que l'email n'est pas déja utilisé
+                //----TRAITER LE CAS OU IL RENVOIE SON PROPRE EMAIL----------
+                if(field == "email"){
+                    try{
+                        const exists = await email_exists(connection_pool, normalized_field);
+                        if(exists != null){
+                            res.status(409).json(
+                                {message: 'Echec', 
+                                details: 'Un compte associé à cette adresse mail existe déja'
+                            });
+                            return;
+                        }
+                    }catch(err){
+                        res.status(500).json(
+                            {message: 'Echec', 
+                            details: 'Erreur interne au serveur'
+                        });
+                        return;
+                    }
+                }
+
+                params.push(normalized_field);
+                if(replicated_index < fields_sent.length-1){
+                    sql += ',';
+                }
+            }                            
         }
         
-        sql += ' WHERE id = ?';
+        sql += ` WHERE id = $${replicated_index+1}`;
         params.push(rescuer_id);
-        //console.log('La requête', sql, params);
 
-        connection.query(sql, params, (err, results, fields) =>{
+        connection_pool.query(sql, params, (err, results, fields) =>{
             if(err){
                 //console.error('Erreur lors de l\'exécution de la requête', err);
                 res.status(500).json({message: 'Echec', details: 'Erreur interne au serveur'});
             }
             else{
+                results = results.rows;
                 res.status(200).json({message: 'Succès', details:results});
             }
         } )
@@ -264,17 +316,18 @@ router.patch('/:id',  check_session, get_rescuer, (req, res)=>{
 
 // Fonction pour supprimer un secouriste de la bdd
 router.delete('/:id', check_session, get_rescuer, (req, res)=>{
-    const connection = req.socket;
+    const connection_pool = req.socket;
     const rescuer_id = parseInt(req.params.id);
 
-    const sql = `DELETE FROM ${config_values.rescuersTable} WHERE id = ?`;
+    const sql = `DELETE FROM rescuers WHERE id = $1`;
     const params = [rescuer_id];
 
-    connection.query(sql, [params],(err, results, fields) =>{
+    connection_pool.query(sql, params,(err, results, fields) =>{
         if(err){
             res.status(500).json({message: 'Echec', details: 'Erreur interne au serveur'});
         }
         else{
+            results = results.rows;
             res.status(200).json({message: 'Succès', details:results});
         }
     } )

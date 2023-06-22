@@ -26,7 +26,67 @@ import java.io.InputStreamReader
 import org.json.JSONObject
 
 
-fun sendPostRequest(url: String, requestBody: String): String {
+fun authentification(requestQueue : RequestQueue, email : String, password : String, success_callback: (Int, String) -> Unit, error_callback: () -> Unit) {
+    val url = "https://backend-service-3kjf.onrender.com/rescuers"
+    val requestBody = JSONObject().apply {
+        put("email", email)
+        put("password", password)
+    }
+    val jsonOR = JsonObjectRequest(
+        Request.Method.GET,
+        url,
+        requestBody,
+        { response ->
+            val jsonArray = response.getJSONArray("details")
+            val rescuer = jsonArray.getJSONObject(0)
+            val myId = rescuer.getInt("id")
+            val myToken = rescuer.getString("tokenFirebase")
+            success_callback(myId, myToken)
+        },
+        { error ->
+            error_callback()
+        }
+    )
+    requestQueue.add(jsonOR)
+}
+
+class LoginActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_login)
+
+        val confirmation = findViewById<Button>(R.id.Connection_button)
+        val mdpForget = findViewById<Button>(R.id.MDP_forget) // Bouton Mot de passe oublié
+        val retButton = findViewById<Button>(R.id.ret_button_2) // Bouton Retour
+        val superButton = findViewById<Button>(R.id.superB)
+
+        confirmation.setOnClickListener {
+            val usermailEntry = findViewById<EditText>(R.id.Usermail_entry)
+            val passwordEntry = findViewById<EditText>(R.id.Password_entry)
+
+            val usermail = usermailEntry.text.toString()
+            val password = passwordEntry.text.toString()
+            val reqQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
+
+            authentification(reqQueue, usermail, password,
+                success_callback = { myId, myToken ->
+                    val message = "Login Réussi"
+                    Toast.makeText(applicationContext, "$message", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    intent.putExtra("Id", myId)
+                    intent.putExtra("Token", myToken)
+                    startActivity(intent)
+                },
+                error_callback = {
+                    val errorMessage = "Login Echoué"
+                    Toast.makeText(applicationContext, "$errorMessage", Toast.LENGTH_SHORT).show()
+                })
+        }
+    }
+}
+
+        /*
+        fun sendPostRequest(url: String, requestBody: String): String {
     val connection = URL(url).openConnection() as HttpURLConnection
     connection.requestMethod = "POST"
     connection.doOutput = true
@@ -66,26 +126,7 @@ fun sendPatchRequest(url: String, requestBody: String): String {
     return ""
 }
 
-class LoginActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-
-        val confirmation = findViewById<Button>(R.id.Connection_button)
-        val mdpForget = findViewById<Button>(R.id.MDP_forget) // Bouton Mot de passe oublié
-        val retButton = findViewById<Button>(R.id.ret_button_2) // Bouton Retour
-        val superButton = findViewById<Button>(R.id.superB)
-
-        confirmation.setOnClickListener {
-            val usermailEntry = findViewById<EditText>(R.id.Usermail_entry)
-            val passwordEntry = findViewById<EditText>(R.id.Password_entry)
-
-            val usermail = usermailEntry.text.toString()
-            val password = passwordEntry.text.toString()
-
-            //Attention : ne pas confondre la requête pour se connecter (ici dans loginActivity) et la requête pour obtenir les infos sur le profil (dans profileActivity)
-
-            val response = sendPostRequest(
+        val response = sendPostRequest(
                 "https://backend-service-3kjf.onrender.com/login",
 
                 "{ \"email\": \"$usermail\", \"password\": \"$password\" }"
@@ -233,4 +274,4 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-}
+         */

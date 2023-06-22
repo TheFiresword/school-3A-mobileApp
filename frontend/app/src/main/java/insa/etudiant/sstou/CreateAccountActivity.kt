@@ -94,6 +94,7 @@ class CreateAccountActivity : AppCompatActivity() {
                             val message = "Utilisateur ajouté"
                             Toast.makeText(applicationContext, "Success: $message", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this, RescuerListActivity::class.java)
+                            intent.putExtra("Token", myToken)
                             startActivity(intent)
                         },
                         error_callback = {

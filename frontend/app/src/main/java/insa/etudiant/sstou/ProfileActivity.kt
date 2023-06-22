@@ -246,7 +246,7 @@ class ProfileActivity : AppCompatActivity() {
                     println(token)
                     println("TEST")
                     headers["Accept"] = "application/json"
-                    headers["Authorization"] = "Bearer {{$token}}"
+                    headers["Authorization"] = "Bearer $token"
                     headers["Content-Type"] = "application/json"
                     return headers
                 }
@@ -255,10 +255,10 @@ class ProfileActivity : AppCompatActivity() {
             requestQueue.add(jsonRequest)
         }
 
-        fun deleteVolleyRequest(id : Int, successCallback: (response:JSONObject) -> Unit, errorCallback: (error:VolleyError) -> Unit) {
+        fun deleteVolleyRequest(id : Int, token : String, successCallback: (response:JSONObject) -> Unit, errorCallback: (error:VolleyError) -> Unit) {
             val url = "https://backend-service-3kjf.onrender.com/rescuers/"+id
             requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
-            val jsonRequest = JsonObjectRequest(
+            val jsonRequest = object : JsonObjectRequest(
                 Request.Method.DELETE,
                 url,
                 null,
@@ -268,7 +268,17 @@ class ProfileActivity : AppCompatActivity() {
                 { error ->
                     errorCallback(error)
                 }
-            )
+            ) {
+                override fun getHeaders(): MutableMap<String, String> {
+                    val headers = HashMap<String, String>()
+                    println(token)
+                    println("TEST")
+                    headers["Accept"] = "application/json"
+                    headers["Authorization"] = "Bearer $token"
+                    headers["Content-Type"] = "application/json"
+                    return headers
+                }
+            }
             requestQueue.add(jsonRequest)
         }
 
@@ -472,17 +482,20 @@ class ProfileActivity : AppCompatActivity() {
                 val bouton_suppression = findViewById<Button>(R.id.button_supprimer)
 
                 bouton_suppression.setOnClickListener {
-                    deleteVolleyRequest(profile.id,
-                        successCallback = { response ->
-                            val message = response.getString("Compte supprimé")
-                            Toast.makeText(applicationContext, "Success: $message", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, MainActivity::class.java)
-                            startActivity(intent)
-                        },
-                        errorCallback = { error ->
-                            val errorMessage = error.message ?: "Erreur dans la suppression du compte"
-                            Toast.makeText(applicationContext, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
-                        })
+                    val token = intent.getStringExtra("Token")
+                    if (token != null) {
+                        deleteVolleyRequest(profile.id, token,
+                            successCallback = { response ->
+                                val message = response.getString("Compte supprimé")
+                                Toast.makeText(applicationContext, "Success: $message", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(this, MainActivity::class.java)
+                                startActivity(intent)
+                            },
+                            errorCallback = { error ->
+                                val errorMessage = error.message ?: "Erreur dans la suppression du compte"
+                                Toast.makeText(applicationContext, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
+                            })
+                    }
                 }
             }
         }

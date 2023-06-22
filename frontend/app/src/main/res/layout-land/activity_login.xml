@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
     android:rotation="0"
     android:rotationX="0"
     android:rotationY="0"
@@ -14,48 +13,35 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="175dp"
-        android:layout_marginBottom="43dp"
+        android:layout_marginStart="216dp"
+        android:layout_marginTop="32dp"
         android:text="Connectez vous"
         android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@+id/Usermail_entry"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.43" />
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/Usermail_entry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="101dp"
-        android:layout_marginBottom="13dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/Password_entry"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <EditText
         android:id="@+id/Password_entry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="101dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginStart="340dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="Mot de passe"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/Connection_button"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Usermail_entry" />
 
@@ -64,14 +50,10 @@
         style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="131dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="131dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginStart="368dp"
+        android:layout_marginTop="20dp"
         android:text="Se connecter"
         app:backgroundTint="@android:color/holo_red_dark"
-        app:layout_constraintBottom_toTopOf="@+id/MDP_forget"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Password_entry" />
 
@@ -80,58 +62,53 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="103dp"
-        android:layout_marginTop="371dp"
-        android:layout_marginEnd="103dp"
-        android:layout_marginBottom="310dp"
+        android:layout_marginStart="236dp"
+        android:layout_marginTop="16dp"
         android:text="Mot de passe oublié ?"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/ret_button_2"
+        app:layout_constraintTop_toBottomOf="@+id/Connection_button" />
 
     <TextView
         android:id="@+id/Troll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="159dp"
-        android:layout_marginEnd="159dp"
-        android:layout_marginBottom="199dp"
+        android:layout_marginStart="288dp"
+        android:layout_marginTop="16dp"
         android:text="Dommage mdr"
         android:textStyle="bold"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/ret_button_2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ret_button_2"
         app:layout_constraintTop_toBottomOf="@+id/MDP_forget" />
-
 
     <Button
         android:id="@+id/ret_button_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="649dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
         android:text="Retour"
-        app:backgroundTint="@android:color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="184dp"
-        android:layout_height="167dp"
-        android:layout_marginTop="502dp"
-        android:layout_marginBottom="41dp"
-        app:layout_constraintBottom_toTopOf="@+id/ret_button_2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        android:layout_width="135dp"
+        android:layout_height="102dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/_logo" />
 
+    <Button
+        android:id="@+id/superB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="180dp"
+        android:text="Super Admin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

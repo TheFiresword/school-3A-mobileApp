@@ -12,32 +12,20 @@
         android:id="@+id/enterLocationText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="54dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="54dp"
-        android:layout_marginBottom="70dp"
+        android:layout_marginStart="268dp"
+        android:layout_marginTop="95dp"
         android:text="@string/inputLocationMessage"
-        android:textSize="17sp"
-        app:layout_constraintBottom_toTopOf="@+id/inputLocation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:textSize="25dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <AutoCompleteTextView
         android:id="@+id/inputLocation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="500dp"
+        android:layout_width="445dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="223dp"
+        android:layout_marginTop="22dp"
         android:hint="@string/inputLocationHint"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.17"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/enterLocationText" />
 
@@ -45,48 +33,38 @@
         android:id="@+id/confirmLocationButton"
         android:layout_width="151dp"
         android:layout_height="49dp"
-        android:layout_marginTop="350dp"
+        android:layout_marginStart="370dp"
+        android:layout_marginTop="22dp"
         android:background="@color/confirmLocationButtonBackgroundColor"
         android:text="@string/confirmLocationButtonText"
         android:textColor="@color/confirmLocationButtonTextColor"
         app:backgroundTint="@android:color/holo_red_dark"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputLocation" />
 
     <TextView
         android:id="@+id/warning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="103dp"
-        android:layout_marginTop="17dp"
-        android:layout_marginEnd="97dp"
-        android:layout_marginBottom="21dp"
+        android:layout_marginStart="377dp"
+        android:layout_marginTop="12dp"
         android:alpha="255"
         android:text="@string/warning"
         android:textColor="@android:color/holo_red_light"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/confirmLocationButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.453"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputLocation"
-        app:layout_constraintVertical_bias="0.942" />
+        app:layout_constraintTop_toBottomOf="@+id/confirmLocationButton" />
 
     <Button
         android:id="@+id/button_ret_0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="161dp"
-        android:layout_marginTop="320dp"
-        android:layout_marginEnd="160dp"
+        android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
         android:text="Retour"
         app:backgroundTint="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputLocation" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

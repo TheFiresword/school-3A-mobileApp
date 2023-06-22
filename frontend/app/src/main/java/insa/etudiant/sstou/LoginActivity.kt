@@ -17,51 +17,35 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 
-//ChatGPT's POST
-import java.io.DataOutputStream
-import java.net.HttpURLConnection
-import java.net.URL
-import java.io.BufferedReader
-import java.io.InputStreamReader
-
 import org.json.JSONObject
 
 
-fun sendPostRequest(url: String, requestBody: String): String {
-    val connection = URL(url).openConnection() as HttpURLConnection
-    connection.requestMethod = "POST"
-    connection.doOutput = true
-
-    val postData = requestBody.toByteArray(Charsets.UTF_8)
-    connection.setRequestProperty("Content-Length", postData.size.toString())
-    DataOutputStream(connection.outputStream).use { outputStream ->
-        outputStream.write(postData)
+fun authentification(requestQueue : RequestQueue, email : String, password : String, success_callback: (String, Int, String) -> Unit, error_callback: () -> Unit) {
+    val url = "https://backend-service-3kjf.onrender.com/authentification/login"
+    val requestBody = JSONObject().apply {
+        put("email", email)
+        put("password", password)
     }
+    val jsonOR = JsonObjectRequest(
+        Request.Method.POST,
+        url,
+        requestBody,
+        { response ->
+            val detailsObject = response.getJSONObject("details")
+            val myToken = detailsObject.getString("token")
+            val userDataObject = detailsObject.getJSONObject("userData")
 
-    val response = StringBuilder()
-    BufferedReader(InputStreamReader(connection.inputStream)).use { reader ->
-        var line: String?
-        while (reader.readLine().also { line = it } != null) {
-            response.append(line)
+            val myEmail = userDataObject.getString("email")
+            val myId = userDataObject.getInt("id")
+
+            success_callback(myEmail, myId, myToken)
+        },
+        { error ->
+            error_callback()
         }
-    }
-    connection.disconnect()
-
-    return response.toString()
+    )
+    requestQueue.add(jsonOR)
 }
-
-data class ServerResponse(val message: String, val details: String)
-
-fun extractServerResponse(response: String): ServerResponse {
-    val jsonResponse = JSONObject(response)
-
-    val message = jsonResponse.getString("message")
-    val details = jsonResponse.getString("details")
-
-    return ServerResponse(message, details)
-}
-
-
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,69 +63,40 @@ class LoginActivity : AppCompatActivity() {
 
             val usermail = usermailEntry.text.toString()
             val password = passwordEntry.text.toString()
+            val reqQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
 
-            //Attention : ne pas confondre la requête pour se connecter (ici dans loginActivity) et la requête pour obtenir les infos sur le profil (dans profileActivity)
-
-            val response = sendPostRequest(
-                "https://backend-service-3kjf.onrender.com/login",
-
-                "{ \"email\": \"$usermail\", \"password\": \"$password\" }"
-            )
-            //println(response)
-            //La réponse est sous la forme : { "message": "Succès", "details": "..." }
-            val serverResponse = extractServerResponse(response)
-
-            val message = serverResponse.message
-            val details = serverResponse.details
-
-            val id = ""
-
-            var requestQueue: RequestQueue
-            var urltokenFirebase = mutableListOf<String>()
-
-
-            fun sendPatchRequest(id: String) {
-                requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
-
-                // Send firebase token to backend
-                //val intent = Intent(this, profileActivity::class.java)
-                //intent.putExtra("userId", profile.id)
-                FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-                    if (!task.isSuccessful) {
-                        Log.w("TOKEN", "Fetching FCM registration token failed", task.exception)
-                        return@OnCompleteListener
-                    }
-                    // Get new FCM registration token
-                    var token = task.result // le token a envoyer
-                    // A envoyer
-                    var siteJunior = "https://backend-service-3kjf.onrender.com/" + id
-                    urltokenFirebase.add(siteJunior + "rescuers/" + id)
-                    urltokenFirebase.add(token)
-
+            authentification(reqQueue, usermail, password,
+                success_callback = { myEmail, myId, myToken ->
+                    Toast.makeText(applicationContext, "Login Réussi", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    intent.putExtra("usermail", myEmail)
+                    intent.putExtra("Id", myId)
+                    intent.putExtra("Token", myToken)
+                    startActivity(intent)
+                },
+                error_callback = {
+                    Toast.makeText(applicationContext, "Login Echoué", Toast.LENGTH_SHORT).show()
                 })
-                val jsonOR = JsonObjectRequest(
-                    Request.Method.PATCH,
-                    urltokenFirebase[0].toString(),
-                    JSONObject().apply {
-                        put("tokenFirebase", urltokenFirebase[1].toString())
-                    }, // envoi token firebase
-                    { response ->
-                        Toast.makeText(
-                            applicationContext,
-                            "Réussite chargement BDD",
-                            Toast.LENGTH_LONG
-                        )
-                            .show()
-                        val jsonArray = response.getJSONArray("details")
-                    },
-                    { error ->
-                        Toast.makeText(
-                            applicationContext,
-                            "Erreur du chargement BDD",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                )
+
+            mdpForget.setOnClickListener {
+                val justTrolling = findViewById<TextView>(R.id.Troll)
+                justTrolling.text = "Dommage !"
+                justTrolling.visibility = View.VISIBLE
+            }
+
+            superButton.setOnClickListener {
+                val intent = Intent(this, RescuerListActivity::class.java)
+                startActivity(intent)
+            }
+
+            retButton.setOnClickListener {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
+        }
+    }
+}
+            /*
 
                 requestQueue?.add(jsonOR)
 
@@ -204,32 +159,8 @@ class LoginActivity : AppCompatActivity() {
             sendPatchRequest(id)
             intent.putExtra("usermail", usermail)
             startActivity(intent) //Redirige vers profil utilisateur (profileActivity
-        }
 
-
-
-            sendPatchRequest(id)
-
-            intent.putExtra("usermail", usermail)
-            startActivity(intent) //Redirige vers profil utilisateur (profileActivity
-        }
-
-
-
-        mdpForget.setOnClickListener {
-            val justTrolling = findViewById<TextView>(R.id.Troll)
-            justTrolling.text = "Dommage !"
-            justTrolling.visibility = View.VISIBLE
-        }
-
-        superButton.setOnClickListener {
-            val intent = Intent(this, RescuerListActivity::class.java)
-            startActivity(intent)
-        }
-
-        retButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
         }
     }
 }
+*/

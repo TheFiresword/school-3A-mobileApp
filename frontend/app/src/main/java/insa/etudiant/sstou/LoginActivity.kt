@@ -58,10 +58,7 @@ fun extractServerResponse(response: String): ServerResponse {
 
     return ServerResponse(message, details)
 }
-fun sendPatchRequest(url: String, requestBody: String): String {
-    val connection = URL(url).openConnection() as HttpURLConnection
-    connection.requestMethod = "PATCH"
-    connection.doOutput = true
+
 
 
     class LoginActivity : AppCompatActivity() {
@@ -171,4 +168,4 @@ fun sendPatchRequest(url: String, requestBody: String): String {
         }
     }
 
-}
+

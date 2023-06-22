@@ -1,16 +1,20 @@
 package insa.etudiant.sstou
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.telephony.SmsManager
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import java.util.Objects
 import org.json.JSONArray
 import org.json.JSONObject
@@ -185,9 +189,23 @@ class WaitingForHelpActivity : AppCompatActivity() {
             notif.put("title","Aide demandée !")
             notif.put("body", "Urgence en salle " + room + " !")
             notif.put("to", theToken)
-            val firestore = FirebaseFirestore.getInstance()
-            firestore.collection("Notifications").document().set(notif)
-            println("done")
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+                val token = task.result.toString()
+                println("token = " + token)
+                notif.put("exp", token)
+                val firestore = FirebaseFirestore.getInstance()
+                firestore.collection("Notifications").document().set(notif)
+                println("done")
+            })
+
+                // Get new FCM registration token
+//            val firestore = FirebaseFirestore.getInstance()
+//            firestore.collection("Notifications").document().set(notif)
+//            println("done")
         }
 
         private const val PERMISSION_REQUEST_SEND_SMS = 1

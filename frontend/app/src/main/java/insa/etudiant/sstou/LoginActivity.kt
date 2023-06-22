@@ -67,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
 
             authentification(reqQueue, usermail, password,
                 success_callback = { myEmail, myId, myToken ->
-                    Toast.makeText(applicationContext, "Login Réussi", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Login Réussi.", Toast.LENGTH_SHORT).show()
 
                     val intent: Intent
                     if (myEmail == "sstou.insa.projet@gmail.com") {
@@ -143,11 +143,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 }
-
-
-
-
-
 
 
 

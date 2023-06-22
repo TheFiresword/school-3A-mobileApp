@@ -63,7 +63,7 @@ class WaitingForHelpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rescuer_list)
         var helperList = mutableListOf<Helpers>()
-        fun getHelperList(url: String) {
+        fun useHelperList() {
             val url = "https://backend-service-3kjf.onrender.com/rescuers/available"
             requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
             var names = arrayListOf(
@@ -83,15 +83,14 @@ class WaitingForHelpActivity : AppCompatActivity() {
                     val jsonArray = response.getJSONArray("details")
                     println(names)
                     names.clear()
-
                     val salle = EnterLocationActivity().defLocation
                     for (i in 0 until jsonArray.length()) {
                         val rescuerName = jsonArray.getJSONObject(i)
                         val rescuer = rescuerName.getString("lastname")
                         names.add(rescuer)
                         val telephone = rescuerName.getString("telephone")
-                        //val tokenFirebase = rescuerName.getString("tokenfirebase")
-                        val tokenFirebase = "dZAVyEPBRuOJQoNoLblJHQ:APA91bF4Sk0qKy_gkODgpLUxX15Mh_cl3Mtx8O-9r1Rm2-DWSubj-AR9y37x6c9heSfNLaLxxs3EyWFI_AsWK_n5wh_C9Vze39LDSvmh9Y7rf66yEixweqQGTayAWfTn9Js8WmfJ8nO_"
+                        val tokenFirebase = rescuerName.getString("tokenfirebase")
+                        //val tokenFirebase = "dZAVyEPBRuOJQoNoLblJHQ:APA91bF4Sk0qKy_gkODgpLUxX15Mh_cl3Mtx8O-9r1Rm2-DWSubj-AR9y37x6c9heSfNLaLxxs3EyWFI_AsWK_n5wh_C9Vze39LDSvmh9Y7rf66yEixweqQGTayAWfTn9Js8WmfJ8nO_"
                         if (tokenFirebase != "NaN") {
                             sendNotif(salle, tokenFirebase)
                         }
@@ -111,6 +110,7 @@ class WaitingForHelpActivity : AppCompatActivity() {
             requestQueue?.add(jsonOR)
         }
 
+        useHelperList()
 
 
 

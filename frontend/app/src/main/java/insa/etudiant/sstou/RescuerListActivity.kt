@@ -26,6 +26,8 @@ class RescuerListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rescuer_list)
 
+        val myToken = intent.getStringExtra("Token")
+
         fun getRescuerList(callback: (ArrayList<String>, ArrayList<String>) -> Unit) {
             val url = "https://backend-service-3kjf.onrender.com/rescuers"
             requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
@@ -37,12 +39,12 @@ class RescuerListActivity : AppCompatActivity() {
                 url,
                 null, // Rien besoin d'envoyer
                 { response ->
-                    Toast.makeText(applicationContext, "Réussite chargement BDD", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "Réussite chargement BDD.", Toast.LENGTH_LONG).show()
                     val jsonArray = response.getJSONArray("details")
                     names.clear()
                     for (i in 0 until jsonArray.length()) {
                         val rescuer = jsonArray.getJSONObject(i)
-                        val rescuerName = rescuer.getString("lastname") + "  " + rescuer.getString("firstname")
+                        val rescuerName = rescuer.getString("lastname") + " " + rescuer.getString("firstname")
                         val rescuerEmail = rescuer.getString("email")
                         names.add(rescuerName)
                         emails.add(rescuerEmail)
@@ -79,8 +81,8 @@ class RescuerListActivity : AppCompatActivity() {
                     itemView.setOnClickListener {
                         val clickedPosition = adapterPosition
                         val clickedRescuerEmail = emails[clickedPosition]
-                        //val clickedRescuer = operations[adapterPosition]
                         val intent = Intent(context, ProfileActivity::class.java)
+                        intent.putExtra("Token", myToken)
                         intent.putExtra("usermail", clickedRescuerEmail)
                         startActivity(intent)
                     }
@@ -96,6 +98,7 @@ class RescuerListActivity : AppCompatActivity() {
             val addRescuerButton = findViewById<ImageButton>(R.id.imageButton)
             addRescuerButton.setOnClickListener {
                 val intent = Intent(this, CreateAccountActivity::class.java)
+                intent.putExtra("Token", myToken)
                 startActivity(intent)
 
             }

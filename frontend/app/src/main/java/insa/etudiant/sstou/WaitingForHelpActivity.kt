@@ -28,8 +28,7 @@ import java.net.URL
 
 
 
-data class Helpers(val id: String, val firstName: String, val lastName: String, val email: String, val tokenFirebase: String)
-
+data class Helpers(val id: String, val firstName: String, val lastName: String, val email: String, val tokenFirebase: String, val telephone: String)
 
 
 
@@ -44,6 +43,7 @@ class WaitingForHelpActivity : AppCompatActivity() {
         firestore.collection("Notifications").document().set(notif)
         println("done")
     }
+
 
     private val PERMISSION_REQUEST_SEND_SMS = 1
 
@@ -83,7 +83,9 @@ class WaitingForHelpActivity : AppCompatActivity() {
                         val lastName = rescuerName.getString("lastName")
                         val email = rescuerName.getString("email")
                         val tokenFirebase = rescuerName.getString("tokenFirebase")
-                        val helper = Helpers(id, firstName, lastName, email, tokenFirebase)
+                        val telephone = rescuerName.getString("telephone")
+                        val helper =
+                            Helpers(id, firstName, lastName, email, tokenFirebase, telephone)
                         helperList.add(helper)
                     }
                 },
@@ -103,8 +105,42 @@ class WaitingForHelpActivity : AppCompatActivity() {
         val helpUrl = "$siteJunior/rescuers/available"
         val response = getHelperList(helpUrl)
         val salle = EnterLocationActivity().defLocation
+
         for (secourist in response) {
             sendNotif(salle, secourist.tokenFirebase)
+            if (secourist.telephone != "") {
+                sendMessage(secourist.telephone)
+            }
+
+        }
+    }
+    /*
+    private fun initiateMessage() {
+
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.SEND_SMS)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.SEND_SMS),
+                PERMISSION_REQUEST_SEND_SMS
+            )
+        } else {
+            sendMessage()
+        }
+    }
+    */
+
+    private fun sendMessage(phoneNumber: String) {
+        val smsManager = SmsManager.getDefault()
+        val location = intent.getStringExtra("location")
+        val message = "[SST][URGENT] Votre aide a été demandée en $location !"
+
+        try {
+            smsManager.sendTextMessage(phoneNumber, null, message, null, null)
+            Toast.makeText(this, "Message sent.", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Failed to send message.", Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
         }
     }
 
@@ -114,16 +150,24 @@ class WaitingForHelpActivity : AppCompatActivity() {
             notif.put("title", "Aide demandée !")
             notif.put("body", "Urgence en salle " + room + " !")
             notif.put("to", theToken)
-            val firestore = FirebaseFirestore.getInstance()
-            firestore.collection("Notifications").document().set(notif)
-            println("done")
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+                val token = task.result.toString()
+                println("token = " + token)
+                notif.put("exp", token)
+                val firestore = FirebaseFirestore.getInstance()
+                firestore.collection("Notifications").document().set(notif)
+                println("done")
+            })
         }
-
     }
+}
 
 
-
-
+/*
 
     private fun getAvailableSST(url: String): String {
         val connection = URL(url).openConnection() as HttpURLConnection
@@ -189,6 +233,7 @@ class WaitingForHelpActivity : AppCompatActivity() {
 
 
 
+/*
         override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -232,5 +277,5 @@ class WaitingForHelpActivity : AppCompatActivity() {
         }
     }
 }
-
-
+*/
+ */

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:rotationX="0"
+    android:rotationY="0"
+    tools:context="insa.etudiant.sstou.EnterLocationActivity">
+
+    <TextView
+        android:id="@+id/enterLocationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="268dp"
+        android:layout_marginTop="95dp"
+        android:text="@string/inputLocationMessage"
+        android:textSize="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <AutoCompleteTextView
+        android:id="@+id/inputLocation"
+        android:layout_width="445dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="223dp"
+        android:layout_marginTop="22dp"
+        android:hint="@string/inputLocationHint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enterLocationText" />
+
+    <Button
+        android:id="@+id/confirmLocationButton"
+        android:layout_width="151dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="370dp"
+        android:layout_marginTop="22dp"
+        android:background="@color/confirmLocationButtonBackgroundColor"
+        android:text="@string/confirmLocationButtonText"
+        android:textColor="@color/confirmLocationButtonTextColor"
+        app:backgroundTint="@android:color/holo_red_dark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputLocation" />
+
+    <TextView
+        android:id="@+id/warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="377dp"
+        android:layout_marginTop="12dp"
+        android:alpha="255"
+        android:text="@string/warning"
+        android:textColor="@android:color/holo_red_light"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confirmLocationButton" />
+
+    <Button
+        android:id="@+id/button_ret_0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Retour"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

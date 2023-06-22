@@ -17,6 +17,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 
 import org.json.JSONObject
@@ -120,8 +121,14 @@ class LoginActivity : AppCompatActivity() {
                     intent.putExtra("Token", myToken)
                     intent.putExtra("userpassword", password)
                     val id = myId
-                    val token = myToken
-                    patchVolleyRequest(id.toString(),token)
+                    FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                        if (!task.isSuccessful) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                            return@OnCompleteListener
+                        }
+                        val token = task.result.toString()
+                        patchVolleyRequest(id.toString(),token)
+                    })
                     startActivity(intent)
                 },
                 error_callback = {

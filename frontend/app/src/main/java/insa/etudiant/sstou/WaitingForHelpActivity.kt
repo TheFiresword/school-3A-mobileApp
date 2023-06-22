@@ -112,9 +112,6 @@ class WaitingForHelpActivity : AppCompatActivity() {
 
         useHelperList()
 
-
-
-
     }
     /*
     private fun initiateMessage() {

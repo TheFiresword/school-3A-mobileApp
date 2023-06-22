@@ -132,11 +132,6 @@ class LoginActivity : AppCompatActivity() {
             justTrolling.visibility = View.VISIBLE
         }
 
-        superButton.setOnClickListener {
-            val intent = Intent(this, RescuerListActivity::class.java)
-            startActivity(intent)
-        }
-
         retButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

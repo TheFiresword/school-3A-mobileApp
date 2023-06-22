@@ -13,10 +13,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="54dp"
-        android:layout_marginTop="97dp"
+        android:layout_marginTop="150dp"
         android:layout_marginEnd="54dp"
         android:layout_marginBottom="70dp"
         android:text="@string/inputLocationMessage"
+        android:textSize="17sp"
         app:layout_constraintBottom_toTopOf="@+id/inputLocation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -29,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="500dp"
         android:hint="@string/inputLocationHint"
@@ -44,17 +45,14 @@
         android:id="@+id/confirmLocationButton"
         android:layout_width="151dp"
         android:layout_height="49dp"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="130dp"
+        android:layout_marginTop="350dp"
         android:background="@color/confirmLocationButtonBackgroundColor"
         android:text="@string/confirmLocationButtonText"
         android:textColor="@color/confirmLocationButtonTextColor"
         app:backgroundTint="@android:color/holo_red_dark"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputLocation" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/warning"
@@ -70,24 +68,25 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/confirmLocationButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.453"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputLocation" />
+        app:layout_constraintTop_toBottomOf="@+id/inputLocation"
+        app:layout_constraintVertical_bias="0.942" />
 
     <Button
         android:id="@+id/button_ret_0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="161dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="320dp"
         android:layout_marginEnd="160dp"
         android:layout_marginBottom="16dp"
         android:text="Retour"
+        app:backgroundTint="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputLocation"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/inputLocation" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

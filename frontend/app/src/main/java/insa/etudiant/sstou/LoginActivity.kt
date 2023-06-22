@@ -77,22 +77,21 @@ class LoginActivity : AppCompatActivity() {
                 error_callback = {
                     Toast.makeText(applicationContext, "Login Echoué", Toast.LENGTH_SHORT).show()
                 })
+        }
+        mdpForget.setOnClickListener {
+            val justTrolling = findViewById<TextView>(R.id.Troll)
+            justTrolling.text = "Dommage !"
+            justTrolling.visibility = View.VISIBLE
+        }
 
-            mdpForget.setOnClickListener {
-                val justTrolling = findViewById<TextView>(R.id.Troll)
-                justTrolling.text = "Dommage !"
-                justTrolling.visibility = View.VISIBLE
-            }
+        superButton.setOnClickListener {
+            val intent = Intent(this, RescuerListActivity::class.java)
+            startActivity(intent)
+        }
 
-            superButton.setOnClickListener {
-                val intent = Intent(this, RescuerListActivity::class.java)
-                startActivity(intent)
-            }
-
-            retButton.setOnClickListener {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-            }
+        retButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 }

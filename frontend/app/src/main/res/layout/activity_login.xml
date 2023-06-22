@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:rotation="0"
     android:rotationX="0"
     android:rotationY="0"
@@ -80,15 +81,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="103dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="371dp"
         android:layout_marginEnd="103dp"
-        android:layout_marginBottom="7dp"
+        android:layout_marginBottom="310dp"
         android:text="Mot de passe oublié ?"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/Troll"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Connection_button" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/Troll"
@@ -105,42 +106,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/MDP_forget" />
 
+
     <Button
         android:id="@+id/ret_button_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="159dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="161dp"
-        android:layout_marginBottom="51dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="649dp"
         android:text="Retour"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:backgroundTint="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Troll" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="128dp"
-        android:layout_height="135dp"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="54dp"
+        android:layout_width="184dp"
+        android:layout_height="167dp"
+        android:layout_marginTop="502dp"
         android:layout_marginBottom="41dp"
         app:layout_constraintBottom_toTopOf="@+id/ret_button_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Troll"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/_logo" />
 
-    <Button
-        android:id="@+id/superB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="408dp"
-        android:text="Super Admin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -33,9 +33,6 @@
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".parameters"
-            android:exported="false" />
-        <activity
             android:name=".WaitingForHelpActivity"
             android:exported="false" />
         <activity

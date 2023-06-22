@@ -255,6 +255,47 @@ class ProfileActivity : AppCompatActivity() {
             requestQueue.add(jsonRequest)
         }
 
+        fun patchVolleyRequestWithoutmail(id: Int, firstName: String, lastName: String, Tele: String, Dispo: Boolean, description: String, password: String, token: String, successCallback: (response:JSONObject) -> Unit, errorCallback: (error:VolleyError) -> Unit)
+        {
+            val url = "https://backend-service-3kjf.onrender.com/rescuers/$id"
+            requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
+            val requestBody = JSONObject().apply {
+                put("firstname", firstName)
+                put("lastname", lastName)
+                put("telephone", Tele)
+                put("disponibility", Dispo)
+                put("description", description)
+                put("password", password)
+                put("tokenFirebase", token)
+            }
+
+            val jsonRequest = object : JsonObjectRequest(
+                Request.Method.PATCH,
+                url,
+                requestBody,
+                { response ->
+                    successCallback(response)
+                },
+                { error ->
+                    errorCallback(error)
+                }
+
+            )
+            {
+                override fun getHeaders(): MutableMap<String, String> {
+                    val headers = HashMap<String, String>()
+                    println(token)
+                    println("TEST")
+                    headers["Accept"] = "application/json"
+                    headers["Authorization"] = "Bearer $token"
+                    headers["Content-Type"] = "application/json"
+                    return headers
+                }
+            }
+
+            requestQueue.add(jsonRequest)
+        }
+
         fun deleteVolleyRequest(id : Int, token : String, successCallback: (response:JSONObject) -> Unit, errorCallback: (error:VolleyError) -> Unit) {
             val url = "https://backend-service-3kjf.onrender.com/rescuers/"+id
             requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
@@ -332,6 +373,7 @@ class ProfileActivity : AppCompatActivity() {
 
 
         val usermail = intent.getStringExtra("usermail")
+        val userpassword = intent.getStringExtra("userpassword")
 
         /*var profile = Profile(-1,"John","Doe","JohnDoe@mail.com","0769997558",true, "")*/
         if (usermail != null) {
@@ -352,6 +394,13 @@ class ProfileActivity : AppCompatActivity() {
                 lastNameinput.setText(profile.lastName)
                 Emailinput.setText(profile.email)
                 Telinput.setText(profile.telephone)
+
+                if(userpassword != null)
+                {
+                    Passwordinput.setText(userpassword)
+                    PasswordConfirminput.setText(userpassword)
+                }
+
                 if(profile.disponibility)
                 {
                     DisponibilitySwitch.setChecked(true)
@@ -450,17 +499,14 @@ class ProfileActivity : AppCompatActivity() {
                         val description = "Patch"
                         val token : String? = intent.getStringExtra("Token")
 
-                        //Besoin d'authentification avant d'envoyer cette requête
-                        //Erreur 401 : Token d'authentification absent ou invalide
+                        //Si vous lisez ceci, sachez que j'ai plusieurs Teraoctets de ************ sur le
+
                         if (token != null) {
+                            if(EmailChange)
                             patchVolleyRequest(profile.id,firstname,lastname,email,telephone,DisponibilitySwitch.isChecked(), description, password, token,
                                 successCallback = { response ->
                                     val message = response.getString("Compte mis à jour")
-                                    Toast.makeText(
-                                        applicationContext,
-                                        "Success: $message",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    Toast.makeText(applicationContext, "Success: $message", Toast.LENGTH_SHORT).show()
                                     println("Test Patch")
                                     val intent = Intent(this, MainActivity::class.java)
                                     startActivity(intent)
@@ -470,6 +516,26 @@ class ProfileActivity : AppCompatActivity() {
                                     println("Probleme Patch")
                                     Toast.makeText(applicationContext, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
                                 })
+                            else
+                            {
+                                patchVolleyRequestWithoutmail(profile.id,firstname,lastname,telephone,DisponibilitySwitch.isChecked(), description, password, token,
+                                    successCallback = { response ->
+                                        val message = response.getString("Compte mis à jour")
+                                        Toast.makeText(
+                                            applicationContext,
+                                            "Success: $message",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        println("Test Patch")
+                                        val intent = Intent(this, MainActivity::class.java)
+                                        startActivity(intent)
+                                    },
+                                    errorCallback = { error ->
+                                        val errorMessage = error.message ?: "Erreur dans la modification du compte"
+                                        println("Probleme Patch")
+                                        Toast.makeText(applicationContext, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
+                                    })
+                            }
                         }
 
                         val intent = Intent(this, MainActivity::class.java)

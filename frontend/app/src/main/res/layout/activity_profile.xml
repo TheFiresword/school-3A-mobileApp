@@ -15,8 +15,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="124dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="150dp"
         android:textAlignment="center"
         android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -201,19 +203,25 @@
         android:id="@+id/SSTProfile_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="58dp"
         android:ems="10"
         android:inputType="textEmailAddress"
         android:text=""
-        tools:layout_editor_absoluteX="163dp"
-        tools:layout_editor_absoluteY="58dp" />
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/Alerte"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="205dp"
+        android:layout_marginTop="492dp"
+        android:layout_marginEnd="206dp"
         android:textAlignment="center"
         android:textColor="@android:color/holo_red_dark"
-        tools:layout_editor_absoluteX="175dp"
-        tools:layout_editor_absoluteY="492dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -379,12 +379,12 @@ class ProfileActivity : AppCompatActivity() {
         if (usermail != null) {
             getRescuerByMailList(usermail) { profile ->
                 val title = findViewById<TextView>(R.id.SSTProfile_Title)
-                val Telinput = findViewById<EditText>(R.id.SSTProfile_Tel)
-                val Passwordinput = findViewById<EditText>(R.id.SSTProfile_Password)
-                val PasswordConfirminput = findViewById<EditText>(R.id.SSTProfile_Password_confirm)
-                val firstNameinput = findViewById<EditText>(R.id.SSTProfile_firstname)
-                val lastNameinput = findViewById<EditText>(R.id.SSTProfile_lastname)
-                val Emailinput = findViewById<EditText>(R.id.SSTProfile_email)
+                val Telinput = findViewById<EditText>(R.id.teleohoneInput)
+                val Passwordinput = findViewById<EditText>(R.id.passwordInput)
+                val PasswordConfirminput = findViewById<EditText>(R.id.confPasswordInput)
+                val firstNameinput = findViewById<EditText>(R.id.firstNameInput)
+                val lastNameinput = findViewById<EditText>(R.id.lastNameInput)
+                val Emailinput = findViewById<EditText>(R.id.emailInput)
                 val DisponibilitySwitch = findViewById<Switch>(R.id.switch_dispo)
                 val SMSswitch = findViewById<Switch>(R.id.Switch_SMS)
                 val NotificationSwitch = findViewById<Switch>(R.id.Switch_Notif)
@@ -500,6 +500,7 @@ class ProfileActivity : AppCompatActivity() {
                         val token : String? = intent.getStringExtra("Token")
 
                         //Si vous lisez ceci, sachez que j'ai plusieurs Teraoctets de ************ sur le
+                        // ???
 
                         if (token != null) {
                             if(EmailChange)

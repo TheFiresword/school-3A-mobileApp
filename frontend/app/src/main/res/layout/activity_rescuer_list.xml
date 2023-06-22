@@ -28,7 +28,7 @@
                 android:layout_marginTop="15dp"
                 android:text="@string/rescuerListTitle"
                 android:textStyle="bold"
-                android:textColor="#FF0000"/>
+                android:textColor="@android:color/holo_red_dark"/>
 
             <ImageButton
                 android:id="@+id/imageButton"

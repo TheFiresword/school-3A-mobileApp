@@ -81,7 +81,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="103dp"
-        android:layout_marginTop="371dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="103dp"
         android:layout_marginBottom="310dp"
         android:text="Mot de passe oublié ?"
@@ -89,7 +89,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/Connection_button" />
 
     <TextView
         android:id="@+id/Troll"
@@ -106,30 +106,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/MDP_forget" />
 
-
     <Button
         android:id="@+id/ret_button_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="649dp"
+        android:layout_marginTop="0dp"
         android:text="Retour"
         app:backgroundTint="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="184dp"
         android:layout_height="167dp"
-        android:layout_marginTop="502dp"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="41dp"
         app:layout_constraintBottom_toTopOf="@+id/ret_button_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Troll"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/_logo" />
 

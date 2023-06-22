@@ -152,24 +152,24 @@
         style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="530dp"
-        android:layout_marginStart="145dp"
+        android:layout_marginTop="150dp"
         android:text="Confirmer"
         app:backgroundTint="@android:color/holo_red_dark"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confPasswordText" />
 
     <TextView
         android:id="@+id/warningText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="500dp"
+        android:layout_marginBottom="20dp"
         android:text="Warning!!"
-        android:textColor="@android:color/holo_red_light"
+        android:textColor="@android:color/holo_red_dark"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button_confirmation" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

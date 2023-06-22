@@ -16,7 +16,7 @@ import org.json.JSONObject
 
 
 //data class Profile(val id: String, val firstName: String, val lastName: String, val email: String, val telephone : String, val disponibility : Int)
-fun createRescuer(requestQueue : RequestQueue, firstname: String, lastname:String, email:String, password:String, phoneNumber: String, success_callback: () -> Unit, error_callback: () -> Unit) {
+fun createRescuer(requestQueue : RequestQueue, token : String, firstname: String, lastname:String, email:String, password:String, phoneNumber: String, success_callback: () -> Unit, error_callback: () -> Unit) {
     val url = "https://backend-service-3kjf.onrender.com/rescuers"
     val requestBody = JSONObject().apply {
         put("firstname", firstname)
@@ -27,7 +27,7 @@ fun createRescuer(requestQueue : RequestQueue, firstname: String, lastname:Strin
         put("disponibility", 0)
     }
 
-    val jsonRequest = JsonObjectRequest(
+    val jsonRequest = object : JsonObjectRequest(
         Request.Method.POST,
         url,
         requestBody,
@@ -36,8 +36,17 @@ fun createRescuer(requestQueue : RequestQueue, firstname: String, lastname:Strin
         },
         { error ->
             error_callback()
+        })
+    {
+        // Override the getHeaders method to include the Authorization header
+        override fun getHeaders(): MutableMap<String, String> {
+            val headers = HashMap<String, String>()
+            headers["Accept"] = "application/json"
+            headers["Authorization"] = "Bearer $token" // Add the token to the Authorization header
+            headers["Content-Type"] = "application/json"
+            return headers
         }
-    )
+    }
     requestQueue.add(jsonRequest)
 }
 
@@ -47,6 +56,7 @@ class CreateAccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
 
+        val myToken = intent.getStringExtra("Token")
         val title = findViewById<TextView>(R.id.Title)
         val firstName = findViewById<EditText>(R.id.firstNameInput)
         val lastName = findViewById<EditText>(R.id.lastNameInput)
@@ -57,7 +67,7 @@ class CreateAccountActivity : AppCompatActivity() {
         val confirmation_button = findViewById<Button>(R.id.button_confirmation)
         val warningText = findViewById<TextView>(R.id.warningText)
 
-        title.setText("Création d'un nouveau compte SST")
+        title.setText("Création d'un nouveau compte SST.")
 
         confirmation_button.setOnClickListener {
             val firstNameC = firstName.text.toString()
@@ -78,17 +88,19 @@ class CreateAccountActivity : AppCompatActivity() {
             }
             else {
                 requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
-                createRescuer(requestQueue, firstNameC,lastNameC,emailC, passwordC, phoneC,
-                    success_callback = {
-                        val message = "Utilisateur ajouté avec succès"
-                        Toast.makeText(applicationContext, "Success: $message", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, RescuerListActivity::class.java)
-                        startActivity(intent)
-                },
-                    error_callback = {
-                        val errorMessage = "Erreur dans la création de l'utilisateur"
-                        Toast.makeText(applicationContext, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
-                    })
+                if (myToken != null) {
+                    createRescuer(requestQueue, myToken, firstNameC,lastNameC,emailC, passwordC, phoneC,
+                        success_callback = {
+                            val message = "Utilisateur ajouté"
+                            Toast.makeText(applicationContext, "Success: $message", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this, RescuerListActivity::class.java)
+                            startActivity(intent)
+                        },
+                        error_callback = {
+                            val errorMessage = "Création Echec"
+                            Toast.makeText(applicationContext, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
+                        })
+                }
             }
         }
     }

@@ -15,13 +15,16 @@ import com.android.volley.toolbox.JsonObjectRequest
 import org.json.JSONObject
 
 
-//data class Profile(val id: String, val firstName: String, val lastName: String, val email: String)
-fun createRescuer(requestQueue : RequestQueue, name: String, phoneNumber: String, mdp:String, successCallback: (response:JSONObject) -> Unit, errorCallback: (error:VolleyError) -> Unit) {
+//data class Profile(val id: String, val firstName: String, val lastName: String, val email: String, val telephone : String, val disponibility : Int)
+fun createRescuer(requestQueue : RequestQueue, firstname: String, lastname:String, email:String, password:String, phoneNumber: String, success_callback: () -> Unit, error_callback: () -> Unit) {
     val url = "https://backend-service-3kjf.onrender.com/rescuers"
     val requestBody = JSONObject().apply {
-        put("name", name)
-        put("phone_number", phoneNumber)
-        put("password", mdp)
+        put("firstname", firstname)
+        put("lastname", lastname)
+        put("email", email)
+        put("password", password)
+        put("telephone", phoneNumber)
+        put("disponibility", 0)
     }
 
     val jsonRequest = JsonObjectRequest(
@@ -29,10 +32,10 @@ fun createRescuer(requestQueue : RequestQueue, name: String, phoneNumber: String
         url,
         requestBody,
         { response ->
-            successCallback(response)
+            success_callback()
         },
         { error ->
-            errorCallback(error)
+            error_callback()
         }
     )
     requestQueue.add(jsonRequest)
@@ -45,44 +48,48 @@ class CreateAccountActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_account)
 
         val title = findViewById<TextView>(R.id.Title)
-        val username = findViewById<EditText>(R.id.SSTProfile_username)
-        val telnum = findViewById<EditText>(R.id.SSTProfile_Tel)
-        val mdp = findViewById<EditText>(R.id.SSTProfile_Password)
-        val mdpconf = findViewById<EditText>(R.id.SSTProfile_Password_confirm)
+        val firstName = findViewById<EditText>(R.id.firstNameInput)
+        val lastName = findViewById<EditText>(R.id.lastNameInput)
+        val phone = findViewById<EditText>(R.id.phoneInput)
+        val email = findViewById<EditText>(R.id.emailInput)
+        val password = findViewById<EditText>(R.id.passwordInput)
+        val confPassword = findViewById<EditText>(R.id.confPasswordInput)
         val confirmation_button = findViewById<Button>(R.id.button_confirmation)
         val warningText = findViewById<TextView>(R.id.warningText)
 
         title.setText("Création d'un nouveau compte SST")
 
         confirmation_button.setOnClickListener {
-            val confUsername = username.text.toString()
-            val confTelnum = telnum.text.toString()
-            val confMdp = mdp.text.toString()
-            val confConfMdp = mdpconf.text.toString()
+            val firstNameC = firstName.text.toString()
+            val lastNameC = lastName.text.toString()
+            val phoneC = phone.text.toString()
+            val emailC = email.text.toString()
+            val passwordC = password.text.toString()
+            val confPasswordC = confPassword.text.toString()
+
             //Erreurs dans le remplissage des champs :
-            if (confUsername.isEmpty() or confTelnum.isEmpty() or confMdp.isEmpty() or confConfMdp.isEmpty()) {
+            if (firstNameC.isEmpty() or lastNameC.isEmpty() or emailC.isEmpty() or phoneC.isEmpty()) {
                 warningText.setVisibility(View.VISIBLE)
                 warningText.setText("Veuillez remplir tous les champs !")
             }
-            else if (confMdp != confConfMdp) {
+            else if (passwordC != confPasswordC) {
                 warningText.setVisibility(View.VISIBLE)
                 warningText.setText("Les mots de passe ne sont pas les mêmes !")
             }
             else {
                 requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
-                createRescuer(requestQueue, confUsername,confTelnum,confMdp,
-                    successCallback = { response ->
-                        val message = response.getString("Utilisateur ajouté avec succès")
+                createRescuer(requestQueue, firstNameC,lastNameC,emailC, passwordC, phoneC,
+                    success_callback = {
+                        val message = "Utilisateur ajouté avec succès"
                         Toast.makeText(applicationContext, "Success: $message", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this, RescuerListActivity::class.java)
                         startActivity(intent)
                 },
-                    errorCallback = { error ->
-                        val errorMessage = error.message ?: "Erreur dans la création de l'utilisateur"
+                    error_callback = {
+                        val errorMessage = "Erreur dans la création de l'utilisateur"
                         Toast.makeText(applicationContext, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
                     })
             }
-
         }
     }
 }

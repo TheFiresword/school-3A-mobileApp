@@ -13,6 +13,9 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.tasks.OnCompleteListener
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.JsonObjectRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 import java.util.Objects
@@ -24,52 +27,103 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 
-fun sendHelpRequest(urlString: String): String {
-    val url = URL(urlString)
-
-    with(url.openConnection() as HttpURLConnection) {
-        requestMethod = "GET"
-
-        val responseCode = responseCode
-
-        val response = StringBuffer()
-
-        inputStream.bufferedReader().use {
-            var inputLine = it.readLine()
-            while (inputLine != null) {
-                response.append(inputLine)
-                inputLine = it.readLine()
-            }
-        }
-
-        return response.toString()
-    }
-}
-
 
 data class Helpers(val id: String, val firstName: String, val lastName: String, val email: String, val tokenFirebase: String)
-fun extractHelpersData(response: String): List<Helpers> {
 
 
-    val helperList = mutableListOf<Helpers>()
 
-    val jsonArray = JSONArray(response)
-    for (i in 0 until jsonArray.length()) {
-        val jsonObject = jsonArray.getJSONObject(i)
-        val id = jsonObject.getString("id")
-        val firstName = jsonObject.getString("firstName")
-        val lastName = jsonObject.getString("lastName")
-        val email = jsonObject.getString("email")
-        val tokenFirebase = jsonObject.getString("tokenFirebase")
 
-        val helper = Helpers(id, firstName, lastName, email, tokenFirebase)
-        helperList.add(helper)
-    }
-    return helperList
-
-}
 class WaitingForHelpActivity : AppCompatActivity() {
-    private val phoneNumber = "+33781552056"
+
+    fun sendNotif(room: String, theToken: String) {
+        val notif = HashMap<String, String>()
+        notif.put("title", "Aide demandée !")
+        notif.put("body", "Urgence en salle " + room + " !")
+        notif.put("to", theToken)
+        val firestore = FirebaseFirestore.getInstance()
+        firestore.collection("Notifications").document().set(notif)
+        println("done")
+    }
+
+    private val PERMISSION_REQUEST_SEND_SMS = 1
+
+
+    private lateinit var requestQueue: RequestQueue
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_rescuer_list)
+        var helperList = mutableListOf<Helpers>()
+        fun getHelperList(url: String): List<Helpers> {
+            val url = "https://backend-service-3kjf.onrender.com/rescuers/available"
+            requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
+            var names = arrayListOf(
+                "Secouriste 1",
+                "Secouriste 2",
+                "Secouriste 3",
+                "Secouriste 4"
+            ) //Default List
+
+            val jsonOR = JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null, // Rien besoin d'envoyer
+                { response ->
+                    Toast.makeText(applicationContext, "Réussite chargement BDD", Toast.LENGTH_LONG)
+                        .show()
+                    val jsonArray = response.getJSONArray("details")
+                    println(names)
+                    names.clear()
+                    for (i in 0 until jsonArray.length()) {
+                        val rescuerName = jsonArray.getJSONObject(i)
+                        val rescuer = rescuerName.getString("lastname")
+                        names.add(rescuer)
+                        val id = rescuerName.getString("id")
+                        val firstName = rescuerName.getString("firstName")
+                        val lastName = rescuerName.getString("lastName")
+                        val email = rescuerName.getString("email")
+                        val tokenFirebase = rescuerName.getString("tokenFirebase")
+                        val helper = Helpers(id, firstName, lastName, email, tokenFirebase)
+                        helperList.add(helper)
+                    }
+                },
+                { error ->
+                    Toast.makeText(
+                        applicationContext,
+                        "Erreur du chargement BDD",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            )
+            requestQueue?.add(jsonOR)
+            return helperList
+        }
+
+        val siteJunior = "https://backend-service-3kjf.onrender.com/"
+        val helpUrl = "$siteJunior/rescuers/available"
+        val response = getHelperList(helpUrl)
+        val salle = EnterLocationActivity().defLocation
+        for (secourist in response) {
+            sendNotif(salle, secourist.tokenFirebase)
+        }
+    }
+
+    companion object {
+        fun sendNotif(room: String, theToken: String) {
+            val notif = HashMap<String, String>()
+            notif.put("title", "Aide demandée !")
+            notif.put("body", "Urgence en salle " + room + " !")
+            notif.put("to", theToken)
+            val firestore = FirebaseFirestore.getInstance()
+            firestore.collection("Notifications").document().set(notif)
+            println("done")
+        }
+
+    }
+
+
+
+
 
     private fun getAvailableSST(url: String): String {
         val connection = URL(url).openConnection() as HttpURLConnection
@@ -104,38 +158,7 @@ class WaitingForHelpActivity : AppCompatActivity() {
             deplacement = pos + 1
     }*/
 
-    val response = getAvailableSST("http://localhost:3000/rescuers/available")
-    //  0123456789 10 11 121314151617 181920 2122232425 26 2728293031323334 -> DATA juste après au bout du 35e caractère
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_waiting_for_help)
-
-        val location = intent.getStringExtra("location")
-        val waitingSentence1 = getString(R.string.waitingSentence1)
-        val waitingSentence2 = getString(R.string.waitingSentence2)
-        val retButton = findViewById<Button>(R.id.button_ret_2) //Bouton "retour"
-
-        val waitingText = findViewById<TextView>(R.id.waitingText)
-        waitingText.text = waitingSentence1 + location + waitingSentence2
-        retButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
-        /* Version un numéro Telephone
-       initiateMessage()
-       */
-        // version notification
-        val siteJunior = ""
-        val helpUrl = "$siteJunior/rescuers/available"
-        val response = sendHelpRequest(helpUrl)
-        val helpers = extractHelpersData(response)
-        for (secourist in helpers){
-                Companion.sendNotif(location.toString(),secourist.tokenFirebase)
-        }
-
-
-    }
 
     private fun initiateMessage() {
 
@@ -184,9 +207,9 @@ class WaitingForHelpActivity : AppCompatActivity() {
 
 
     companion object {
-        fun sendNotif(room:String, theToken:String) {
-            val notif = HashMap<String,String>()
-            notif.put("title","Aide demandée !")
+        fun sendNotif(room: String, theToken: String) {
+            val notif = HashMap<String, String>()
+            notif.put("title", "Aide demandée !")
             notif.put("body", "Urgence en salle " + room + " !")
             notif.put("to", theToken)
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
@@ -202,15 +225,12 @@ class WaitingForHelpActivity : AppCompatActivity() {
                 println("done")
             })
 
-                // Get new FCM registration token
+            // Get new FCM registration token
 //            val firestore = FirebaseFirestore.getInstance()
 //            firestore.collection("Notifications").document().set(notif)
 //            println("done")
         }
-
-        private const val PERMISSION_REQUEST_SEND_SMS = 1
     }
-
 }
 
 

@@ -12,6 +12,8 @@ import android.widget.Button
 import android.widget.TextView
 
 class EnterLocationActivity : AppCompatActivity() {
+
+    var defLocation : String = String()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_enter_location)
@@ -32,6 +34,7 @@ class EnterLocationActivity : AppCompatActivity() {
             else {
                 val intent = Intent(this, WaitingForHelpActivity::class.java)       //Se diriger vers l'activité "Suivante"
                 intent.putExtra("location", confirmedLoc)
+                defLocation = confirmedLoc
                 startActivity(intent)
             }
         }
@@ -41,4 +44,5 @@ class EnterLocationActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
 }

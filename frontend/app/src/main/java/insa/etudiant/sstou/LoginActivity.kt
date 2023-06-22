@@ -1,5 +1,6 @@
 package insa.etudiant.sstou
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +9,10 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.JsonObjectRequest
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 
@@ -44,9 +49,6 @@ fun sendPostRequest(url: String, requestBody: String): String {
     return response.toString()
 }
 
-
-//ChatGPT's ServerResponse
-
 data class ServerResponse(val message: String, val details: String)
 
 fun extractServerResponse(response: String): ServerResponse {
@@ -57,33 +59,12 @@ fun extractServerResponse(response: String): ServerResponse {
 
     return ServerResponse(message, details)
 }
-
-
 fun sendPatchRequest(url: String, requestBody: String): String {
     val connection = URL(url).openConnection() as HttpURLConnection
     connection.requestMethod = "PATCH"
     connection.doOutput = true
-
-    val postData = requestBody.toByteArray(Charsets.UTF_8)
-    connection.setRequestProperty("Content-Length", postData.size.toString())
-    DataOutputStream(connection.outputStream).use { outputStream ->
-        outputStream.write(postData)
-    }
-
-    val responseCode = connection.responseCode
-    val response = StringBuilder()
-    BufferedReader(InputStreamReader(connection.inputStream)).use { reader ->
-        var line: String?
-        while (reader.readLine().also { line = it } != null) {
-            response.append(line)
-        }
-    }
-    connection.disconnect()
-
-    return response.toString()
+    return ""
 }
-
-
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,9 +85,11 @@ class LoginActivity : AppCompatActivity() {
 
             //Attention : ne pas confondre la requête pour se connecter (ici dans loginActivity) et la requête pour obtenir les infos sur le profil (dans profileActivity)
 
+            val response = sendPostRequest(
+                "https://backend-service-3kjf.onrender.com/login",
 
-            val response = sendPostRequest("http://localhost:3000/authentification/login",
-                "{ \"email\": \"$usermail\", \"password\": \"$password\" }")
+                "{ \"email\": \"$usermail\", \"password\": \"$password\" }"
+            )
             //println(response)
             //La réponse est sous la forme : { "message": "Succès", "details": "..." }
             val serverResponse = extractServerResponse(response)
@@ -114,22 +97,131 @@ class LoginActivity : AppCompatActivity() {
             val message = serverResponse.message
             val details = serverResponse.details
 
+            val id = ""
+
+            var requestQueue: RequestQueue
+            var urltokenFirebase = mutableListOf<String>()
 
 
+            fun sendPatchRequest(id: String) {
+                requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
 
-             // Le problème ici c'est qu'on ne peut pas fournir un "id" à profileActivity,
-            // il devra la demander lui-même. Ce qu'on va donner à la place, c'est le mail
+                // Send firebase token to backend
+                //val intent = Intent(this, profileActivity::class.java)
+                //intent.putExtra("userId", profile.id)
+                FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.w("TOKEN", "Fetching FCM registration token failed", task.exception)
+                        return@OnCompleteListener
+                    }
+                    // Get new FCM registration token
+                    var token = task.result // le token a envoyer
+                    // A envoyer
+                    var siteJunior = "https://backend-service-3kjf.onrender.com/" + id
+                    urltokenFirebase.add(siteJunior + "rescuers/" + id)
+                    urltokenFirebase.add(token)
+
+                })
+                val jsonOR = JsonObjectRequest(
+                    Request.Method.PATCH,
+                    urltokenFirebase[0].toString(),
+                    JSONObject().apply {
+                        put("tokenFirebase", urltokenFirebase[1].toString())
+                    }, // envoi token firebase
+                    { response ->
+                        Toast.makeText(
+                            applicationContext,
+                            "Réussite chargement BDD",
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                        val jsonArray = response.getJSONArray("details")
+                    },
+                    { error ->
+                        Toast.makeText(
+                            applicationContext,
+                            "Erreur du chargement BDD",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                )
+
+                requestQueue?.add(jsonOR)
+
+                //println(response)
+                //La réponse est sous la forme : { "message": "Succès", "details": "..." }
+                val serverResponse = extractServerResponse(response)
+
+                val message = serverResponse.message
+                val details = serverResponse.details
+
+            val id = "someIdIcantgetbecausefrançoishasnotfinishedhisjob"
+
+            var requestQueue: RequestQueue
+
+
+                fun sendPatchRequest(id: String) {
+                    requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
+
+                // Send firebase token to backend
+                //val intent = Intent(this, profileActivity::class.java)
+                //intent.putExtra("userId", profile.id)
+                FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                        return@OnCompleteListener
+                    }
+
+                    // Get new FCM registration token
+                    val token = task.result
+
+                    // Log and toast
+
+
+                    var siteJunior = "https://backend-service-3kjf.onrender.com/"+id
+                    var patchurl = siteJunior + "rescuers/" + id
+                    val jsonOR = JsonObjectRequest(
+                    Request.Method.PATCH,
+                    patchurl,
+                    JSONObject().apply {
+                        put("tokenFirebase", token)
+                    }, // envoi token firebase
+                    { response ->
+                        Toast.makeText(applicationContext, "Réussite chargement BDD", Toast.LENGTH_LONG)
+                            .show()
+                        val jsonArray = response.getJSONArray("details")
+                    },
+                    { error ->
+                        Toast.makeText(
+                            applicationContext,
+                            "Erreur du chargement BDD",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                )
+                requestQueue?.add(jsonOR)
+            })
+            }
+            sendPatchRequest(id)
             intent.putExtra("usermail", usermail)
             startActivity(intent) //Redirige vers profil utilisateur (profileActivity
-
         }
+
+
+
+            sendPatchRequest(id)
+
+            intent.putExtra("usermail", usermail)
+            startActivity(intent) //Redirige vers profil utilisateur (profileActivity
+        }
+
+
 
         mdpForget.setOnClickListener {
             val justTrolling = findViewById<TextView>(R.id.Troll)
             justTrolling.text = "Dommage !"
             justTrolling.visibility = View.VISIBLE
         }
-
 
         superButton.setOnClickListener {
             val intent = Intent(this, RescuerListActivity::class.java)

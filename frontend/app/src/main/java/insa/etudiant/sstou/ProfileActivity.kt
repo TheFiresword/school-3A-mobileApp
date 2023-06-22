@@ -263,8 +263,6 @@ fun getUserByEmail(usersJson: String, email: String): Profile? {
     return null
 }
 
-
-//ChatGPT's json extractProfile
 data class Profile(val id: String, val firstName: String, val lastName: String, val email: String)
 fun extractProfileData(response: String): Profile {
     val jsonResponse = JSONObject(response)

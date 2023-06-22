@@ -20,7 +20,6 @@ import java.io.InputStreamReader
 
 import org.json.JSONObject
 
-
 fun sendPostRequest(url: String, requestBody: String): String {
     val connection = URL(url).openConnection() as HttpURLConnection
     connection.requestMethod = "POST"
@@ -44,9 +43,6 @@ fun sendPostRequest(url: String, requestBody: String): String {
     return response.toString()
 }
 
-
-//ChatGPT's ServerResponse
-
 data class ServerResponse(val message: String, val details: String)
 
 fun extractServerResponse(response: String): ServerResponse {
@@ -57,7 +53,6 @@ fun extractServerResponse(response: String): ServerResponse {
 
     return ServerResponse(message, details)
 }
-
 
 fun sendPatchRequest(url: String, requestBody: String): String {
     val connection = URL(url).openConnection() as HttpURLConnection
@@ -83,8 +78,6 @@ fun sendPatchRequest(url: String, requestBody: String): String {
     return response.toString()
 }
 
-
-
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,7 +97,6 @@ class LoginActivity : AppCompatActivity() {
 
             //Attention : ne pas confondre la requête pour se connecter (ici dans loginActivity) et la requête pour obtenir les infos sur le profil (dans profileActivity)
 
-
             val response = sendPostRequest("http://localhost:3000/authentification/login",
                 "{ \"email\": \"$usermail\", \"password\": \"$password\" }")
             //println(response)
@@ -114,14 +106,10 @@ class LoginActivity : AppCompatActivity() {
             val message = serverResponse.message
             val details = serverResponse.details
 
-
-
-
-             // Le problème ici c'est qu'on ne peut pas fournir un "id" à profileActivity,
+            // Le problème ici c'est qu'on ne peut pas fournir un "id" à profileActivity,
             // il devra la demander lui-même. Ce qu'on va donner à la place, c'est le mail
             intent.putExtra("usermail", usermail)
             startActivity(intent) //Redirige vers profil utilisateur (profileActivity
-
         }
 
         mdpForget.setOnClickListener {
@@ -129,7 +117,6 @@ class LoginActivity : AppCompatActivity() {
             justTrolling.text = "Dommage !"
             justTrolling.visibility = View.VISIBLE
         }
-
 
         superButton.setOnClickListener {
             val intent = Intent(this, RescuerListActivity::class.java)

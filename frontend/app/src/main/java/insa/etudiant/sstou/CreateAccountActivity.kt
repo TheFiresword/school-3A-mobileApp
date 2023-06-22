@@ -15,7 +15,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import org.json.JSONObject
 
 
-//data class Profile(val id: String, val firstName: String, val lastName: String, val email: String, telephone, dispo)
+//data class Profile(val id: String, val firstName: String, val lastName: String, val email: String, val telephone : String, val disponibility : Int)
 fun createRescuer(requestQueue : RequestQueue, firstname: String, lastname:String, email:String, password:String, phoneNumber: String, success_callback: () -> Unit, error_callback: () -> Unit) {
     val url = "https://backend-service-3kjf.onrender.com/rescuers"
     val requestBody = JSONObject().apply {
@@ -90,7 +90,6 @@ class CreateAccountActivity : AppCompatActivity() {
                         Toast.makeText(applicationContext, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
                     })
             }
-
         }
     }
 }

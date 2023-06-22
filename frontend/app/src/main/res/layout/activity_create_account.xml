@@ -9,6 +9,175 @@
 
     <TextView
         android:id="@+id/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Création d'un nouveau compte SST :"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/firstNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="150dp"
+        android:text="Prénom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/firstNameInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintStart_toEndOf="@+id/firstNameText"
+        android:layout_marginBottom="-10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/firstNameText" />
+
+    <TextView
+        android:id="@+id/lastNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Nom"
+        app:layout_constraintStart_toStartOf="@+id/firstNameText"
+        app:layout_constraintTop_toTopOf="@+id/firstNameText" />
+
+    <EditText
+        android:id="@+id/lastNameInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintStart_toEndOf="@+id/firstNameText"
+        android:layout_marginBottom="-10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/lastNameText" />
+
+
+    <TextView
+        android:id="@+id/emailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Adresse mail"
+        app:layout_constraintStart_toStartOf="@+id/firstNameText"
+        app:layout_constraintTop_toTopOf="@+id/lastNameText" />
+
+    <EditText
+        android:id="@+id/emailInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="150dp"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintStart_toEndOf="@+id/firstNameText"
+        android:layout_marginBottom="-10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/emailText" />
+
+
+    <TextView
+        android:id="@+id/phoneText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Téléphone"
+        app:layout_constraintStart_toStartOf="@+id/firstNameText"
+        app:layout_constraintTop_toTopOf="@+id/emailText" />
+
+    <EditText
+        android:id="@+id/phoneInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="210dp"
+        android:ems="10"
+        android:inputType="phone"
+        app:layout_constraintStart_toEndOf="@+id/firstNameText"
+        android:layout_marginBottom="-10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/phoneText" />
+
+
+    <TextView
+        android:id="@+id/passwordText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Mot De Passe"
+        app:layout_constraintStart_toStartOf="@+id/firstNameText"
+        app:layout_constraintTop_toTopOf="@+id/phoneText" />
+
+    <EditText
+        android:id="@+id/passwordInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="270dp"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintStart_toEndOf="@+id/firstNameText"
+        android:layout_marginBottom="-10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/passwordText" />
+
+    <TextView
+        android:id="@+id/confPasswordText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Confirmation"
+        app:layout_constraintStart_toStartOf="@+id/firstNameText"
+        app:layout_constraintTop_toTopOf="@+id/passwordText" />
+
+    <EditText
+        android:id="@+id/confPasswordInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="330dp"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintStart_toEndOf="@+id/firstNameText"
+        android:layout_marginBottom="-10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/confPasswordText" />
+
+
+    <Button
+        android:id="@+id/button_confirmation"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="530dp"
+        android:layout_marginStart="145dp"
+        android:text="Confirmer"
+        app:backgroundTint="@android:color/holo_red_dark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/warningText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="500dp"
+        android:text="Warning!!"
+        android:textColor="@android:color/holo_red_light"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+<!--
+    <TextView
+        android:id="@+id/Title"
         android:text="Création d'un nouveau compte SST"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,40 +187,6 @@
         android:textSize="25sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Switch
-        android:id="@+id/switch2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="8dp"
-        android:text="Disponible"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SSTProfile_username" />
-
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="101dp"
-        android:layout_height="65dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:visibility="invisible"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/SSTProfile_Tel">
-
-        <Switch
-            android:id="@+id/Switch_SMS"
-            android:layout_width="match_parent"
-            android:layout_height="23dp"
-            android:text="SMS" />
-
-        <Switch
-            android:id="@+id/Switch_Notif"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Notif" />
-    </RadioGroup>
 
     <TextView
         android:id="@+id/textView4"
@@ -68,12 +203,11 @@
         android:id="@+id/SSTProfile_Password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="44dp"
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/SSTProfile_Tel" />
 
     <TextView
         android:id="@+id/textView6"
@@ -89,7 +223,7 @@
         android:id="@+id/Telephone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="9dp"
+        android:layout_marginStart="148dp"
         android:layout_marginTop="69dp"
         android:text="Numéro de téléphone"
         app:layout_constraintStart_toStartOf="parent"
@@ -99,19 +233,17 @@
         android:id="@+id/SSTProfile_Tel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginStart="40dp"
         android:ems="10"
         android:inputType="phone"
         app:layout_constraintStart_toEndOf="@+id/Telephone"
-        app:layout_constraintTop_toBottomOf="@+id/switch2" />
+        app:layout_constraintTop_toBottomOf="@+id/SSTProfile_username" />
 
     <EditText
         android:id="@+id/SSTProfile_Password_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="27dp"
+        android:layout_marginStart="44dp"
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintStart_toEndOf="@+id/textView7"
@@ -134,19 +266,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="140dp"
-        android:layout_marginTop="108dp"
         android:text="Confirmer"
         app:backgroundTint="@android:color/holo_blue_dark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SSTProfile_Password_confirm" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/firstNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="38dp"
         android:layout_marginTop="128dp"
-        android:text="Nom d'utilisateur"
+        android:text="Prénom"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -154,12 +285,12 @@
         android:id="@+id/SSTProfile_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="110dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="32dp"
         android:ems="10"
         android:inputType="text"
         app:layout_constraintStart_toEndOf="@+id/textView8"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/Title" />
 
     <TextView
         android:id="@+id/warningText"
@@ -171,6 +302,4 @@
         android:textColor="@android:color/holo_red_light"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toTopOf="parent" />-->

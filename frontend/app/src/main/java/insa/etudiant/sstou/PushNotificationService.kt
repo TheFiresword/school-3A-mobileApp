@@ -6,30 +6,28 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
-import android.util.Log
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import java.io.File
+import java.util.concurrent.atomic.AtomicInteger
+import android.app.PendingIntent
+import android.content.Intent
+
+
+object NotificationID {
+    private val c = AtomicInteger(0)
+    val iD: Int
+        get() = c.incrementAndGet()
+}
 
 
 class PushNotificationService : FirebaseMessagingService()  {
     override fun onNewToken(s : String) {
-            super.onNewToken(s);
+            super.onNewToken(s)
             println("token" + s)
-
     }
-
-
-
-
-
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         val title = message.notification?.title
@@ -37,8 +35,24 @@ class PushNotificationService : FirebaseMessagingService()  {
         val CHANNEL_ID = "HEADS_UP_NOTIFICATIONS"
         val channel = NotificationChannel(CHANNEL_ID, "MyNotification", NotificationManager.IMPORTANCE_HIGH)
         getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+
+
         val notification:Notification.Builder = Notification.Builder(this, CHANNEL_ID)
-            .setContentTitle(title).setContentText(body).setAutoCancel(true)
+            .setContentTitle(title).setContentText(body).setAutoCancel(true).setSmallIcon(R.drawable._logo).setPriority(Notification.PRIORITY_HIGH)
+
+        if (message.data.containsKey("exp")) {
+            val exp:String = message.data["exp"]!!
+            println("par ici")
+            val acceptIntent = Intent(this, NotificationButtonReceiver::class.java).apply{
+                putExtra("exp", exp)
+            }
+            acceptIntent.action = "MY_NOTIFICATION_BUTTON_CLICK"
+            val pendingIntent: PendingIntent = PendingIntent.getBroadcast(this, 0, acceptIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            notification.addAction(R.drawable._accept, getString(R.string.accept),pendingIntent)
+        }
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.POST_NOTIFICATIONS
@@ -53,6 +67,29 @@ class PushNotificationService : FirebaseMessagingService()  {
             // for ActivityCompat#requestPermissions for more details.
             return
         }
-        NotificationManagerCompat.from(this).notify(1, notification.build())
+        with(NotificationManagerCompat.from(this)) {
+            notify(NotificationID.iD, notification.build())
+        }
+    }
+
+
+    companion object {
+//        fun getFCMToken(): String {
+//            var token = "blabla"
+//            var list = mutableListOf<String>()
+//            FirebaseMessaging.getInstance().token
+//                .addOnCompleteListener { task ->
+//                    if (task.isSuccessful) {
+//                        token = task.result.toString()
+//                        println("token = " + token)
+//                        return token
+//                    } else {
+//                        println("token error")
+//                    }
+//                }
+//            return "error"
+//        }
+
     }
 }
+

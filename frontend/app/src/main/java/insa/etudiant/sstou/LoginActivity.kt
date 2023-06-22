@@ -8,6 +8,10 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.JsonObjectRequest
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 
@@ -53,79 +57,119 @@ fun extractServerResponse(response: String): ServerResponse {
 
     return ServerResponse(message, details)
 }
-
 fun sendPatchRequest(url: String, requestBody: String): String {
     val connection = URL(url).openConnection() as HttpURLConnection
     connection.requestMethod = "PATCH"
     connection.doOutput = true
 
-    val postData = requestBody.toByteArray(Charsets.UTF_8)
-    connection.setRequestProperty("Content-Length", postData.size.toString())
-    DataOutputStream(connection.outputStream).use { outputStream ->
-        outputStream.write(postData)
-    }
 
-    val responseCode = connection.responseCode
-    val response = StringBuilder()
-    BufferedReader(InputStreamReader(connection.inputStream)).use { reader ->
-        var line: String?
-        while (reader.readLine().also { line = it } != null) {
-            response.append(line)
-        }
-    }
-    connection.disconnect()
+    class LoginActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_login)
 
-    return response.toString()
-}
+            val confirmation = findViewById<Button>(R.id.Connection_button)
+            val mdpForget = findViewById<Button>(R.id.MDP_forget) // Bouton Mot de passe oublié
+            val retButton = findViewById<Button>(R.id.ret_button_2) // Bouton Retour
+            val superButton = findViewById<Button>(R.id.superB)
 
-class LoginActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+            confirmation.setOnClickListener {
+                val usermailEntry = findViewById<EditText>(R.id.Usermail_entry)
+                val passwordEntry = findViewById<EditText>(R.id.Password_entry)
 
-        val confirmation = findViewById<Button>(R.id.Connection_button)
-        val mdpForget = findViewById<Button>(R.id.MDP_forget) // Bouton Mot de passe oublié
-        val retButton = findViewById<Button>(R.id.ret_button_2) // Bouton Retour
-        val superButton = findViewById<Button>(R.id.superB)
+                val usermail = usermailEntry.text.toString()
+                val password = passwordEntry.text.toString()
 
-        confirmation.setOnClickListener {
-            val usermailEntry = findViewById<EditText>(R.id.Usermail_entry)
-            val passwordEntry = findViewById<EditText>(R.id.Password_entry)
+                //Attention : ne pas confondre la requête pour se connecter (ici dans loginActivity) et la requête pour obtenir les infos sur le profil (dans profileActivity)
 
-            val usermail = usermailEntry.text.toString()
-            val password = passwordEntry.text.toString()
+                val response = sendPostRequest(
+                    "https://backend-service-3kjf.onrender.com/login",
 
-            //Attention : ne pas confondre la requête pour se connecter (ici dans loginActivity) et la requête pour obtenir les infos sur le profil (dans profileActivity)
+                    "{ \"email\": \"$usermail\", \"password\": \"$password\" }"
+                )
+                //println(response)
+                //La réponse est sous la forme : { "message": "Succès", "details": "..." }
+                val serverResponse = extractServerResponse(response)
 
-            val response = sendPostRequest("http://localhost:3000/authentification/login",
-                "{ \"email\": \"$usermail\", \"password\": \"$password\" }")
-            //println(response)
-            //La réponse est sous la forme : { "message": "Succès", "details": "..." }
-            val serverResponse = extractServerResponse(response)
+                val message = serverResponse.message
+                val details = serverResponse.details
 
-            val message = serverResponse.message
-            val details = serverResponse.details
+                val id = ""
 
-            // Le problème ici c'est qu'on ne peut pas fournir un "id" à profileActivity,
-            // il devra la demander lui-même. Ce qu'on va donner à la place, c'est le mail
-            intent.putExtra("usermail", usermail)
-            startActivity(intent) //Redirige vers profil utilisateur (profileActivity
-        }
+                var requestQueue: RequestQueue
+                var urltokenFirebase = mutableListOf<String>()
 
-        mdpForget.setOnClickListener {
-            val justTrolling = findViewById<TextView>(R.id.Troll)
-            justTrolling.text = "Dommage !"
-            justTrolling.visibility = View.VISIBLE
-        }
 
-        superButton.setOnClickListener {
-            val intent = Intent(this, RescuerListActivity::class.java)
-            startActivity(intent)
-        }
+                fun sendPatchRequest(id: String) {
+                    requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
 
-        retButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+                    // Send firebase token to backend
+                    //val intent = Intent(this, profileActivity::class.java)
+                    //intent.putExtra("userId", profile.id)
+                    FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                        if (!task.isSuccessful) {
+                            Log.w("TOKEN", "Fetching FCM registration token failed", task.exception)
+                            return@OnCompleteListener
+                        }
+                        // Get new FCM registration token
+                        var token = task.result // le token a envoyer
+                        // A envoyer
+                        var siteJunior = "https://backend-service-3kjf.onrender.com/" + id
+                        urltokenFirebase.add(siteJunior + "rescuers/" + id)
+                        urltokenFirebase.add(token)
+
+                    })
+                    val jsonOR = JsonObjectRequest(
+                        Request.Method.PATCH,
+                        urltokenFirebase[0].toString(),
+                        JSONObject().apply {
+                            put("tokenFirebase", urltokenFirebase[1].toString())
+                        }, // envoi token firebase
+                        { response ->
+                            Toast.makeText(
+                                applicationContext,
+                                "Réussite chargement BDD",
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
+                            val jsonArray = response.getJSONArray("details")
+                        },
+                        { error ->
+                            Toast.makeText(
+                                applicationContext,
+                                "Erreur du chargement BDD",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    )
+                    requestQueue?.add(jsonOR)
+                }
+
+
+
+                sendPatchRequest(id)
+
+                intent.putExtra("usermail", usermail)
+                startActivity(intent) //Redirige vers profil utilisateur (profileActivity
+            }
+
+
+
+            mdpForget.setOnClickListener {
+                val justTrolling = findViewById<TextView>(R.id.Troll)
+                justTrolling.text = "Dommage !"
+                justTrolling.visibility = View.VISIBLE
+            }
+
+            superButton.setOnClickListener {
+                val intent = Intent(this, RescuerListActivity::class.java)
+                startActivity(intent)
+            }
+
+            retButton.setOnClickListener {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -13,13 +14,12 @@ import android.widget.TextView
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.RequestQueue
+import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 
 import org.json.JSONObject
-
-
 fun authentification(requestQueue : RequestQueue, email : String, password : String, success_callback: (String, Int, String) -> Unit, error_callback: () -> Unit) {
     val url = "https://backend-service-3kjf.onrender.com/authentification/login"
     val requestBody = JSONObject().apply {
@@ -48,6 +48,46 @@ fun authentification(requestQueue : RequestQueue, email : String, password : Str
 }
 
 class LoginActivity : AppCompatActivity() {
+
+    private lateinit var requestQueue: RequestQueue
+    fun patchVolleyRequest(
+        id:String,
+        token: String,
+    ) {
+        val url = "https://backend-service-3kjf.onrender.com/rescuers/$id"
+        val requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
+        val requestBody = JSONObject().apply {
+            put("tokenFirebase", token)
+        }
+
+        val jsonRequest = object : JsonObjectRequest(
+            Request.Method.PATCH,
+            url,
+            requestBody,
+            { response ->
+                println("everything is fine")
+            },
+            { error ->
+                println("everything is burning to the grounds")
+
+            }
+
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                println(token)
+                println("TEST")
+                headers["Accept"] = "application/json"
+                headers["Authorization"] = "Bearer $token"
+                headers["Content-Type"] = "application/json"
+                return headers
+            }
+        }
+
+        requestQueue.add(jsonRequest)
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -81,46 +121,7 @@ class LoginActivity : AppCompatActivity() {
                     intent.putExtra("userpassword", password)
                     val id = myId
                     val token = myToken
-                    val requestQueue = VolleyRequestQueue.getInstance(this).getOurRequestQueue()
-                    var siteJunior = "https://backend-service-3kjf.onrender.com/" + id
-                    var patchurl = siteJunior + "rescuers/" + id
-
-                    // Send firebase token to backend
-                    FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-                        if (!task.isSuccessful) {
-                            Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                            return@OnCompleteListener
-                        }
-
-                        // Get new FCM registration token
-                        val firetoken = task.result
-                        val jsonOR = JsonObjectRequest(
-                            Request.Method.PATCH,
-                            patchurl,
-                            JSONObject().apply {
-                                put("tokenFirebase", firetoken)
-                                put("id", id)
-                                put("token", token)
-                            }, // envoi token firebase
-                            { response ->
-                                Toast.makeText(
-                                    applicationContext,
-                                    "Réussite chargement BDD",
-                                    Toast.LENGTH_LONG
-                                )
-                                    .show()
-                                //val jsonArray = response.getJSONArray("details")
-                            },
-                            { error ->
-                                Toast.makeText(
-                                    applicationContext,
-                                    "Erreur du chargement BDD",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                        )
-                        requestQueue?.add(jsonOR)
-                    })
+                    patchVolleyRequest(id.toString(),token)
                     startActivity(intent)
                 },
                 error_callback = {
@@ -154,7 +155,23 @@ class LoginActivity : AppCompatActivity() {
 
 
 
+/*
+FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+    if (!task.isSuccessful) {
+        Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+        return@OnCompleteListener
+    }
 
+    // Get new FCM registration token
+    val firetoken = task.result
+    val jsonOR = JsonObjectRequest(
+        Request.Method.PATCH,
+        patchurl,
+        JSONObject().apply {
+            put("tokenFirebase", firetoken)
+            put("id", id)
+            put("token", token)
+        }
 
-
+*/
 

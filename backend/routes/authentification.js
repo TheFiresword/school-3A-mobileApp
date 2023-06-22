@@ -8,6 +8,7 @@ const secretKey = require('./../tokenGeneration')
 const safeInfos = "id, firstname, lastname, email, telephone, disponibility, tokenFirebase";
 
 
+console.log('je suis appelé')
 // Route de connexion
 router.post('/login', (req, res)=>{
     const email = req.body.email;

@@ -17,15 +17,15 @@
     "express-rate-limit": "^6.7.0",
     "firebase-admin": "^11.9.0",
     "helmet": "^7.0.0",
-    "ibm_db": "^3.2.1",
+    "firebase-functions": "^4.4.1",
     "jsonwebtoken": "^9.0.0",
-    "mysql": "^2.18.1",
-    "mysql2": "^3.3.5",
     "pg": "^8.11.0",
     "pg-format": "^1.0.4"
   },
   "devDependencies": {
     "dotenv": "^16.3.0",
+    "eslint": "^8.43.0",
+    "eslint-config-google": "^0.14.0",
     "nodemon": "^2.0.22"
   }
 }

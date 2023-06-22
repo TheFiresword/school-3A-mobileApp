@@ -10,7 +10,7 @@
     <string name="confirmLocationButtonText">Confirmer</string>
 
     <!-- Attente des secours -->
-    <string name="waitingSentence1">Votre appel en salle&#xA0;</string>
+    <string name="waitingSentence1">Votre appel en salle :&#xA0;</string>
     <string name="waitingSentence2">&#xA0;a bien été enregistré et envoyé au personnel SST de l\'établissement.</string>
     <string name="param_tres">Paramètres</string>
     <string name="alerte">Alerte</string>
@@ -18,5 +18,6 @@
     <string name="warning">La salle n`\'existe pas !</string>
     <string name="baseNumber">+33781552056</string>
     <string name="retour">Retour</string>
+    <string name="rescuerListTitle">Liste du personnel SST enregistré</string>
 
 </resources>

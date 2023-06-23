@@ -225,7 +225,6 @@ class ProfileActivity : AppCompatActivity() {
                 put("disponibility", Dispo)
                 put("description", description)
                 put("password", password)
-                put("tokenFirebase", token)
             }
 
             val jsonRequest = object : JsonObjectRequest(
@@ -266,7 +265,6 @@ class ProfileActivity : AppCompatActivity() {
                 put("disponibility", Dispo)
                 put("description", description)
                 put("password", password)
-                put("tokenFirebase", token)
             }
 
             val jsonRequest = object : JsonObjectRequest(

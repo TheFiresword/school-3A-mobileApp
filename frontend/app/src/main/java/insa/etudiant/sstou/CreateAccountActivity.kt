@@ -76,7 +76,7 @@ class CreateAccountActivity : AppCompatActivity() {
             val confPasswordC = confPassword.text.toString()
 
             //Erreurs dans le remplissage des champs :
-            if (firstNameC.isEmpty() or lastNameC.isEmpty() or emailC.isEmpty() or phoneC.isEmpty()) {
+            if (firstNameC.isEmpty() or lastNameC.isEmpty() or emailC.isEmpty()) {
                 warningText.setVisibility(View.VISIBLE)
                 warningText.setText("Veuillez remplir tous les champs !")
             }

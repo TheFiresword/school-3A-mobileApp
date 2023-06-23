@@ -477,7 +477,7 @@ class ProfileActivity : AppCompatActivity() {
                         val message_alerte = findViewById<TextView>(R.id.Alerte)
                         message_alerte.text = "Veuillez saisir le même mot de passe"
                     }
-                    else if ((firstNameinput.text.toString() == "") or (lastNameinput.text.toString() == "") or (Emailinput.text.toString() == "") or (Telinput.text.toString() == ""))
+                    else if ((firstNameinput.text.toString() == "") or (lastNameinput.text.toString() == "") or (Emailinput.text.toString() == ""))
                     {
                         val message_alerte = findViewById<TextView>(R.id.Alerte)
                         message_alerte.text = "Champs non complétés"
@@ -487,11 +487,11 @@ class ProfileActivity : AppCompatActivity() {
                         val message_alerte = findViewById<TextView>(R.id.Alerte)
                         message_alerte.text = "Champs non complétés"
                     }
-                    else if (Telinput.text.toString().length < 10)
+                    /*else if (Telinput.text.toString().length < 10)
                     {
                         val message_alerte = findViewById<TextView>(R.id.Alerte)
                         message_alerte.text = "Le numéro de téléphone est trop long"
-                    }
+                    }*/
                     /*else if (['À','Á','Â','Ã','Ä','Å','Æ','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ð','Ñ','Ò','Ó','Ô','Õ','Ö','Ø','Œ','Š','þ','Ù','Ú','Û','Ü','Ý','Ÿ','à','á','â','ã','ä','å','æ','ç','è','é','ê','ë','ì','í','î','ï','ð','ñ','ò','ó','ô','õ','ö','ø','œ','š','Þ','ù','ú','û','ü','ý','ÿ'] in (firstNameinput.text.toString() + lastNameinput.text.toString()))
                     {
 

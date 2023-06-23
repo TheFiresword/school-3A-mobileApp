@@ -489,7 +489,7 @@ class ProfileActivity : AppCompatActivity() {
                         val message_alerte = findViewById<TextView>(R.id.Alerte)
                         message_alerte.text = "Champs non complétés"
                     }
-                    else if (Telinput.text.toString().length <= 10)
+                    else if (Telinput.text.toString().length < 10)
                     {
                         val message_alerte = findViewById<TextView>(R.id.Alerte)
                         message_alerte.text = "Le numéro de téléphone est trop long"

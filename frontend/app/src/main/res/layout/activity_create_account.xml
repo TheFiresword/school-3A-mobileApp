@@ -11,9 +11,8 @@
         android:id="@+id/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="48dp"
-        android:text="Création d'un nouveau compte SST"
+        android:text="Création d'un nouveau compte SST :"
         android:textAlignment="center"
         android:textSize="25sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,8 +22,8 @@
         android:id="@+id/firstNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="150dp"
         android:text="Prénom"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,42 +33,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="32dp"
         android:ems="10"
         android:inputType="text"
         app:layout_constraintStart_toEndOf="@+id/firstNameText"
-        app:layout_constraintTop_toBottomOf="@+id/Title" />
+        android:layout_marginBottom="-10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/firstNameText" />
 
     <TextView
         android:id="@+id/lastNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="188dp"
+        android:layout_marginTop="50dp"
         android:text="Nom"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/firstNameText"
+        app:layout_constraintTop_toTopOf="@+id/firstNameText" />
 
     <EditText
         android:id="@+id/lastNameInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="90dp"
         android:ems="10"
         android:inputType="text"
         app:layout_constraintStart_toEndOf="@+id/firstNameText"
-        app:layout_constraintTop_toBottomOf="@+id/Title" />
+        android:layout_marginBottom="-10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/lastNameText" />
+
 
     <TextView
         android:id="@+id/emailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="50dp"
         android:text="Adresse mail"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/firstNameText"
+        app:layout_constraintTop_toTopOf="@+id/lastNameText" />
 
     <EditText
         android:id="@+id/emailInput"
@@ -80,17 +78,18 @@
         android:ems="10"
         android:inputType="text"
         app:layout_constraintStart_toEndOf="@+id/firstNameText"
-        app:layout_constraintTop_toBottomOf="@+id/Title" />
+        android:layout_marginBottom="-10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/emailText" />
+
 
     <TextView
         android:id="@+id/phoneText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="310dp"
+        android:layout_marginTop="50dp"
         android:text="Téléphone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/firstNameText"
+        app:layout_constraintTop_toTopOf="@+id/emailText" />
 
     <EditText
         android:id="@+id/phoneInput"
@@ -101,17 +100,18 @@
         android:ems="10"
         android:inputType="phone"
         app:layout_constraintStart_toEndOf="@+id/firstNameText"
-        app:layout_constraintTop_toBottomOf="@+id/Title" />
+        android:layout_marginBottom="-10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/phoneText" />
+
 
     <TextView
         android:id="@+id/passwordText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="370dp"
+        android:layout_marginTop="50dp"
         android:text="Mot De Passe"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/firstNameText"
+        app:layout_constraintTop_toTopOf="@+id/phoneText" />
 
     <EditText
         android:id="@+id/passwordInput"
@@ -122,17 +122,17 @@
         android:ems="10"
         android:inputType="text"
         app:layout_constraintStart_toEndOf="@+id/firstNameText"
-        app:layout_constraintTop_toBottomOf="@+id/Title" />
+        android:layout_marginBottom="-10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/passwordText" />
 
     <TextView
         android:id="@+id/confPasswordText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="430dp"
+        android:layout_marginTop="50dp"
         android:text="Confirmation"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/firstNameText"
+        app:layout_constraintTop_toTopOf="@+id/passwordText" />
 
     <EditText
         android:id="@+id/confPasswordInput"
@@ -143,31 +143,33 @@
         android:ems="10"
         android:inputType="text"
         app:layout_constraintStart_toEndOf="@+id/firstNameText"
-        app:layout_constraintTop_toBottomOf="@+id/Title" />
+        android:layout_marginBottom="-10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/confPasswordText" />
+
 
     <Button
         android:id="@+id/button_confirmation"
         style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="530dp"
-        android:layout_marginStart="145dp"
+        android:layout_marginTop="150dp"
         android:text="Confirmer"
-        app:backgroundTint="@android:color/holo_blue_dark"
+        app:backgroundTint="@android:color/holo_red_dark"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confPasswordText" />
 
     <TextView
         android:id="@+id/warningText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="500dp"
+        android:layout_marginBottom="20dp"
         android:text="Warning!!"
-        android:textColor="@android:color/holo_red_light"
+        android:textColor="@android:color/holo_red_dark"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button_confirmation" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

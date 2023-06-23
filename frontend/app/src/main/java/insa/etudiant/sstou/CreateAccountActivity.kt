@@ -67,8 +67,6 @@ class CreateAccountActivity : AppCompatActivity() {
         val confirmation_button = findViewById<Button>(R.id.button_confirmation)
         val warningText = findViewById<TextView>(R.id.warningText)
 
-        title.setText("Création d'un nouveau compte SST.")
-
         confirmation_button.setOnClickListener {
             val firstNameC = firstName.text.toString()
             val lastNameC = lastName.text.toString()

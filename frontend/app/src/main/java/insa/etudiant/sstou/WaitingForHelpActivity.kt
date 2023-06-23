@@ -61,12 +61,16 @@ class WaitingForHelpActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_rescuer_list)
-        /*val Texte = findViewById<TextView>(R.id.waitingText)
-        Texte.text = "Requête pour la salle " + EnterLocationActivity().defLocation + " envoyé !"*/
+        setContentView(R.layout.activity_waiting_for_help)
+        val Texte = findViewById<TextView>(R.id.waitingText)
+        val salle = intent.getStringExtra("location")
+        Texte.text = "Requête pour la salle $salle envoyée !"
 
-
-
+        val retButton = findViewById<Button>(R.id.button_ret_2)
+        retButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
 
         var helperList = mutableListOf<Helpers>()
         fun useHelperList() {

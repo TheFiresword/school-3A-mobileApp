@@ -40,7 +40,7 @@ class RescuerListActivity : AppCompatActivity() {
                 url,
                 null, // Rien besoin d'envoyer
                 { response ->
-                    Toast.makeText(applicationContext, "Réussite chargement BDD.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "Chargement réussi.", Toast.LENGTH_LONG).show()
                     val jsonArray = response.getJSONArray("details")
                     names.clear()
                     for (i in 0 until jsonArray.length()) {
@@ -53,7 +53,7 @@ class RescuerListActivity : AppCompatActivity() {
                     callback(names, emails)
                 },
                 { error ->
-                    Toast.makeText(applicationContext, "Erreur du chargement BDD", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "Erreur du chargement", Toast.LENGTH_LONG).show()
                 }
             )
             requestQueue.add(jsonOR)

@@ -6,7 +6,7 @@
 
     <!-- Séléction de la salle -->
     <string name="inputLocationMessage">Entrez le numéro de votre salle :</string>
-    <string name="inputLocationHint">Exemple : E104, Aurore, ...</string>
+    <string name="inputLocationHint">Exemple : E.104, Aurore, ...</string>
     <string name="confirmLocationButtonText">Confirmer</string>
 
     <!-- Attente des secours -->

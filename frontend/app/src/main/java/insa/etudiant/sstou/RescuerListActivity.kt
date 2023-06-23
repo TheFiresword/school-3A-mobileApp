@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import com.android.volley.Request
@@ -39,7 +40,7 @@ class RescuerListActivity : AppCompatActivity() {
                 url,
                 null, // Rien besoin d'envoyer
                 { response ->
-                    Toast.makeText(applicationContext, "Réussite chargement BDD.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "Chargement réussi.", Toast.LENGTH_LONG).show()
                     val jsonArray = response.getJSONArray("details")
                     names.clear()
                     for (i in 0 until jsonArray.length()) {
@@ -52,7 +53,7 @@ class RescuerListActivity : AppCompatActivity() {
                     callback(names, emails)
                 },
                 { error ->
-                    Toast.makeText(applicationContext, "Erreur du chargement BDD", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "Erreur du chargement", Toast.LENGTH_LONG).show()
                 }
             )
             requestQueue.add(jsonOR)
@@ -101,7 +102,11 @@ class RescuerListActivity : AppCompatActivity() {
                 val intent = Intent(this, CreateAccountActivity::class.java)
                 intent.putExtra("Token", myToken)
                 startActivity(intent)
-
+            }
+            val retButton = findViewById<Button>(R.id.button_ret_0)
+            retButton.setOnClickListener {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
             }
         }
 

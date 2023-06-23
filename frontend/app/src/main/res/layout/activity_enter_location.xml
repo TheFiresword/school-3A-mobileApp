@@ -12,18 +12,10 @@
         android:id="@+id/enterLocationText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="54dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="54dp"
-        android:layout_marginBottom="70dp"
         android:text="@string/inputLocationMessage"
         android:textSize="17sp"
-        app:layout_constraintBottom_toTopOf="@+id/inputLocation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        tools:layout_editor_absoluteX="50dp"
+        tools:layout_editor_absoluteY="263dp" />
 
     <AutoCompleteTextView
         android:id="@+id/inputLocation"
@@ -37,22 +29,23 @@
         android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.17"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterLocationText" />
+        app:layout_constraintTop_toBottomOf="@+id/enterLocationText"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/confirmLocationButton"
         android:layout_width="151dp"
         android:layout_height="49dp"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="440dp"
         android:background="@color/confirmLocationButtonBackgroundColor"
         android:text="@string/confirmLocationButtonText"
         android:textColor="@color/confirmLocationButtonTextColor"
         app:backgroundTint="@android:color/holo_red_dark"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/warning"

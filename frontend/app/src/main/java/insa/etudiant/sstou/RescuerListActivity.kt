@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import com.android.volley.Request
@@ -101,7 +102,11 @@ class RescuerListActivity : AppCompatActivity() {
                 val intent = Intent(this, CreateAccountActivity::class.java)
                 intent.putExtra("Token", myToken)
                 startActivity(intent)
-
+            }
+            val retButton = findViewById<Button>(R.id.button_ret_0)
+            retButton.setOnClickListener {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
             }
         }
 
